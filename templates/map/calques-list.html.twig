@@ -1,16 +1,16 @@
 <div>
     <ul class="list-group">
         <h1>Liste des calques existants</h1>
+        <div class="listClq">
         {% for calque in calques %}
+            <span class="me-2">{{ calque.nom }}</span>
             <li class="list-group-item d-flex justify-content-between">
-                <span class="me-2">{{ calque.nom }}</span>
-                <div class="d-flex justify-content-between">
-                    <a class="btn btn-primary me-2" href="#">Modifier le calque</a>
-                    <a class="btn btn-primary me-2" href="#">Supprimer le calque</a>
-                    <a class="btn btn-primary" href="#">Ajouter un nouvel élément au calque</a>
-                </div>
+                    <a><span title="Ajouter un élement" class="material-icons">add</span></a>
+                    <span title="Modifier un élement" class="material-icons">edit</span>
+                    <span title="Supprimer un élement" class="material-icons">delete</span>
             </li>
         {% endfor %}
+        </div>
     </ul>
 </div>
 <div>
