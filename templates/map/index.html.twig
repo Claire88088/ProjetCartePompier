@@ -57,7 +57,7 @@
            #}
 
             {% if app.user %}
-                <div class="col">
+                <div id="form">
                     {{ render(controller('App\\Controller\\MapController::calquesListAction')) }}
                     {% block form %}
                     {% endblock %}

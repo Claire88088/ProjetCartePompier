@@ -18,10 +18,6 @@
     text-align: center;
 }
 
-.col {
-
-}
-
 #log {
     margin: 10px 10px 10px 10px;
 }
@@ -55,7 +51,8 @@
 }
 
 #form {
-    flex: 0 0 20%;
+    flex: 0 0 25%;
+    padding: 10px 10px 10px 10px;
 }
 
 #bLog #summ {
@@ -75,4 +72,10 @@
 .listClq {
     border: 1px solid rgba(0,0,0,.15);
     border-radius: 0.25rem;
+    padding: 0.70rem 1.5rem;
+}
+.material-icons {
+    width: 32.3%;
+    border: 1px solid rgba(0,0,0,.15);
+    text-align: center;
 }
