@@ -15,6 +15,7 @@ use App\Entity\Calque;
 
 class MapController extends AbstractController
 {
+    // Affichage de la carte
     #[Route('/map', name: 'map')]
     public function index(EntityManagerInterface $em, Request $request): Response
     {
@@ -26,6 +27,7 @@ class MapController extends AbstractController
 
     }
 
+    // Affichage de la liste des calques créés
     #[Route('/calques-list', name: 'calques_list')]
     public function calquesListAction(EntityManagerInterface $em, Request $request): Response
     {
@@ -34,7 +36,7 @@ class MapController extends AbstractController
         $options = [];
 
         foreach($calques as $calque)  {
-            //$calquesTab[] = $calque->getNom();
+            $calquesTab[] = $calque->getNom();
             $options[$calque->getNom()] = $calque->getNom();
         }
 
@@ -66,6 +68,7 @@ class MapController extends AbstractController
         ]);
     }
 
+    // Ajout d'un nouveau claque
     #[Route('/map/add-calque', name: 'add_calque')]
     public function addCalqueAction(EntityManagerInterface $em, Request $request): Response
     {
@@ -83,5 +86,15 @@ class MapController extends AbstractController
         return $this->render('map/add-calque.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    // Ajout d'un nouvel élément sur un calque existant
+    #[Route('/map/calque-{nomCalque}/add', name: 'calque_add_element')]
+    public function addElementOnCalqueAction(EntityManagerInterface $em, Request $request, $nomCalque): Response
+    {
+        // en fonction du calque choisi : on ajoute le bon formulaire dans le block Twig
+
+        // en fonction du calque on renvoie vers le template correspondant au formulaire à afficher
+        return $this->render('map/calque-'.$nomCalque.'-add-element.html.twig', ['nomCalque' => $nomCalque]);
     }
 }
