@@ -31,9 +31,11 @@
         </div>
     {% endif %}
     </div>
+
     <div class="container-fluid">
         <div class="row">
             <div id="mapid" class="col" ></div>
+{#
             {% if app.user %}
             <div id="form" class="col">
                 <div id="choixClq">
@@ -50,6 +52,18 @@
                     </div>
                 </div>
             </div>
+           {% endif %}
+
+           #}
+
+            {% if app.user %}
+                <div class="col">
+                    {{ render(controller('App\\Controller\\MapController::calquesListAction')) }}
+                    {% block form %}
+                    {% endblock %}
+                </div>
+
+
             {% endif %}
         </div>
     </div>

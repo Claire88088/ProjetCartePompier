@@ -1,0 +1,37 @@
+<div>
+    <ul class="list-group">
+        <h1>Liste des calques existants</h1>
+        {% for calque in calques %}
+            <li class="list-group-item d-flex justify-content-between">
+                <span class="me-2">{{ calque.nom }}</span>
+                <div class="d-flex justify-content-between">
+                    <a class="btn btn-primary me-2" href="#">Modifier le calque</a>
+                    <a class="btn btn-primary me-2" href="#">Supprimer le calque</a>
+                    <a class="btn btn-primary" href="#">Ajouter un nouvel élément au calque</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <h1>Créer un nouvel élément sur un calque existant :</h1>
+    {# {{ render(controller('App\\Controller\\')) }} #}
+    {{ form(choiceCalqueForm) }}
+    {#
+    <form action="{{ path('select_calque') }}" method="post">
+        <select class="form-select" aria-label="Default select example">
+            {% for calque in calques %}
+                <option value="{{ calque.nom|lower }}">{{ calque.nom }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">Sélectionner le calque</button>
+    </form>
+    #}
+    <h1>Créer un nouveau calque :</h1>
+    <form action="{{ path('add_calque') }}" method="post">
+        <button type="submit" class="btn btn-primary">Créer un nouveau calque</button>
+    </form>
+</div>
+
+{# Pour passer des variables de Twig à JS #}
+<div id="calquesTab" calques="{{ calquesTab|json_encode() }}"></div>
