@@ -83,3 +83,14 @@ searchControl.on("results", (data) => {
         marker.openPopup();
     }
 })
+
+var buttonAddCalque = document.getElementById("addCalque")
+var clicked = false
+buttonAddCalque.addEventListener("click", function() {
+    clicked = true
+    if (clicked == true) {
+        var zoneAddCalque = document.getElementById("calque");
+        buttonAddCalque.appendChild(zoneAddCalque);
+    }
+});
+

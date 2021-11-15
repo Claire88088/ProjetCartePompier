@@ -32,7 +32,7 @@
 }
 
 #Ah3 {
-    flex: 0 0 80%;
+    flex: 0 0 70%;
     text-align: center;
 }
 
@@ -74,6 +74,11 @@
     border-radius: 0.25rem;
     padding: 0.70rem 1.5rem;
 }
+
+.listClq > form {
+    text-align: center;
+}
+
 .material-icons {
     width: 49.1%;
     border: 1px solid rgba(0,0,0,.15);

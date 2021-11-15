@@ -9,14 +9,19 @@
                 <a href="#"><span title="Supprimer un élement" class="material-icons">delete</span></a>
             </div>
         {% endfor %}
+            <hr>
+            <form action="{{ path('add_calque') }}" method="post">
+                <button type="submit" id="addCalque" class="btn btn-primary">Créer un nouveau calque</button>
+            </form>
         </div>
     </ul>
 </div>
+{#
 <div>
     <h1>Créer un nouvel élément sur un calque existant :</h1>
-    {# {{ render(controller('App\\Controller\\')) }} #}
+    {{ render(controller('App\\Controller\\')) }}
     {{ form(choiceCalqueForm) }}
-    {#
+
     <form action="{{ path('select_calque') }}" method="post">
         <select class="form-select" aria-label="Default select example">
             {% for calque in calques %}
@@ -25,12 +30,8 @@
         </select>
         <button type="submit" class="btn btn-primary">Sélectionner le calque</button>
     </form>
-    #}
-    <h1>Créer un nouveau calque :</h1>
-    <form action="{{ path('add_calque') }}" method="post">
-        <button type="submit" class="btn btn-primary">Créer un nouveau calque</button>
-    </form>
 </div>
+#}
 
 {# Pour passer des variables de Twig à JS #}
 <div id="calquesTab" calques="{{ calquesTab|json_encode() }}"></div>
