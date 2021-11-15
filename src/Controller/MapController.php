@@ -16,7 +16,9 @@ use App\Entity\Calque;
 class MapController extends AbstractController
 {
     // Affichage de la carte
-    #[Route('/map', name: 'map')]
+    /**
+     * @Route("/map", name="map")
+     */
     public function index(EntityManagerInterface $em, Request $request): Response
     {
         $calques = $em->getRepository('App:Calque')->findAll();
@@ -28,7 +30,9 @@ class MapController extends AbstractController
     }
 
     // Affichage de la liste des calques créés
-    #[Route('/calques-list', name: 'calques_list')]
+    /**
+     * @Route("/calques-list", name="calques_list")
+     */
     public function calquesListAction(EntityManagerInterface $em, Request $request): Response
     {
         $calques = $em->getRepository('App:Calque')->findAll();
@@ -69,7 +73,9 @@ class MapController extends AbstractController
     }
 
     // Ajout d'un nouveau claque
-    #[Route('/map/add-calque', name: 'add_calque')]
+    /**
+     * @Route("/map/add-calque", name="add_calque")
+     */
     public function addCalqueAction(EntityManagerInterface $em, Request $request): Response
     {
         $calque = new Calque();
@@ -89,7 +95,9 @@ class MapController extends AbstractController
     }
 
     // Ajout d'un nouvel élément sur un calque existant
-    #[Route('/map/calque-{nomCalque}/add', name: 'calque_add_element')]
+    /**
+     * @Route("/map/calque-{nomCalque}/add", name="calque_add_element")
+     */
     public function addElementOnCalqueAction(EntityManagerInterface $em, Request $request, $nomCalque): Response
     {
         // en fonction du calque choisi : on ajoute le bon formulaire dans le block Twig
