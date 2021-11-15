@@ -84,6 +84,7 @@ searchControl.on("results", (data) => {
     }
 })
 
+/* Test
 var buttonAddCalque = document.getElementById("addCalque")
 var clicked = false
 buttonAddCalque.addEventListener("click", function() {
@@ -93,4 +94,4 @@ buttonAddCalque.addEventListener("click", function() {
         buttonAddCalque.appendChild(zoneAddCalque);
     }
 });
-
+*/
