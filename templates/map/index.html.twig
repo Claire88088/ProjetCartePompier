@@ -58,8 +58,24 @@
 
             {% if app.user %}
                 <div id="form">
-                    {{ render(controller('App\\Controller\\MapController::calquesListAction')) }}
-                    {% block form %}
+                    {% block global %}
+                    {# {{ render(controller('App\\Controller\\MapController::calquesListAction')) }} #}
+                        <form action="{{ path('calques_list') }}" method="post">
+                            <button class="btn btn-primary">Lister les calques</button>
+                        </form>
+                        <hr>
+                        <form action="{{ path('add_calque') }}" method="post">
+                            <button class="btn btn-primary">Créer un nouveau calque</button>
+                        </form>
+                        <hr>
+                        <form action="" method="post">
+                            <button class="btn btn-primary">Ajouter un élément sur un calque</button>
+                        </form>
+                        <hr>
+                        {#
+                        {% block form %}
+                        {% endblock %}
+                        #}
                     {% endblock %}
                 </div>
 
@@ -67,9 +83,4 @@
             {% endif %}
         </div>
     </div>
-    {#
-    {% for calque in calques %}
-        <div class="calques" calques="{{ calque.nom }}"></div>
-    {% endfor %}
-    #}
 {% endblock %}

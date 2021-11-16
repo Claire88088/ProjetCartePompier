@@ -95,3 +95,15 @@ buttonAddCalque.addEventListener("click", function() {
     }
 });
 */
+for (let i = 0; i < clq.length; i++) {
+    clqs = clq[i].attributes[1].value;
+    var test = document.getElementById(clqs);
+
+    test.addEventListener('click', function() {
+        if (test.attributes[1].value = clqs) {
+            console.log('hey')
+        }
+    })
+}
+
+
