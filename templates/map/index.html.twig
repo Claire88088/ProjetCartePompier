@@ -1,4 +1,4 @@
-{%  extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block body %}
     <div id="bLog">
         <div id="Ah3">
@@ -77,27 +77,18 @@
                         {% endblock %}
                         #}
                     {% endblock %}
+                    {%  if app.request.get('_route') != "map" %}
+                        <form action="{{ path('map') }}" method="post">
+                            <button class="btn btn-primary">retour</button>
+                        </form>
+                    {% endif %}
                 </div>
-
-
-            {% endif %}
-
-            {% for batiment in bat %}
-                <h1>{{ batiment.longitude }}</h1>
-                <script defer src="{{ asset('js/script.js') }}"></script>
-                <script defer>
-                    var entryInfo = {
-                        id:'{{ batiment.id }}',
-                        nom:'{{ batiment.nom }}',
-                        latitude:'{{ batiment.latitude }}',
-                        longitude:'{{ batiment.longitude }}',
-                    };
-                    console.log(entryInfo);
-                    maximeGenie();
-                </script>
-                <script defer src="{{ asset('js/script2.js') }}"></script>
-            {% endfor %}
-
         </div>
+            {% endif %}
     </div>
+    {# Pour passer des variables de Twig à JS #}
+    {% for calque in calques %}
+        <div class="calques" calques="{{ calque.nom }}"></div>
+    {% endfor %}
+    {# <div id="calquesTab" calques="{{ calquesTab|json_encode() }}"></div> #}
 {% endblock %}
