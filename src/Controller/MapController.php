@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\EtablissementRepertorie;
 use App\Form\CalqueType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,13 +22,11 @@ class MapController extends AbstractController
     public function index(EntityManagerInterface $em, Request $request): Response
     {
         $calques = $em->getRepository('App:Calque')->findAll();
-        $bat=$this->getDoctrine()->getRepository(EtablissementRepertorie::class)->findBy(['lien'=>'a pas']);
-        /*return $this->render('map/index.html.twig', [
-            'calques' => $calques,
-        ]);*/
+
         return $this->render('map/index.html.twig', [
-            'bat' => $bat,
+            'calques' => $calques,
         ]);
+
     }
 
     // Affichage de la liste des calques créés
@@ -76,10 +73,12 @@ class MapController extends AbstractController
     }
 
     // Ajout d'un nouveau claque
-    #[Route('/map/add-calque', name: 'add_calque')]
-
+    /**
+     * @Route("/map/add-calque", name="add_calque")
+     */
     public function addCalqueAction(EntityManagerInterface $em, Request $request): Response
     {
+        $calques = $em->getRepository('App:Calque')->findAll();
         $calque = new Calque();
         $form = $this->createForm(CalqueType::class, $calque);
         $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter un nouveau calque']);
@@ -92,8 +91,35 @@ class MapController extends AbstractController
         }
 
         return $this->render('map/add-calque.html.twig', [
+            'calques'=> $calques,
             'form' => $form->createView()
         ]);
+    }
+
+    // Supprimer un calque
+    /**
+     * @Route("/map/del-calque-{id}", name="del_calque")
+     */
+    public function deleteCalqueAction(EntityManagerInterface $em, int $id): Response
+    {
+        $calques = $em->getRepository('App:Calque')->findAll();
+        $calque = $em->getRepository('App:Calque')->find($id);
+
+        if (!$calque) {
+            throw $this->createNotFoundException('Aucun Calque a supprimer');
+        } else {
+            $em->remove($calque);
+            $em->flush();
+        }
+        return $this->render('map/index.html.twig', ['calques' => $calques]);;
+    }
+
+    // Editer un calque
+    /**
+     * @Route("/map/edit-calque-{id}", name="edit_calque")
+     */
+    public function editCalqueAction(EntityManagerInterface $em, Request $request): Response
+    {
     }
 
     // Ajout d'un nouvel élément sur un calque existant
