@@ -84,6 +84,7 @@ searchControl.on("results", (data) => {
     }
 })
 
+/* Test
 var buttonAddCalque = document.getElementById("addCalque")
 var clicked = false
 buttonAddCalque.addEventListener("click", function() {
@@ -93,4 +94,16 @@ buttonAddCalque.addEventListener("click", function() {
         buttonAddCalque.appendChild(zoneAddCalque);
     }
 });
+*/
+for (let i = 0; i < clq.length; i++) {
+    clqs = clq[i].attributes[1].value;
+    var test = document.getElementById(clqs);
+
+    test.addEventListener('click', function() {
+        if (test.attributes[1].value = clqs) {
+            console.log('hey')
+        }
+    })
+}
+
 

@@ -1,18 +1,26 @@
+{% extends 'map/index.html.twig' %}
+
+{% block global %}
 <div>
     <ul class="list-group">
         <h4>Liste des calques existants</h4>
         <div class="listClq">
         {% for calque in calques %}
-            <span class="me-2">{{ calque.nom }}</span>
-            <div>
-                <a href="#"><span title="Modifier un élement" class="material-icons">edit</span></a>
-                <a href="#"><span title="Supprimer un élement" class="material-icons">delete</span></a>
+            {#<span class="me-2">{{ calque.nom }}</span>#}
+            <div class="divClqEntier">
+                <div class="divClqNom">
+                    <input id="{{ calque.nom }}" type="text" value="{{ calque.nom }}" disabled/>
+                </div>
+                <div>
+                    <a href="#" id="{{ calque.nom }}M" class="am">
+                        <span title="Modifier un élement" class="material-icons">edit</span>
+                    </a>
+                    <a href="#" id="{{ calque.nom }}S">
+                        <span title="Supprimer un élement" class="material-icons">delete</span>
+                    </a>
+                </div>
             </div>
         {% endfor %}
-            <hr>
-            <form action="{{ path('add_calque') }}" method="post">
-                <button type="submit" id="addCalque" class="btn btn-primary">Créer un nouveau calque</button>
-            </form>
         </div>
     </ul>
 </div>
@@ -34,4 +42,8 @@
 #}
 
 {# Pour passer des variables de Twig à JS #}
-<div id="calquesTab" calques="{{ calquesTab|json_encode() }}"></div>
+{% for calque in calques %}
+    <div class="calques" calques="{{ calque.nom }}"></div>
+{% endfor %}
+{# <div id="calquesTab" calques="{{ calquesTab|json_encode() }}"></div> #}
+{% endblock %}

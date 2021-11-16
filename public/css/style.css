@@ -53,6 +53,7 @@
 #form {
     flex: 0 0 25%;
     padding: 10px 10px 10px 10px;
+    text-align: center;
 }
 
 #bLog #summ {
@@ -79,8 +80,28 @@
     text-align: center;
 }
 
+.divClqEntier {
+    margin-bottom: 10px;
+}
+
+.listClq:first-child {
+    margin-top: 10px;
+}
+
+.divClqNom > input {
+    width: 100%;
+}
+
 .material-icons {
-    width: 49.1%;
+    width: 50%;
     border: 1px solid rgba(0,0,0,.15);
     text-align: center;
+}
+
+.am {
+    margin-right: -5px;
+}
+
+#calque{
+    margin: 30px;
 }
