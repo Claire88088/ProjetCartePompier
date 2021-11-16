@@ -50,14 +50,24 @@ class Travaux
     private $dateFin;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="decimal", precision=10, scale=8)
      */
-    private $adresseDebut;
+    private $latitudeDebut;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column (type="decimal", precision=10, scale=8)
      */
-    private $adresseFin;
+    private $longitudeDebut;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=8)
+     */
+    private $latitudeFin;
+
+    /**
+     * @ORM\Column (type="decimal", precision=10, scale=8)
+     */
+    private $longitudeFin;
 
     public function getId(): ?int
     {
@@ -88,26 +98,50 @@ class Travaux
         return $this;
     }
 
-    public function getAdresseDebut(): ?string
+    public function getLatitudeDebut(): ?string
     {
-        return $this->adresseDebut;
+        return $this->latitudeDebut;
     }
 
-    public function setAdresseDebut(string $adresseDebut): self
+    public function setLatitudeDebut(string $latitudeDebut): self
     {
-        $this->adresseDebut = $adresseDebut;
+        $this->latitudeDebut = $latitudeDebut;
 
         return $this;
     }
 
-    public function getAdresseFin(): ?string
+    public function getLongitudeDebut(): ?string
     {
-        return $this->adresseFin;
+        return $this->longitudeDebut;
     }
 
-    public function setAdresseFin(string $adresseFin): self
+    public function setLongitudeDebut(string $longitudeDebut): self
     {
-        $this->adresseFin = $adresseFin;
+        $this->longitudeDebut = $longitudeDebut;
+
+        return $this;
+    }
+
+    public function getLatitudeFin(): ?string
+    {
+        return $this->latitudeFin;
+    }
+
+    public function setLatitudeFin(string $latitudeFin): self
+    {
+        $this->latitudeDebut = $latitudeFin;
+
+        return $this;
+    }
+
+    public function getLongitudeFin(): ?string
+    {
+        return $this->longitudeFin;
+    }
+
+    public function setLongitudeFin(string $longitudeFin): self
+    {
+        $this->longitudeDebut = $longitudeFin;
 
         return $this;
     }

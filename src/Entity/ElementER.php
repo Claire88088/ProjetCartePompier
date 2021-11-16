@@ -50,10 +50,14 @@ class ElementER
     private $adresse;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="decimal", precision=10, scale=8)
      */
-    private $coordonneesGPS;
+    private $latitude;
 
+    /**
+     * @ORM\Column (type="decimal", precision=10, scale=8)
+     */
+    private $longitude;
     public function getId(): ?int
     {
         return $this->id;
@@ -83,14 +87,26 @@ class ElementER
         return $this;
     }
 
-    public function getCoordonneesGPS(): ?string
+    public function getLatitude(): ?string
     {
-        return $this->coordonneesGPS;
+        return $this->latitude;
     }
 
-    public function setCoordonneesGPS(string $coordonneesGPS): self
+    public function setLatitude(string $latitude): self
     {
-        $this->coordonneesGPS = $coordonneesGPS;
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(string $longitude): self
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }
