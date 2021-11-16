@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\EtablissementRepertorie;
 use App\Form\CalqueType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,14 +23,16 @@ class MapController extends AbstractController
     public function index(EntityManagerInterface $em, Request $request): Response
     {
         $calques = $em->getRepository('App:Calque')->findAll();
-
-        return $this->render('map/index.html.twig', [
+        $bat=$this->getDoctrine()->getRepository(EtablissementRepertorie::class)->findBy(['lien'=>'a pas']);
+        /*return $this->render('map/index.html.twig', [
             'calques' => $calques,
+        ]);*/
+        return $this->render('map/index.html.twig', [
+            'bat' => $bat,
         ]);
-
     }
 
-    // Affichage de la liste des calques créés pour la modification/suppression
+    // Affichage de la liste des calques créés
     /**
      * @Route("/calques-list", name="calques_list")
      */
@@ -45,18 +48,18 @@ class MapController extends AbstractController
         }
 
         // Création du formulaire de choix de calque directement dans le controller
-        /*$choiceCalqueForm = $this->createFormBuilder()
+        $choiceCalqueForm = $this->createFormBuilder()
             ->add('calque', ChoiceType::class, ['choices' => $options])
             ->add('Selectionner', SubmitType::class, [
                 'label' => 'Sélectionner ce calque'])
             ->getForm();
-    */
+
         /* Création du formulaire de choix de calque à partir d'une classe ChoiceCalqueType
         $choiceCalqueForm = $this->createForm(ChoiceCalqueType::class, ['test'=>'valeurTest']);
         $choiceCalqueForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter un nouveau calque']);
         */
-        //$choiceCalqueForm->handleRequest($request);
-/*
+        $choiceCalqueForm->handleRequest($request);
+
         if ($choiceCalqueForm->isSubmitted() && $choiceCalqueForm->isValid()) {
             // on récupère le nom du calque sur lequel on veut ajouter un élément
             $nomCalque = strtolower($request->request->get('form')['calque']);
@@ -64,18 +67,17 @@ class MapController extends AbstractController
             // on redirige vers la page qui contient le formulaire d'ajout correspondant
             return $this->redirectToRoute('calque_add_element', ['nomCalque' => $nomCalque]);
         }
-*/
+
         return $this->render('/map/calques-list.html.twig', [
             'calques' => $calques,
             'calquesTab' =>$calquesTab,
-            //'choiceCalqueForm' => $choiceCalqueForm->createView()
+            'choiceCalqueForm' => $choiceCalqueForm->createView()
         ]);
     }
 
     // Ajout d'un nouveau claque
-    /**
-     * @Route("/map/add-calque", name="add_calque")
-     */
+    #[Route('/map/add-calque', name: 'add_calque')]
+
     public function addCalqueAction(EntityManagerInterface $em, Request $request): Response
     {
         $calque = new Calque();

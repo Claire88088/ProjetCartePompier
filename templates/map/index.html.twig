@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{%  extends 'base.html.twig' %}
 {% block body %}
     <div id="bLog">
         <div id="Ah3">
@@ -81,6 +81,23 @@
 
 
             {% endif %}
+
+            {% for batiment in bat %}
+                <h1>{{ batiment.longitude }}</h1>
+                <script defer src="{{ asset('js/script.js') }}"></script>
+                <script defer>
+                    var entryInfo = {
+                        id:'{{ batiment.id }}',
+                        nom:'{{ batiment.nom }}',
+                        latitude:'{{ batiment.latitude }}',
+                        longitude:'{{ batiment.longitude }}',
+                    };
+                    console.log(entryInfo);
+                    maximeGenie();
+                </script>
+                <script defer src="{{ asset('js/script2.js') }}"></script>
+            {% endfor %}
+
         </div>
     </div>
 {% endblock %}
