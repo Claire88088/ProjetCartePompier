@@ -51,9 +51,7 @@
                     {% endblock %}
 
                     {%  if app.request.get('_route') != "map" %}
-                        <form action="{{ path('map') }}" method="post">
-                            <button class="btn btn-primary">retour</button>
-                        </form>
+                            <button class="btn btn-primary" onclick="location.href='{{ path('map') }}'">retour</button>
                     {% endif %}
                 </div>
         </div>
