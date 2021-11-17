@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\CalqueRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=CalqueRepository::class)
+ * @UniqueEntity(fields="nom", message="Ce nom est déjà pris.")
  */
 class Calque
 {
