@@ -38,6 +38,9 @@
 
             {% if app.user %}
                 <div id="form">
+                    {% for msg in app.session.flashBag.get('success') %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
                     {% block global %}
                         <form action="{{ path('calques_list') }}" method="post">
                             <button class="btn btn-primary">Lister les calques</button>
