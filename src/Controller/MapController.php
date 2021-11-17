@@ -21,6 +21,14 @@ use App\Entity\Calque;
 
 class MapController extends AbstractController
 {
+    /**
+     * @Route("/", name="accueil")
+     */
+    public function indexAction2(): Response
+    {
+        return $this->redirectToRoute('map');
+    }
+
     // Affichage de la carte
     /**
      * @Route("/map", name="map")
