@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\EtablissementRepertorie;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,7 +13,6 @@ class EtablissementRepertorieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('type')
             ->add('nom')
             ->add('adresse')
             ->add('latitude')
@@ -20,7 +20,6 @@ class EtablissementRepertorieType extends AbstractType
             ->add('description')
             ->add('photo')
             ->add('lien')
-            ->add('calque')
         ;
     }
 

@@ -2,7 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\ElementAutoroute;
+use App\Entity\EtablissementRepertorie;
+use App\Entity\Travaux;
 use App\Form\CalqueType;
+use App\Form\ElementAutorouteType;
+use App\Form\EtablissementRepertorieType;
+use App\Form\TravauxType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -109,4 +115,127 @@ class MapController extends AbstractController
         ]);
     }
 
+    // Ajouter un établissement répertorié
+    /**
+     * @Route("/map/add-er-{idCalque}", name="add_er")
+     */
+    public function addERAction(EntityManagerInterface $em, Request $request, int $idCalque): Response
+    {
+        $er = new EtablissementRepertorie();
+
+        // on ajoute le calque auquel il est lié au nouvel établissement
+        $calque = $em->getRepository('App:Calque')->find($idCalque);
+        $er->setCalque($calque);
+
+        $form = $this->createForm(EtablissementRepertorieType::class, $er);
+
+        // on ajoute le champ de choix du type d'établissement (choix issu de la table TypeEtablissementRepertorie de la BD)
+        $typeChoices = $em->getRepository('App:TypeEtablissementRepertorie')->findAll();
+        $typeChoicesTab = [];
+        $options = [];
+        foreach($typeChoices as $type)  {
+            $typeChoicesTab[] = $type->getNomType();
+            $options[$type->getNomType()] = $type->getNomType();
+        }
+        $form->add('type', ChoiceType::class, [
+            'choices'  => $options,
+        ]);
+
+        // on ajoute le bouton de soumission
+        $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter un nouveau ER']);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($er);
+            $em->flush();
+            $this->addFlash('success', 'L\'établissement a bien été ajouté !');
+            return $this->redirectToRoute('map');
+        }
+
+        return $this->render('map/add-er.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    // Ajout d'un nouvel élément
+    /**
+     * @Route("/choice-calque", name="choice_calque")
+     */
+    public function ajouterElementAction(EntityManagerInterface $em, Request $request): Response
+    {
+        // on créé le formulaire de choix de calque directement dans le controller (à partir des données de la BD)
+        $calques = $em->getRepository('App:Calque')->findAll();
+        $calquesTab = [];
+        $options = [];
+        foreach($calques as $calque)  {
+            $calquesTab[] = $calque->getNom();
+            $options[$calque->getNom()] = $calque->getId();
+        }
+        $choixCalqueForm = $this->createFormBuilder()
+            ->add('calque', ChoiceType::class, ['choices' => $options])
+            ->add('Selectionner', SubmitType::class, [
+                'label' => 'Sélectionner ce calque'])
+            ->getForm();
+
+        $choixCalqueForm->handleRequest($request);
+
+        if ($choixCalqueForm->isSubmitted() && $choixCalqueForm->isValid()) {
+            // on récupère l'id du calque sur lequel on veut ajouter un élément
+            $idCalqueChoisi = $request->request->get('form')['calque'];
+
+            // TODO : gestion des cas où on veut ajouter un élément d'un ER
+
+            // on créé le formulaire d'ajout en fonction de l'id du calque
+            // TODO : le faire dynamiquement
+           /*foreach($calques as $calque)  {
+                if ($calque->getId() == $idCalqueChoisi) {
+
+                }
+            }
+            */
+            switch ($idCalqueChoisi) {
+                case '1':
+                    $element = new Travaux();
+                    $formTypeClass = TravauxType::class;
+                    break;
+                case '2':
+                    return $this->redirectToRoute('add_er', ['idCalque' => $idCalqueChoisi]);
+                case '4':
+                    $element = $em->getRepository(ElementAutoroute::class)->find(1);
+                    //$element = new ElementAutoroute();
+                    $formTypeClass = ElementAutorouteType::class;
+                    break;
+            }
+           //var_dump('on est ici');
+            $element->setCalque($calqueChoisi);
+
+            $form = $this->createForm($formTypeClass, $element);
+            $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter']);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted()) { var_dump('soumis');}
+
+                        if ($form->isSubmitted() && $form->isValid()) {
+                            var_dump('coucou');
+                            $em->persist($element);
+                            $em->flush();
+                            return $this->redirectToRoute('map');
+                        }
+
+            // on redirige vers la page d'ajout avec le formulaire d'ajout correspondant
+            return $this->render('/map/add-element.html.twig', [
+                'element' => $element,
+                'calque' => $calqueChoisi,
+                'form' => $form->createView()
+            ]);
+        }
+
+        return $this->render('/map/choix-calque.html.twig', [
+            'calques' => $calques,
+            'calquesTab' =>$calquesTab,
+            'choixCalqueForm' => $choixCalqueForm->createView()
+        ]);
+    }
 }

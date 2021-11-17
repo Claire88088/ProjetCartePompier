@@ -45,37 +45,37 @@ class EtablissementRepertorie
     private $type;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $adresse;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=8)
+     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=true)
      */
     private $latitude;
 
     /**
-     * @ORM\Column (type="decimal", precision=10, scale=8)
+     * @ORM\Column (type="decimal", precision=10, scale=8, nullable=true)
      */
     private $longitude;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lien;
 
