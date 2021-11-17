@@ -88,12 +88,25 @@ class MapController extends AbstractController
         return $this->redirectToRoute('calques_list');;
     }
 
-    // Editer un calque
     /**
      * @Route("/map/edit-calque-{id}", name="edit_calque")
      */
-    public function editCalqueAction(EntityManagerInterface $em, Request $request): Response
+    public function editCalqueAction(EntityManagerInterface $em, Request $request, int $id): Response
     {
+        $calque = $em->getRepository('App:Calque')->find($id);
+        $form = $this->createForm(CalqueType::class, $calque);
+        $form->add('Modifier', SubmitType::class, ['label' => 'Modifier le calque']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($calque);
+            $em->flush();
+            return $this->redirectToRoute('calques_list');
+        }
+
+        return $this->render('map/add-calque.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
 }
