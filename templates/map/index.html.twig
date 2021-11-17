@@ -35,31 +35,10 @@
     <div class="container-fluid">
         <div class="row">
             <div id="mapid" class="col" ></div>
-{#
-            {% if app.user %}
-            <div id="form" class="col">
-                <div id="choixClq">
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Sélectionnez un calque
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            {% for calque in calques %}
-                            <a class="dropdown-item dropdown-toggle">{{ calque.nom }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-           {% endif %}
-
-           #}
 
             {% if app.user %}
                 <div id="form">
                     {% block global %}
-                    {# {{ render(controller('App\\Controller\\MapController::calquesListAction')) }} #}
                         <form action="{{ path('calques_list') }}" method="post">
                             <button class="btn btn-primary">Lister les calques</button>
                         </form>
@@ -72,11 +51,8 @@
                             <button class="btn btn-primary">Ajouter un élément sur un calque</button>
                         </form>
                         <hr>
-                        {#
-                        {% block form %}
-                        {% endblock %}
-                        #}
                     {% endblock %}
+
                     {%  if app.request.get('_route') != "map" %}
                         <form action="{{ path('map') }}" method="post">
                             <button class="btn btn-primary">retour</button>
@@ -86,9 +62,6 @@
         </div>
             {% endif %}
     </div>
-    {# Pour passer des variables de Twig à JS #}
-    {% for calque in calques %}
-        <div class="calques" calques="{{ calque.nom }}"></div>
-    {% endfor %}
-    {# <div id="calquesTab" calques="{{ calquesTab|json_encode() }}"></div> #}
+
+    {{ render(controller('App\\Controller\\MapController::envoiDonneesJSAction')) }}
 {% endblock %}

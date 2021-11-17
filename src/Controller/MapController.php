@@ -19,11 +19,17 @@ class MapController extends AbstractController
     /**
      * @Route("/map", name="map")
      */
-    public function index(EntityManagerInterface $em, Request $request): Response
+    public function indexAction(): Response
+    {
+        return $this->render('map/index.html.twig');
+    }
+
+    // Envoi des données nécessaires à JS
+    public function envoiDonneesJSAction(EntityManagerInterface $em): Response
     {
         $calques = $em->getRepository('App:Calque')->findAll();
 
-        return $this->render('map/index.html.twig', [
+        return $this->render('envoi-donnees-JS.html.twig', [
             'calques' => $calques,
         ]);
     }
@@ -32,23 +38,14 @@ class MapController extends AbstractController
     /**
      * @Route("/calques-list", name="calques_list")
      */
-    public function calquesListAction(EntityManagerInterface $em, Request $request): Response
+    public function calquesListAction(EntityManagerInterface $em): Response
     {
         $calques = $em->getRepository('App:Calque')->findAll();
-        $calquesTab = [];
-        $options = [];
-
-        foreach($calques as $calque)  {
-            $calquesTab[] = $calque->getNom();
-            $options[$calque->getNom()] = $calque->getNom();
-        }
 
         return $this->render('/map/calques-list.html.twig', [
             'calques' => $calques,
-            'calquesTab' =>$calquesTab,
         ]);
     }
-
 
     // Ajout d'un nouveau calque
     /**
@@ -56,7 +53,6 @@ class MapController extends AbstractController
      */
     public function addCalqueAction(EntityManagerInterface $em, Request $request): Response
     {
-        $calques = $em->getRepository('App:Calque')->findAll();
         $calque = new Calque();
         $form = $this->createForm(CalqueType::class, $calque);
         $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter un nouveau calque']);
@@ -69,7 +65,6 @@ class MapController extends AbstractController
         }
 
         return $this->render('map/add-calque.html.twig', [
-            'calques'=> $calques,
             'form' => $form->createView()
         ]);
     }
@@ -80,16 +75,15 @@ class MapController extends AbstractController
      */
     public function deleteCalqueAction(EntityManagerInterface $em, int $id): Response
     {
-        $calques = $em->getRepository('App:Calque')->findAll();
         $calque = $em->getRepository('App:Calque')->find($id);
 
         if (!$calque) {
-            throw $this->createNotFoundException('Aucun Calque a supprimer');
+            throw $this->createNotFoundException('Aucun calque à supprimer');
         } else {
             $em->remove($calque);
             $em->flush();
         }
-        return $this->render('map/index.html.twig', ['calques' => $calques]);;
+        return $this->redirectToRoute('calques_list');;
     }
 
     // Editer un calque
