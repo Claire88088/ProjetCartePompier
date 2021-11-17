@@ -15,10 +15,11 @@
                     <a href="{{ path('edit_calque', { 'id':calque.id }) }}" class="am">
                         <span title="Modifier un élement" class="material-icons">edit</span>
                     </a>
-                    <a href="{{ path('del_calque', { 'id':calque.id }) }}"  onclick="return confirm('Etes vous certain de vouloir supprimer ce calque ?')">
+                    <a href="{{ path('del_calque', { 'id':calque.id }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce calque ?')">
                         <span title="Supprimer un élement" class="material-icons">delete</span>
                     </a>
                 </div>
+
             </div>
         {% endfor %}
         </div>
