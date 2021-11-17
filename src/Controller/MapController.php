@@ -61,6 +61,7 @@ class MapController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($calque);
             $em->flush();
+            $this->addFlash('success', 'Le calque a bien été ajouté !');
             return $this->redirectToRoute('map');
         }
 
@@ -82,6 +83,7 @@ class MapController extends AbstractController
         } else {
             $em->remove($calque);
             $em->flush();
+            $this->addFlash('success', 'Le calque a bien été supprimé !');
         }
         return $this->redirectToRoute('calques_list');;
     }

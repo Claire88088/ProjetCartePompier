@@ -38,6 +38,9 @@
 
             {% if app.user %}
                 <div id="form">
+                    {% for msg in app.session.flashBag.get('success') %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
                     {% block global %}
                             <button class="btn btn-primary" onclick="location.href='{{ path('calques_list') }}'">Lister les calques</button>
                         <hr>
