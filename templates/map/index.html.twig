@@ -39,17 +39,11 @@
             {% if app.user %}
                 <div id="form">
                     {% block global %}
-                        <form action="{{ path('calques_list') }}" method="post">
-                            <button class="btn btn-primary">Lister les calques</button>
-                        </form>
+                            <button class="btn btn-primary" onclick="location.href='{{ path('calques_list') }}'">Lister les calques</button>
                         <hr>
-                        <form action="{{ path('add_calque') }}" method="post">
-                            <button class="btn btn-primary">Créer un nouveau calque</button>
-                        </form>
+                            <button class="btn btn-primary" onclick="location.href='{{ path('add_calque') }}'">Créer un nouveau calque</button>
                         <hr>
-                        <form action="" method="post">
-                            <button class="btn btn-primary">Ajouter un élément sur un calque</button>
-                        </form>
+                            <button class="btn btn-primary" onclick="location.href='{{ path('') }}'">Ajouter un élément sur un calque</button>
                         <hr>
                     {% endblock %}
 
