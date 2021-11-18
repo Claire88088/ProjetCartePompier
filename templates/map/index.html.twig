@@ -34,7 +34,11 @@
 
     <div class="container-fluid">
         <div class="row">
+
+            {# Affichage de la carte #}
             <div id="mapid" class="col" ></div>
+
+            {{ form(rechercheForm) }}
 
             {% if app.user %}
                 <div id="form">

@@ -29,13 +29,22 @@ class MapController extends AbstractController
         return $this->redirectToRoute('map');
     }
 
-    // Affichage de la carte
+    // Affichage de la carte avec le formulaire de recherche
     /**
      * @Route("/map", name="map")
      */
     public function indexAction(): Response
     {
-        return $this->render('map/index.html.twig');
+        $rechercheForm = $this->createFormBuilder(null, ['attr' => ['id' => 'rechercheForm']])
+            ->add('adresseRecherche')
+            ->add('commune')
+            ->add('Selectionner', SubmitType::class, [
+                'label' => 'Rechercher'])
+            ->getForm();
+
+        return $this->render('map/index.html.twig', [
+            'rechercheForm' => $rechercheForm->createView()
+        ]);
     }
 
     // Envoi des données nécessaires à JS

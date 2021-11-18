@@ -107,3 +107,20 @@ for (let i = 0; i < clq.length; i++) {
 }
 
 
+// Affichage d'un marqueur à partir du formulaire de recherche par adresse
+let form = document.getElementById('rechercheForm');
+
+form.addEventListener('submit', event => {
+    event.preventDefault();
+
+    let adresseRecherche = document.getElementById('form_adresseRecherche').value;
+    // TODO : ajouter la recherche du code postal
+
+    // on cherche les coordonnées GPS correspondant à l'adresse
+    coordFromAddressWithFetch(adresseRecherche, '86180').then(coord => {
+
+        // on affiche l'adresse à l'aide d'un marqueur
+        let myMarker = L.marker([coord[1], coord[0]]).addTo(myMap)
+    });
+});
+
