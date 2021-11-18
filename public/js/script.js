@@ -114,10 +114,12 @@ form.addEventListener('submit', event => {
     event.preventDefault();
 
     let adresseRecherche = document.getElementById('form_adresseRecherche').value;
-    // TODO : ajouter la recherche du code postal
+
+    let selectElt = document.getElementById('form_commune');
+    let codePostal = selectElt.options[selectElt.selectedIndex].value;
 
     // on cherche les coordonnées GPS correspondant à l'adresse
-    coordFromAddressWithFetch(adresseRecherche, '86180').then(coord => {
+    coordFromAddressWithFetch(adresseRecherche, codePostal).then(coord => {
 
         // on affiche l'adresse à l'aide d'un marqueur
         let myMarker = L.marker([coord[1], coord[0]]).addTo(myMap)

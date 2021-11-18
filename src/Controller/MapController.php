@@ -33,11 +33,19 @@ class MapController extends AbstractController
     /**
      * @Route("/map", name="map")
      */
-    public function indexAction(): Response
+    public function indexAction(EntityManagerInterface $em): Response
     {
+        $communes = $em->getRepository('App:Commune')->findAll();
+        $communesTab = [];
+        $options = [];
+        foreach($communes as $commune)  {
+            $communesTab[] = $commune->getNom();
+            $options[$commune->getCodePostal() . ' - ' . $commune->getNom()] = $commune->getCodePostal();
+        }
+
         $rechercheForm = $this->createFormBuilder(null, ['attr' => ['id' => 'rechercheForm']])
             ->add('adresseRecherche')
-            ->add('commune')
+            ->add('commune', ChoiceType::class, ['choices' => $options])
             ->add('Selectionner', SubmitType::class, [
                 'label' => 'Rechercher'])
             ->getForm();
