@@ -40,15 +40,26 @@ class ElementAutoroute
     }
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var TypeElementAutoroute
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeElementAutoroute")
      */
-    private $type;
+    private $typeElementAutoroute;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @return TypeElementAutoroute
      */
-    private $adresse;
+    public function getTypeElementAutoroute(): TypeElementAutoroute
+    {
+        return $this->typeElementAutoroute;
+    }
 
+    /**
+     * @param TypeElementAutoroute $typeElementAutoroute
+     */
+    public function setTypeElementAutoroute(TypeElementAutoroute $typeElementAutoroute): void
+    {
+        $this->typeElementAutoroute = $typeElementAutoroute;
+    }
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=8)
@@ -63,30 +74,6 @@ class ElementAutoroute
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getAdresse(): ?string
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(string $adresse): self
-    {
-        $this->adresse = $adresse;
-
-        return $this;
     }
 
     public function getLatitude(): ?string

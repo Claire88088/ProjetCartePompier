@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\TypeEtablissementRepertorie;
+use App\Entity\TypeEtablissmentRepertorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method TypeEtablissementRepertorie|null find($id, $lockMode = null, $lockVersion = null)
- * @method TypeEtablissementRepertorie|null findOneBy(array $criteria, array $orderBy = null)
- * @method TypeEtablissementRepertorie[]    findAll()
- * @method TypeEtablissementRepertorie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TypeEtablissmentRepertorie|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TypeEtablissmentRepertorie|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TypeEtablissmentRepertorie[]    findAll()
+ * @method TypeEtablissmentRepertorie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TypeEtablissementRepertorieRepository extends ServiceEntityRepository
+class TypeEtablissmentRepertorieRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TypeEtablissementRepertorie::class);
+        parent::__construct($registry, TypeEtablissmentRepertorie::class);
     }
 
     // /**
-    //  * @return TypeEtablissementRepertorie[] Returns an array of TypeEtablissementRepertorie objects
+    //  * @return TypeEtablissmentRepertorie[] Returns an array of TypeEtablissmentRepertorie objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TypeEtablissementRepertorieRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TypeEtablissementRepertorie
+    public function findOneBySomeField($value): ?TypeEtablissmentRepertorie
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

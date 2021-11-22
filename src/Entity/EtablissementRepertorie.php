@@ -40,29 +40,26 @@ class EtablissementRepertorie
     }
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var TypeEtablissmentRepertoriementRepertorie
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeEtablissmentRepertorie")
      */
-    private $type;
+    private $typeEtablissmentRepertorie;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @return TypeEtablissmentRepertorie
      */
-    private $nom;
+    public function getTypeEtablissmentRepertorie(): TypeEtablissmentRepertorie
+    {
+        return $this->typeEtablissmentRepertorie;
+    }
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @param TypeEtablissmentRepertorie $typeEtablissmentRepertorie
      */
-    private $adresse;
-
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=true)
-     */
-    private $latitude;
-
-    /**
-     * @ORM\Column (type="decimal", precision=10, scale=8, nullable=true)
-     */
-    private $longitude;
+    public function setTypeEtablissmentRepertorie(TypeEtablissmentRepertorie $typeEtablissmentRepertorie): void
+    {
+        $this->typeEtablissmentRepertorie = $typeEtablissmentRepertorie;
+    }
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

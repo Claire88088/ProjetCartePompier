@@ -40,14 +40,26 @@ class ElementER
     }
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var TypeElementER
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeElementER")
      */
-    private $type;
+    private $typeElementER;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @return TypeElementER
      */
-    private $adresse;
+    public function getTypeElementER(): TypeElementER
+    {
+        return $this->typeElementER;
+    }
+
+    /**
+     * @param TypeElementER $typeElementER
+     */
+    public function setTypeElementER(TypeElementER $typeElementER): void
+    {
+        $this->typeElementER = $typeElementER;
+    }
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=8)
@@ -61,30 +73,6 @@ class ElementER
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getAdresse(): ?string
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(string $adresse): self
-    {
-        $this->adresse = $adresse;
-
-        return $this;
     }
 
     public function getLatitude(): ?string

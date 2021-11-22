@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\TypeASaisirRepository;
+use App\Repository\TypeElementERRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ElementASaisirRepository::class)
+ * @ORM\Entity(repositoryClass=TypeElementERRepository::class)
  */
-class TypeASaisir
+class TypeElementER
 {
     /**
      * @ORM\Id
@@ -20,21 +20,21 @@ class TypeASaisir
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom;
+    private $nomType;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getNomType(): ?string
     {
-        return $this->nom;
+        return $this->nomType;
     }
 
-    public function setNom(string $nom): self
+    public function setNomType(string $nomType): self
     {
-        $this->nom = $nom;
+        $this->nomType = $nomType;
 
         return $this;
     }

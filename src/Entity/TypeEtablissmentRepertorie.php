@@ -2,16 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\TypeEtablissementRepertorieRepository;
+use App\Repository\TypeEtablissmentRepertorieRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=TypeEtablissementRepertorieRepository::class)
- * @UniqueEntity(fields="nomType", message="Ce nom est déjà pris.")
+ * @ORM\Entity(repositoryClass=TypeEtablissmentRepertorieRepository::class)
  */
-class TypeEtablissementRepertorie
+class TypeEtablissmentRepertorie
 {
     /**
      * @ORM\Id
