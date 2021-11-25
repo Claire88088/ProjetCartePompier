@@ -32,6 +32,27 @@ class Point
      */
     private $rang;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Element")
+     */
+    private $element;
+
+    /**
+     * @return mixed
+     */
+    public function getElement()
+    {
+        return $this->element;
+    }
+
+    /**
+     * @param mixed $element
+     */
+    public function setElement($element): void
+    {
+        $this->element = $element;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

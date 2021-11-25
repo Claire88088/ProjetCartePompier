@@ -42,6 +42,21 @@ class Element
      */
     private $dateFin;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeCalque")
+     */
+    private $typeCalque;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeElement")
+     */
+    private $typeElement;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Icone")
+     */
+    private $icone;
+
     public function getId(): ?int
     {
         return $this->id;
