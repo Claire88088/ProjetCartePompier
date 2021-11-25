@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Commune;
 use App\Entity\ElementAutoroute;
 use App\Entity\EtablissementRepertorie;
 use App\Entity\Travaux;
+use App\Entity\TypeCalque;
 use App\Form\CalqueType;
 use App\Form\ElementAutorouteType;
 use App\Form\EtablissementRepertorieType;
 use App\Form\TravauxType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,25 +32,20 @@ class MapController extends AbstractController
         return $this->redirectToRoute('map');
     }
 
-    // Affichage de la carte avec le formulaire de recherche
     /**
+     * Affichage de la carte avec le formulaire de recherche
      * @Route("/map", name="map")
      */
     public function indexAction(EntityManagerInterface $em): Response
     {
-        $communes = $em->getRepository('App:Commune')->findAll();
-        $communesTab = [];
-        $options = [];
-        foreach($communes as $commune)  {
-            $communesTab[] = $commune->getNom();
-            $options[$commune->getCodePostal() . ' - ' . $commune->getNom()] = $commune->getCodePostal();
-        }
-
+        // TODO : créer une entité pour le formulaire
         $rechercheForm = $this->createFormBuilder(null, ['attr' => ['id' => 'rechercheForm']])
-            ->add('adresseRecherche')
-            ->add('commune', ChoiceType::class, ['choices' => $options])
-            ->add('Selectionner', SubmitType::class, [
-                'label' => 'Rechercher'])
+            //->add('adresseRecherche')
+            ->add('commune', EntityType::class, [
+                'class' => Commune::class,
+                'mapped' => false,
+                'label' => 'Choisir une commune (si recherche hors Châtellerault)'
+            ])
             ->getForm();
 
         return $this->render('map/index.html.twig', [
@@ -58,33 +56,37 @@ class MapController extends AbstractController
     // Envoi des données nécessaires à JS
     public function envoiDonneesJSAction(EntityManagerInterface $em): Response
     {
-        $calques = $em->getRepository('App:Calque')->findAll();
+        // TODO changer le nom des variables (mais a priori on changement la façon de passer les valeurs)
+        $calques = $em->getRepository('App:TypeCalque')->findAll();
 
         return $this->render('envoi-donnees-JS.html.twig', [
             'calques' => $calques,
         ]);
     }
 
-    // Affichage de la liste des calques créés pour la modification/suppression
+
     /**
+     * Affichage de la liste des calques créés pour la modification/suppression
      * @Route("/calques-list", name="calques_list")
      */
     public function calquesListAction(EntityManagerInterface $em): Response
     {
-        $calques = $em->getRepository('App:Calque')->findAll();
+        $calques = $em->getRepository('App:TypeCalque')->findAll();
 
         return $this->render('/map/calques-list.html.twig', [
             'calques' => $calques,
         ]);
     }
 
-    // Ajout d'un nouveau calque
+
     /**
+     * Ajout d'un nouveau calque forcément du type "AUTRE"
      * @Route("/map/add-calque", name="add_calque")
      */
     public function addCalqueAction(EntityManagerInterface $em, Request $request): Response
     {
-        $calque = new Calque();
+        $calque = new TypeCalque();
+        $calque->setType('AUTRE');
         $form = $this->createForm(CalqueType::class, $calque);
         $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter un nouveau calque']);
         $form->handleRequest($request);
@@ -101,13 +103,13 @@ class MapController extends AbstractController
         ]);
     }
 
-    // Supprimer un calque
     /**
+     * Supprimer un calque
      * @Route("/map/del-calque-{id}", name="del_calque")
      */
     public function deleteCalqueAction(EntityManagerInterface $em, int $id): Response
     {
-        $calque = $em->getRepository('App:Calque')->find($id);
+        $calque = $em->getRepository('App:TypeCalque')->find($id);
 
         if (!$calque) {
             throw $this->createNotFoundException('Aucun calque à supprimer');
@@ -120,11 +122,12 @@ class MapController extends AbstractController
     }
 
     /**
+     * Modifier uniquement le nom du calque et pas le type
      * @Route("/map/edit-calque-{id}", name="edit_calque")
      */
     public function editCalqueAction(EntityManagerInterface $em, Request $request, int $id): Response
     {
-        $calque = $em->getRepository('App:Calque')->find($id);
+        $calque = $em->getRepository('App:TypeCalque')->find($id);
         $form = $this->createForm(CalqueType::class, $calque);
         $form->add('Modifier', SubmitType::class, ['label' => 'Modifier le calque']);
         $form->handleRequest($request);
@@ -190,7 +193,7 @@ class MapController extends AbstractController
     public function ajouterElementAction(EntityManagerInterface $em, Request $request): Response
     {
         // on créé le formulaire de choix de calque directement dans le controller (à partir des données de la BD)
-        $calques = $em->getRepository('App:Calque')->findAll();
+        $calques = $em->getRepository('App:TypeCalque')->findAll();
         $calquesTab = [];
         $options = [];
         foreach($calques as $calque)  {

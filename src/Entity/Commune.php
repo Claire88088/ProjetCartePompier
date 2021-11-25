@@ -55,4 +55,10 @@ class Commune
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $communeToString = $this->codePostal . ' ' . $this->nom;
+        return $communeToString;
+    }
 }
