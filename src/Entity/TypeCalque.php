@@ -55,4 +55,10 @@ class TypeCalque
 
         return $this;
     }
+
+    public function __toString()
+    {
+        $calqueToString = $this->nom;
+        return $calqueToString;
+    }
 }

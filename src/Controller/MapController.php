@@ -192,16 +192,11 @@ class MapController extends AbstractController
      */
     public function ajouterElementAction(EntityManagerInterface $em, Request $request): Response
     {
-        // on créé le formulaire de choix de calque directement dans le controller (à partir des données de la BD)
-        $calques = $em->getRepository('App:TypeCalque')->findAll();
-        $calquesTab = [];
-        $options = [];
-        foreach($calques as $calque)  {
-            $calquesTab[] = $calque->getNom();
-            $options[$calque->getNom()] = $calque->getId();
-        }
         $choixCalqueForm = $this->createFormBuilder()
-            ->add('calque', ChoiceType::class, ['choices' => $options])
+            ->add('calque', EntityType::class, [
+                'class' => TypeCalque::class,
+                'mapped' => false,
+            ])
             ->add('Selectionner', SubmitType::class, [
                 'label' => 'Sélectionner ce calque'])
             ->getForm();
@@ -209,8 +204,9 @@ class MapController extends AbstractController
         $choixCalqueForm->handleRequest($request);
 
         if ($choixCalqueForm->isSubmitted() && $choixCalqueForm->isValid()) {
-            // on récupère l'id du calque sur lequel on veut ajouter un élément
+            // on récupère le type du calque sur lequel on veut ajouter un élément
             $idCalqueChoisi = $request->request->get('form')['calque'];
+            $calqueChoisi = $em->getRepository('App:TypeCalque')->find($idCalqueChoisi);
 
             // TODO : gestion des cas où on veut ajouter un élément d'un ER
 
@@ -261,8 +257,6 @@ class MapController extends AbstractController
         }
 
         return $this->render('/map/choix-calque.html.twig', [
-            'calques' => $calques,
-            'calquesTab' =>$calquesTab,
             'choixCalqueForm' => $choixCalqueForm->createView()
         ]);
     }
