@@ -30,9 +30,6 @@ for (let i=0; i < keys.length; i++) {
 
 }
 
-console.log(cities)
-console.log(city)
-
 var clq = document.querySelectorAll('.calques');
 for (let i = 0; i < clq.length; i++) {
     clqs = clq[i].attributes[1].value;
@@ -84,29 +81,7 @@ searchControl.on("results", (data) => {
     }
 })
 
-/* Test
-var buttonAddCalque = document.getElementById("addCalque")
-var clicked = false
-buttonAddCalque.addEventListener("click", function() {
-    clicked = true
-    if (clicked == true) {
-        var zoneAddCalque = document.getElementById("calque");
-        buttonAddCalque.appendChild(zoneAddCalque);
-    }
-});
-*/
-for (let i = 0; i < clq.length; i++) {
-    clqs = clq[i].attributes[1].value;
-    var test = document.getElementById(clqs);
-
-    test.addEventListener('click', function() {
-        if (test.attributes[1].value = clqs) {
-            console.log('hey')
-        }
-    })
-}
-
-
+/*
 // Affichage d'un marqueur à partir du formulaire de recherche par adresse
 let form = document.getElementById('rechercheForm');
 
@@ -124,5 +99,50 @@ form.addEventListener('submit', event => {
         // on affiche l'adresse à l'aide d'un marqueur
         let myMarker = L.marker([coord[1], coord[0]]).addTo(myMap)
     });
-});
+});*/
 
+// Fonction d'ajout d'un marqueur uniquement a une url précise.
+var newMarker;
+if (window.location.pathname == "/map/add-element-1") {
+    function addMarker(e) {
+        // Enlève le dernier marqueur si il y'en a eu un
+        if (myMap.hasLayer(newMarker)) {
+            myMap.removeLayer(newMarker)
+        }
+
+        var tab = [];
+        tab = e;
+
+        var lat = tab.latlng.lat;
+        var long = tab.latlng.lng;
+
+        // Création d'un marqueur et d'une popup
+        newMarker = new L.marker(e.latlng);
+        var newPopup = new L.popup();
+        const data = null;
+
+        // Requête XHTML pour retourner l'adresse selon des cordonnées GPS (lat et long)
+        const req = new XMLHttpRequest();
+        req.open("GET", "https://api-adresse.data.gouv.fr/reverse/?lon=" + long + "&lat=" + lat + "");
+        req.addEventListener("load", function () {
+            var jp = JSON.parse(req.responseText);
+            let popupContenu = jp.features[0].properties.label;
+            newPopup.setContent(popupContenu);
+
+            var inputAdresse = document.getElementById('etablissement_repertorie_adresse');
+            inputAdresse.setAttribute("value", jp.features[0].properties.name);
+
+            var inputLat = document.getElementById('etablissement_repertorie_latitude');
+            inputLat.setAttribute("value", jp.features[0].geometry.coordinates[0]);
+
+            var inputLong = document.getElementById('etablissement_repertorie_longitude');
+            inputLong.setAttribute("value", jp.features[0].geometry.coordinates[1]);
+        });
+        req.send(data);
+
+        newMarker.bindPopup(newPopup).addTo(myMap);
+
+    }
+    myMap.on("click", addMarker);
+
+}
