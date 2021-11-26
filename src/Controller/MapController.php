@@ -144,50 +144,6 @@ class MapController extends AbstractController
         ]);
     }
 
-    // Ajouter un établissement répertorié
-    /**
-     * @Route("/map/add-er-{idCalque}", name="add_er")
-     */
-    public function addERAction(EntityManagerInterface $em, Request $request, int $idCalque): Response
-    {
-        $er = new EtablissementRepertorie();
-
-        // on ajoute le calque auquel il est lié au nouvel établissement
-        $calque = $em->getRepository('App:Calque')->find($idCalque);
-        $er->setCalque($calque);
-
-        $form = $this->createForm(EtablissementRepertorieType::class, $er);
-
-        // on ajoute le champ de choix du type d'établissement (choix issu de la table TypeEtablissementRepertorie de la BD)
-        $typeChoices = $em->getRepository('App:TypeEtablissementRepertorie')->findAll();
-        // todo : voir si on ne peut pas renvoyer directement le bon format
-        $typeChoicesTab = [];
-        $options = [];
-        foreach($typeChoices as $type)  {
-            $typeChoicesTab[] = $type->getNomType();
-            $options[$type->getNomType()] = $type->getNomType();
-        }
-        $form->add('type', ChoiceType::class, [
-            'choices'  => $options,
-        ]);
-
-        // on ajoute le bouton de soumission
-        $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter un nouveau ER']);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($er);
-            $em->flush();
-            $this->addFlash('success', 'L\'établissement a bien été ajouté !');
-            return $this->redirectToRoute('map');
-        }
-
-        return $this->render('map/add-er.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
     // Ajout d'un nouvel élément
     /**
      * Choix du calque sur lequel ajouter un élément
