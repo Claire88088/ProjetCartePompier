@@ -4,15 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Commune;
 use App\Entity\Element;
-use App\Entity\ElementAutoroute;
-use App\Entity\EtablissementRepertorie;
 use App\Entity\Point;
-use App\Entity\Travaux;
 use App\Entity\TypeCalque;
 use App\Form\CalqueType;
 use App\Form\ElementAutorouteType;
-use App\Form\EtablissementRepertorieType;
-use App\Form\TravauxType;
+use App\Form\ElementAutreType;
+use App\Form\ElementERType;
+use App\Form\ElementPIType;
+use App\Form\ElementTravauxType;
+use App\Form\PointType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use App\Entity\Calque;
 
 class MapController extends AbstractController
 {
@@ -161,6 +160,7 @@ class MapController extends AbstractController
 
         // on ajoute le champ de choix du type d'établissement (choix issu de la table TypeEtablissementRepertorie de la BD)
         $typeChoices = $em->getRepository('App:TypeEtablissementRepertorie')->findAll();
+        // todo : voir si on ne peut pas renvoyer directement le bon format
         $typeChoicesTab = [];
         $options = [];
         foreach($typeChoices as $type)  {
@@ -190,10 +190,13 @@ class MapController extends AbstractController
 
     // Ajout d'un nouvel élément
     /**
+     * Choix du calque sur lequel ajouter un élément
      * @Route("/choice-calque", name="choice_calque")
      */
     public function ajouterElementAction(EntityManagerInterface $em, Request $request): Response
     {
+        // todo : changer le nom de la méthode
+        // on choisit sur quel calque on veut mettre l'élément
         $choixCalqueForm = $this->createFormBuilder()
             ->add('calque', EntityType::class, [
                 'class' => TypeCalque::class,
@@ -206,105 +209,103 @@ class MapController extends AbstractController
         $choixCalqueForm->handleRequest($request);
 
         if ($choixCalqueForm->isSubmitted() && $choixCalqueForm->isValid()) {
-            // on récupère le type du calque sur lequel on veut ajouter un élément
             $idCalqueChoisi = $request->request->get('form')['calque'];
-            $calqueChoisi = $em->getRepository('App:TypeCalque')->find($idCalqueChoisi);
-            $typeChoisi = $calqueChoisi->getType();
 
-            // en fonction du type du calque, on renvoit le formulaire adéquat
-            $point = new Point();
-            $element = new Element();
-            /*
-            $point->setElement($element);
-            */
-
-            // on récupère les types d'éléments possibles pour le type de calque choisi
-            $typesElt = $em->getRepository('App:TypeElement')->findByTypeCalque($calqueChoisi);
-
-            // création du formulaire de récupération des coordonnées GPS
-            switch ($typeChoisi) {
-                case 'ER':
-                    $elementForm = $this->createFormBuilder()
-                        ->add('type')
-                        /*
-                        ->add('type', ChoiceType::class, [
-                            // todo : mettre les types que l'on peut choisir : $typesElt
-                        ])*/
-                        ->add('icone')
-                        ->add('photo')
-                        ->add('texte')
-                        ->add('lien')
-                        ->add('latitude')
-                        ->add('longitude')
-                        ->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément'])
-                        ->getForm();
-                    break;
-                case 'TRAVAUX':
-                    $elementForm = $this->createFormBuilder()
-                        ->add('dateDebut')
-                        ->add('dateFin')
-                        ->add('latitude')
-                        ->add('longitude')
-                        ->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément'])
-                        ->getForm();
-                    break;
-                case 'AUTOROUTE':
-                    $elementForm = $this->createFormBuilder()
-                        ->add('type')
-                        ->add('latitude')
-                        ->add('longitude')
-                        ->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément'])
-                        ->getForm();
-                    break;
-                case 'PI':
-                    break;
-                case 'AUTRE':
-                    $elementForm = $this->createFormBuilder()
-                        ->add('type')
-                        ->add('icone')
-                        ->add('photo')
-                        ->add('texte')
-                        ->add('lien')
-                        ->add('dateDeb')
-                        ->add('dateFin')
-                        ->add('latitude')
-                        ->add('longitude')
-                        ->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément'])
-                        ->getForm();
-                    break;
-
-            }
-
-           $elementForm->handleRequest($request);
-
-            if ($elementForm->isSubmitted()) { var_dump('soumis');}
-
-                        /*if ($form->isSubmitted() && $form->isValid()) {
-                            var_dump('coucou');
-                            $em->persist($element);
-                            $point->setElement($element);
-
-                            $em->persist($point);
-                            $em->flush();
-                            return $this->redirectToRoute('map');
-                        }*/
-
-            return $this->render('map/test.html.twig', [
-                'form' => $elementForm->createView(),
-                'typeCalque' => $typeChoisi
-            ]);
-/*
-            // on redirige vers la page d'ajout avec le formulaire d'ajout correspondant
-            return $this->render('/map/add-element.html.twig', [
-                'element' => $element,
-                'calque' => $calqueChoisi,
-                'form' => $form->createView()
-            ]);
-*/
+            return $this->redirectToRoute('add_element', ['idCalque'=>$idCalqueChoisi]);
         }
 
         return $this->render('/map/choix-calque.html.twig', [
             'choixCalqueForm' => $choixCalqueForm->createView()
+        ]);
+    }
+
+    /**
+     * Ajout d'un nouvel élément
+     * @Route("/map/add-element-{idCalque}", name="add_element")
+     */
+    public function ajouterElementTestAction(EntityManagerInterface $em, Request $request, int $idCalque): Response
+    {
+        $calqueChoisi = $em->getRepository('App:TypeCalque')->find($idCalque);
+        $typeChoisi = $calqueChoisi->getType();
+
+        // en fonction du type du calque, on renvoit le formulaire adéquat
+        $point = new Point();
+        $element = new Element();
+
+
+        // on récupère les types d'éléments possibles pour le type de calque choisi
+        $typesElt = $em->getRepository('App:TypeElement')->findByTypeCalque($calqueChoisi);
+        $typesEltTab = [];
+        $options = [];
+        foreach($typesElt as $type)  {
+            $typesEltTab[] = $type->getType();
+            $options[$type->getNom()] = $type->getId();
+        }
+
+
+        // création du formulaire de récupération des coordonnées GPS
+        switch ($typeChoisi) {
+            case 'ER':
+                $classeForm = ElementERType::class;
+                $elt = 'er';
+                break;
+                    /*
+                    $elementForm = $this->createFormBuilder()
+                        ->add('type', ChoiceType::class, [
+                            'choices'  => $options,
+                        ])
+                        ->add('icone')
+                        ->add('photo')
+                        ->add('texte')
+                        ->add('lien')
+                        ->add('latitude')
+                        ->add('longitude')
+                        ->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément'])
+                        ->getForm();*/
+            case 'TRAVAUX':
+                $classeForm = ElementTravauxType::class;
+                $elt = 'travaux';
+                break;
+            case 'AUTOROUTE':
+                $classeForm = ElementAutorouteType::class;
+                $elt = 'autoroute';
+                break;
+            case 'PI':
+                $classeForm = ElementPIType::class;
+                $elt = 'pi';
+                break;
+            case 'AUTRE':
+                $classeForm = ElementAutreType::class;
+                $elt = 'autre';
+                break;
+        }
+        //$elementForm = $this->createForm(ElementERType::class, $element);
+        $elementForm = $this->createForm($classeForm, $element);
+        $elementForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
+
+        $elementForm->handleRequest($request);
+
+        if ($elementForm->isSubmitted() && $elementForm->isValid()) {
+            $em->persist($element);
+
+            // on ajoute les données au Point
+            $point->setElement($element);
+            $coordGPS = $request->request->get('element_'.$elt)['coordonnees'];
+            $longitude = $coordGPS['longitude'];
+            $latitude = $coordGPS['latitude'];
+            $point->setLongitude($longitude);
+            $point->setLatitude($latitude);
+            $point->setRang(1);
+            $em->persist($point);
+
+            $em->flush();
+            $this->addFlash('success', 'L\'élément a bien été ajouté !');
+            return $this->redirectToRoute('map');
+        }
+
+        return $this->render('map/add-element.html.twig', [
+            'form' => $elementForm->createView(),
+            'typeCalque' => $typeChoisi
         ]);
     }
 }

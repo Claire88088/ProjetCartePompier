@@ -55,4 +55,9 @@ class Icone
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->lien;
+    }
 }
