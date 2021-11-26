@@ -27,6 +27,29 @@ class TypeElement
      */
     private $type;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeCalque")
+     */
+    private $typeCalque;
+
+    /**
+     * @return mixed
+     */
+    public function getTypeCalque()
+    {
+        return $this->typeCalque;
+    }
+
+    /**
+     * @param mixed $typeCalque
+     * @return TypeElement
+     */
+    public function setTypeCalque($typeCalque)
+    {
+        $this->typeCalque = $typeCalque;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

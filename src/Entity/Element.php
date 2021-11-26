@@ -43,11 +43,6 @@ class Element
     private $dateFin;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TypeCalque")
-     */
-    private $typeCalque;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TypeElement")
      */
     private $typeElement;
@@ -60,6 +55,42 @@ class Element
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTypeElement()
+    {
+        return $this->typeElement;
+    }
+
+    /**
+     * @param mixed $typeElement
+     * @return Element
+     */
+    public function setTypeElement($typeElement)
+    {
+        $this->typeElement = $typeElement;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIcone()
+    {
+        return $this->icone;
+    }
+
+    /**
+     * @param mixed $icone
+     * @return Element
+     */
+    public function setIcone($icone)
+    {
+        $this->icone = $icone;
+        return $this;
     }
 
     public function getPhoto(): ?string
