@@ -22,7 +22,7 @@ class TravauxType extends AbstractType
                 //'html5' => false,
                 //'format' => 'dd-MM-yyyy HH:mm'
             ])
-            ->add('dateFin', TimeType::class, [
+            ->add('dateFin', DateTimeType::class, [
                 'widget' => 'single_text',
             ])
             ->add('icone')

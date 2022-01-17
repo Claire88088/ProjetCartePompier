@@ -87,7 +87,7 @@ searchControl.on("results", (data) => {
 
 // Fonction d'ajout d'un marqueur uniquement a une url précise.
 var newMarker;
-if (window.location.pathname == "/map/add-er-2") {
+if (window.location.pathname.substr(0,16) == "/map/add-element") {
     function addMarker(e) {
         // Enlève le dernier marqueur si il y'en a eu un
         if (myMap.hasLayer(newMarker)) {
@@ -113,13 +113,15 @@ if (window.location.pathname == "/map/add-er-2") {
             let popupContenu = jp.features[0].properties.label;
             newPopup.setContent(popupContenu);
 
-            var inputAdresse = document.getElementById('etablissement_repertorie_adresse');
-            inputAdresse.setAttribute("value", jp.features[0].properties.name);
+            // Récupération du nom du formulaire parce que l'id des champs lat et long changent en fonction du form
+            let formName = document.getElementsByTagName("form")[0].name;
 
-            var inputLat = document.getElementById('etablissement_repertorie_latitude');
+            // Récupères le champs de latitude et le remplis au avec la latitude du point (au clique)
+            var inputLat = document.getElementById(formName+'_coordonnees_latitude');
             inputLat.setAttribute("value", jp.features[0].geometry.coordinates[0]);
 
-            var inputLong = document.getElementById('etablissement_repertorie_longitude');
+            // idem
+            var inputLong = document.getElementById(formName+'_coordonnees_longitude');
             inputLong.setAttribute("value", jp.features[0].geometry.coordinates[1]);
         });
         req.send(data);
@@ -139,7 +141,7 @@ $('.custom-file-input').on('change', function(event) {
         .html(inputFile.files[0].name);
 });
 
-
+/*
 // Remplis la liste d'icones.
 let divIcones = document.querySelectorAll('.icones');
 let ulDropDownIcones = document.getElementById("dropdown-ul");
@@ -175,5 +177,5 @@ $("#dropdown-ul").children('li').hover(function() {
 }, function() {
     $(this).css("background-color", "white")
 });
-
+*/
 
