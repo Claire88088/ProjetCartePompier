@@ -12,6 +12,7 @@ use App\Form\ElementAutreType;
 use App\Form\ElementERType;
 use App\Form\ElementPIType;
 use App\Form\ElementTravauxType;
+use App\Form\ElementType;
 use App\Form\PointType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -182,62 +183,28 @@ class MapController extends AbstractController
     public function ajouterElementTestAction(EntityManagerInterface $em, Request $request, int $idCalque): Response
     {
         $calqueChoisi = $em->getRepository('App:TypeCalque')->find($idCalque);
-        $typeChoisi = $calqueChoisi->getType();
+        $typeCalqueChoisi = $calqueChoisi->getType();
 
-        // en fonction du type du calque, on renvoit le formulaire adéquat
         $point = new Point();
         $element = new Element();
 
-
         // on récupère les types d'éléments possibles pour le type de calque choisi
         $typesElt = $em->getRepository('App:TypeElement')->findByTypeCalque($calqueChoisi);
-        $typesEltTab = [];
         $options = [];
         foreach($typesElt as $type)  {
-            $typesEltTab[] = $type->getType();
-            $options[$type->getNom()] = $type->getId();
+            $options[$type->getNom()] = $type;
         }
 
+        // on créé le formulaire
+        $elementForm = $this->createForm(ElementType::class, $element);
+        $elementForm->add('typeElement', ChoiceType::class, [
+                'choices'  => $options,
+            ])
+            ->add('coordonnees', PointType::class, [
+                'mapped' => false
+            ])
+            ->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
 
-        // création du formulaire de récupération des coordonnées GPS
-        switch ($typeChoisi) {
-            case 'ER':
-                $classeForm = ElementERType::class;
-                $elt = 'er';
-                break;
-                    /*
-                    $elementForm = $this->createFormBuilder()
-                        ->add('type', ChoiceType::class, [
-                            'choices'  => $options,
-                        ])
-                        ->add('icone')
-                        ->add('photo')
-                        ->add('texte')
-                        ->add('lien')
-                        ->add('latitude')
-                        ->add('longitude')
-                        ->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément'])
-                        ->getForm();*/
-            case 'TRAVAUX':
-                $classeForm = ElementTravauxType::class;
-                $elt = 'travaux';
-                break;
-            case 'AUTOROUTE':
-                $classeForm = ElementAutorouteType::class;
-                $elt = 'autoroute';
-                break;
-            case 'PI':
-                $classeForm = ElementPIType::class;
-                $elt = 'pi';
-                break;
-            case 'AUTRE':
-                $classeForm = ElementAutreType::class;
-                $elt = 'autre';
-                break;
-        }
-        //$elementForm = $this->createForm(ElementERType::class, $element);
-        $elementForm = $this->createForm($classeForm, $element);
-        $elementForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
 
         $elementForm->handleRequest($request);
 
@@ -246,12 +213,13 @@ class MapController extends AbstractController
 
             // on ajoute les données au Point
             $point->setElement($element);
-            $coordGPS = $request->request->get('element_'.$elt)['coordonnees'];
+            $coordGPS = $request->request->get('element')['coordonnees'];
             $longitude = $coordGPS['longitude'];
             $latitude = $coordGPS['latitude'];
             $point->setLongitude($longitude);
             $point->setLatitude($latitude);
             $point->setRang(1);
+
             $em->persist($point);
 
             $em->flush();
@@ -261,7 +229,7 @@ class MapController extends AbstractController
 
         return $this->render('map/add-element.html.twig', [
             'form' => $elementForm->createView(),
-            'typeCalque' => $typeChoisi
+            'typeCalque' => $typeCalqueChoisi
         ]);
     }
 }

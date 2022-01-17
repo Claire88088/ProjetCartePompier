@@ -7,13 +7,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ElementTravauxType extends AbstractType
+class ElementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('photo')
+            ->add('texte')
+            ->add('lien')
             ->add('dateDeb')
             ->add('dateFin')
+            //->add('typeElement')
             ->add('icone')
         ;
     }
