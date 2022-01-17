@@ -7,6 +7,8 @@ security:
             algorithm: auto
             cost: 13
 
+            # mdp hash: $2y$13$42J55tM7N4R0jdqRc2/4DOrc9o0nt/7huhPRHBalH8bnO0bJ1T3D6
+
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # users_in_memory: # Nom arbitraire pour le provider
