@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class MapController extends AbstractController
 {
@@ -64,6 +65,7 @@ class MapController extends AbstractController
     public function envoiDonneesJSAction(EntityManagerInterface $em): Response
     {
         // TODO changer le nom des variables (mais a priori on changement la façon de passer les valeurs)
+        // TODO : code différent dans testClaire
         $calques = $em->getRepository('App:TypeCalque')->findAll();
 
         return $this->render('envoi-donnees-JS.html.twig', [
@@ -89,6 +91,7 @@ class MapController extends AbstractController
     /**
      * Ajout d'un nouveau calque forcément du type "AUTRE"
      * @Route("/map/add-calque", name="add_calque")
+     * @IsGranted("ROLE_USER")
      */
     public function addCalqueAction(EntityManagerInterface $em, Request $request): Response
     {
@@ -113,6 +116,7 @@ class MapController extends AbstractController
     /**
      * Supprimer un calque
      * @Route("/map/del-calque-{id}", name="del_calque")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function deleteCalqueAction(EntityManagerInterface $em, int $id): Response
     {
@@ -131,6 +135,7 @@ class MapController extends AbstractController
     /**
      * Modifier uniquement le nom du calque et pas le type
      * @Route("/map/edit-calque-{id}", name="edit_calque")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function editCalqueAction(EntityManagerInterface $em, Request $request, int $id): Response
     {
