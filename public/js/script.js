@@ -1,5 +1,5 @@
-// création de la carte avec un fond de carte OSM
-let myMap = L.map('mapid').setView([46.580224, 0.340375], 13);
+// Création de la carte avec un fond de carte OSM centrée sur chatellerault
+let myMap = L.map('mapid').setView([46.816487, 0.548146], 13);
 
 L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
     attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
@@ -7,23 +7,25 @@ L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
     maxZoom: 20
 }).addTo(myMap);
 
+// Icone d'un feu,
+var iconFeu = L.icon({
+    iconUrl: '../MarkersIcons/icons8-gaz-24.png',
+    iconSize: [35, 39]
+});
+
+// Marqueurs de ville dans cities
 var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.');
 var littleton2 = L.marker([39.61, 40.02]).bindPopup('Test');
 var cities = L.layerGroup([littleton, littleton2]);
 
 
-/* var divAdresse = document.querySelectorAll('.adresses');
-var adresses = divAdresse.forEach(function(adrs) {
-    adresse = adrs.attributes[1].value
-}); */
-
+// Création d'un calque
 var overlayMapsT = [];
 var overlayMapsO = {};
 var city = [];
 
 // Test de création d'un tableau de points pour layers.
 var keys = Object.keys(cities._layers);
-
 for (let i=0; i < keys.length; i++) {
 
     city[i] = cities._layers[keys[i]];
@@ -53,17 +55,19 @@ var ligne = document.createElement('hr');
 
 bCalques.prepend(titreCalque);
 
-// Géocodage
+// Recherche
 const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
 const searchControl = L.esri.Geocoding.geosearch({
+    // Position de la barre de recherche
     position: "topleft",
     placeholder: "Entrez une adresse à rechercher",
-    useMapBounds: false,
+    useMapBounds: true,
     providers: [L.esri.Geocoding.arcgisOnlineProvider({
+        countries: "FR",
         apikey: apiKey,
         nearby: {
-            lat: -33.8688,
-            lng: 151.2093
+            lat: 46.816487,
+            lng: 0.548146
         },
     })]
 }).addTo(myMap);
@@ -74,36 +78,16 @@ searchControl.on("results", (data) => {
     results.clearLayers();
     for (let i = data.results.length - 1; i >= 0; i--) {
         const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000)/100000}, ${Math.round(data.results[i].latlng.lat * 100000)/100000}`;
-        const marker = L.marker(data.results[i].latlng);
+        const marker = L.marker(data.results[i].latlng, {icon: iconFeu});
         marker.bindPopup(`<b>${lngLatString}</b><p>${data.results[i].properties.LongLabel}</p>`)
         results.addLayer(marker);
         marker.openPopup();
     }
 })
 
-/*
-// Affichage d'un marqueur à partir du formulaire de recherche par adresse
-let form = document.getElementById('rechercheForm');
-
-form.addEventListener('submit', event => {
-    event.preventDefault();
-
-    let adresseRecherche = document.getElementById('form_adresseRecherche').value;
-
-    let selectElt = document.getElementById('form_commune');
-    let codePostal = selectElt.options[selectElt.selectedIndex].value;
-
-    // on cherche les coordonnées GPS correspondant à l'adresse
-    coordFromAddressWithFetch(adresseRecherche, codePostal).then(coord => {
-
-        // on affiche l'adresse à l'aide d'un marqueur
-        let myMarker = L.marker([coord[1], coord[0]]).addTo(myMap)
-    });
-});*/
-
 // Fonction d'ajout d'un marqueur uniquement a une url précise.
 var newMarker;
-if (window.location.pathname == "/map/add-element-1") {
+if (window.location.pathname == "/map/add-er-2") {
     function addMarker(e) {
         // Enlève le dernier marqueur si il y'en a eu un
         if (myMap.hasLayer(newMarker)) {
@@ -146,3 +130,50 @@ if (window.location.pathname == "/map/add-element-1") {
     myMap.on("click", addMarker);
 
 }
+
+// Permet au champs d'upload d'afficher le nom du ficher donné.
+$('.custom-file-input').on('change', function(event) {
+    var inputFile = event.currentTarget;
+    $(inputFile).parent()
+        .find('.custom-file-label')
+        .html(inputFile.files[0].name);
+});
+
+
+// Remplis la liste d'icones.
+let divIcones = document.querySelectorAll('.icones');
+let ulDropDownIcones = document.getElementById("dropdown-ul");
+let whiteB = document.getElementById("dropdownMenuButton")
+whiteB.style.background = "white";
+whiteB.style.color = "black"
+
+for (let i = 0; i < divIcones.length; i++) {
+    divIconeValeur = divIcones[i].attributes[1].value;
+    cheminIcone = "/MarkersIcons/"+divIconeValeur;
+
+    let liIcone = document.createElement("li");
+    let imgIcone = document.createElement("img");
+    let hr = document.createElement("hr")
+
+    hr.style.margin = "0";
+
+    liIcone.setAttribute('id', "liIconeId"+i)
+    liIcone.style.textAlign = "center";
+    liIcone.style.padding = "10px 0px 10px 0px"
+    imgIcone.setAttribute('src', cheminIcone);
+
+    ulDropDownIcones.appendChild(liIcone);
+    liIcone.appendChild(imgIcone);
+
+    if (i !== divIcones.length-1 ) {
+        liIcone.insertAdjacentElement("afterend", hr)
+    }
+}
+
+$("#dropdown-ul").children('li').hover(function() {
+    $(this).css("background-color", "lightgrey")
+}, function() {
+    $(this).css("background-color", "white")
+});
+
+
