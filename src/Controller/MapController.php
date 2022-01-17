@@ -6,14 +6,19 @@ use App\Entity\Commune;
 use App\Entity\Element;
 use App\Entity\Point;
 use App\Entity\TypeCalque;
+use App\Form\AutorouteType;
 use App\Form\CalqueType;
+use App\Form\DefaultElementType;
 use App\Form\ElementAutorouteType;
 use App\Form\ElementAutreType;
 use App\Form\ElementERType;
 use App\Form\ElementPIType;
 use App\Form\ElementTravauxType;
 use App\Form\ElementType;
+use App\Form\ERType;
+use App\Form\PIType;
 use App\Form\PointType;
+use App\Form\TravauxType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -150,9 +155,8 @@ class MapController extends AbstractController
      * Choix du calque sur lequel ajouter un élément
      * @Route("/choice-calque", name="choice_calque")
      */
-    public function ajouterElementAction(EntityManagerInterface $em, Request $request): Response
+    public function choiceCalqueAction(EntityManagerInterface $em, Request $request): Response
     {
-        // todo : changer le nom de la méthode
         // on choisit sur quel calque on veut mettre l'élément
         $choixCalqueForm = $this->createFormBuilder()
             ->add('calque', EntityType::class, [
@@ -180,7 +184,7 @@ class MapController extends AbstractController
      * Ajout d'un nouvel élément
      * @Route("/map/add-element-{idCalque}", name="add_element")
      */
-    public function ajouterElementTestAction(EntityManagerInterface $em, Request $request, int $idCalque): Response
+    public function addElementAction(EntityManagerInterface $em, Request $request, int $idCalque): Response
     {
         $calqueChoisi = $em->getRepository('App:TypeCalque')->find($idCalque);
         $typeCalqueChoisi = $calqueChoisi->getType();
@@ -195,15 +199,34 @@ class MapController extends AbstractController
             $options[$type->getNom()] = $type;
         }
 
-        // on créé le formulaire
-        $elementForm = $this->createForm(ElementType::class, $element);
-        $elementForm->add('typeElement', ChoiceType::class, [
-                'choices'  => $options,
-            ])
-            ->add('coordonnees', PointType::class, [
-                'mapped' => false
-            ])
-            ->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
+        $elementForm = $this->createForm(DefaultElementType::class, $element);
+        // on créé le formulaire en fonction du type de calque
+        switch ($typeCalqueChoisi) {
+            case 'ER':
+                $elementForm = $this->createForm(ERType::class, $element);
+                $elementForm->add('typeElement', ChoiceType::class, [
+                    'choices'  => $options,
+                ]);
+                break;
+            case 'AUTOROUTE':
+                $elementForm = $this->createForm(AutorouteType::class, $element);
+                $elementForm->add('typeElement', ChoiceType::class, [
+                    'choices'  => $options,
+                ]);
+                break;
+            case 'TRAVAUX':
+                $elementForm = $this->createForm(TravauxType::class, $element);
+                break;
+            case 'PI':
+                $elementForm = $this->createForm(PIType::class, $element);
+                break;
+            case 'AUTRE':
+                $elementForm = $this->createForm(ElementType::class, $element);
+                break;
+
+        }
+
+        $elementForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
 
 
         $elementForm->handleRequest($request);

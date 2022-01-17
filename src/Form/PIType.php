@@ -12,22 +12,13 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ElementType extends AbstractType
+class PIType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('photo')
             ->add('texte')
-            ->add('lien')
-            ->add('dateDeb', DateTimeType::class, [
-                'widget' => 'single_text',
-                //'html5' => false,
-                //'format' => 'dd-MM-yyyy HH:mm'
-            ])
-            ->add('dateFin', TimeType::class, [
-                'widget' => 'single_text',
-            ])
             ->add('icone')
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
