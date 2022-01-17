@@ -24,11 +24,13 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class MapController extends AbstractController
 {
@@ -189,7 +191,7 @@ class MapController extends AbstractController
      * Ajout d'un nouvel élément
      * @Route("/map/add-element-{idCalque}", name="add_element")
      */
-    public function addElementAction(EntityManagerInterface $em, Request $request, int $idCalque): Response
+    public function addElementAction(EntityManagerInterface $em, Request $request, int $idCalque, SluggerInterface $slugger): Response
     {
         $calqueChoisi = $em->getRepository('App:TypeCalque')->find($idCalque);
         $typeCalqueChoisi = $calqueChoisi->getType();
@@ -209,9 +211,12 @@ class MapController extends AbstractController
         switch ($typeCalqueChoisi) {
             case 'ER':
                 $elementForm = $this->createForm(ERType::class, $element);
-                $elementForm->add('typeElement', ChoiceType::class, [
-                    'choices'  => $options,
-                ]);
+                //$elementForm = $this->createForm(ERType::class, $element);
+                //foreach ($elementForm as $ef) {
+                    $elementForm->add('typeElement', ChoiceType::class, [
+                        'choices'  => $options,
+                    ]);
+                //}
                 break;
             case 'AUTOROUTE':
                 $elementForm = $this->createForm(AutorouteType::class, $element);
@@ -233,10 +238,27 @@ class MapController extends AbstractController
 
         $elementForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
 
-
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
+            $photoFile = $elementForm->get('photo')->getData();
+            if ($photoFile) {
+                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $photoFile->move(
+                        $this->getParameter('uploads_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $element->setPhoto($newFilename);
+            }
             $em->persist($element);
 
             // on ajoute les données au Point
