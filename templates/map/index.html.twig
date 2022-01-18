@@ -41,6 +41,7 @@
             {# Affichage de la carte #}
             <div id="mapid" class="col" ></div>
 
+
             {% if app.user %}
                 <div id="form">
                     {% for msg in app.session.flashBag.get('success') %}

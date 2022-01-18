@@ -59,7 +59,7 @@ class MapController extends AbstractController
             ->getForm();
 
         return $this->render('map/index.html.twig', [
-            'rechercheForm' => $rechercheForm->createView()
+            'rechercheForm' => $rechercheForm->createView(),
         ]);
     }
 
