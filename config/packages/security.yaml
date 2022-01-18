@@ -8,15 +8,10 @@ security:
             cost: 13
 
             # mdp hash: $2y$13$42J55tM7N4R0jdqRc2/4DOrc9o0nt/7huhPRHBalH8bnO0bJ1T3D6
+            # $2y$13$eD2Ou25gPvOIh4W203mOwe1IyEkN0ttPM309ZD4FfSxD0dMKwmqFW
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        # users_in_memory: # Nom arbitraire pour le provider
-            # memory: # Mes utilisateurs sont stockés dans la mémoire
-                # users:
-                    # admin:
-                        # password: admin
-                        # roles: ROLE_ADMIN
         app_user_provider:
             entity:
                 class: App\Entity\Users
@@ -40,6 +35,9 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
