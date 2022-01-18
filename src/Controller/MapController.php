@@ -237,11 +237,9 @@ class MapController extends AbstractController
         }
 
         $elementForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
-
         $elementForm->handleRequest($request);
-
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-            if(array_key_exists('photo', $_POST)) {
+            if(isset($_FILES)) {
                 $photoFile = $elementForm->get('photo')->getData();
                 if ($photoFile) {
                     $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -263,8 +261,8 @@ class MapController extends AbstractController
             }
             $em->persist($element);
 
+            // ici name correspond au nom du formulaire
             foreach ($_POST as $name => $value) {
-                echo $name;
 
                 // on ajoute les données au Point
                 $point->setElement($element);

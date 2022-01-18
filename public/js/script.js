@@ -118,11 +118,11 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
 
             // Récupères le champs de latitude et le remplis au avec la latitude du point (au clique)
             var inputLat = document.getElementById(formName+'_coordonnees_latitude');
-            inputLat.setAttribute("value", jp.features[0].geometry.coordinates[0]);
+            inputLat.setAttribute("value", jp.features[0].geometry.coordinates[1]);
 
             // idem
             var inputLong = document.getElementById(formName+'_coordonnees_longitude');
-            inputLong.setAttribute("value", jp.features[0].geometry.coordinates[1]);
+            inputLong.setAttribute("value", jp.features[0].geometry.coordinates[0]);
         });
         req.send(data);
 
