@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Commune;
 use App\Entity\Element;
+use App\Entity\Icone;
 use App\Entity\Point;
 use App\Entity\TypeCalque;
 use App\Form\AutorouteType;
@@ -194,6 +195,7 @@ class MapController extends AbstractController
     public function addElementAction(EntityManagerInterface $em, Request $request, int $idCalque, SluggerInterface $slugger): Response
     {
         $calqueChoisi = $em->getRepository('App:TypeCalque')->find($idCalque);
+        $icones = $em->getRepository('App:Icone')->findAll();
         $typeCalqueChoisi = $calqueChoisi->getType();
 
         $point = new Point();
@@ -206,17 +208,21 @@ class MapController extends AbstractController
             $options[$type->getNom()] = $type;
         }
 
+        $liensIcones = [];
+        foreach($icones as $icone)  {
+            $liensIcones[$icone->getLien()] = $icone;
+        }
+
         $elementForm = $this->createForm(DefaultElementType::class, $element);
         // on créé le formulaire en fonction du type de calque
         switch ($typeCalqueChoisi) {
             case 'ER':
                 $elementForm = $this->createForm(ERType::class, $element);
-                //$elementForm = $this->createForm(ERType::class, $element);
-                //foreach ($elementForm as $ef) {
-                    $elementForm->add('typeElement', ChoiceType::class, [
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
+                $elementForm->add('typeElement', ChoiceType::class, [
                         'choices'  => $options,
                     ]);
-                //}
                 break;
             case 'AUTOROUTE':
                 $elementForm = $this->createForm(AutorouteType::class, $element);
@@ -283,7 +289,8 @@ class MapController extends AbstractController
 
         return $this->render('map/add-element.html.twig', [
             'form' => $elementForm->createView(),
-            'typeCalque' => $typeCalqueChoisi
+            'typeCalque' => $typeCalqueChoisi,
+            'icones' => $icones
         ]);
     }
 }

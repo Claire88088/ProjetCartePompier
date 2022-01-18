@@ -141,9 +141,23 @@ $('.custom-file-input').on('change', function(event) {
         .html(inputFile.files[0].name);
 });
 
-/*
+let formName = document.getElementsByTagName("form")[0].name;
+let selectIcone = document.getElementById(formName+"_icone");
+
+for (let i = 0; i < selectIcone.length; i++) {
+    let option = selectIcone[i];
+    let valOption = selectIcone[i].label;
+    console.log(valOption)
+}
+
+
+
+
+    cheminIcone = "/MarkersIcons/"+selectIcone.textContent;
+
+
 // Remplis la liste d'icones.
-let divIcones = document.querySelectorAll('.icones');
+/*let divIcones = document.querySelectorAll('icones');
 let ulDropDownIcones = document.getElementById("dropdown-ul");
 let whiteB = document.getElementById("dropdownMenuButton")
 whiteB.style.background = "white";

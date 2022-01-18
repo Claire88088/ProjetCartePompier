@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Element;
 use App\Form\Type\LocalDateTimeType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -49,7 +50,6 @@ class ERType extends AbstractType
                 'help' => 'Sélectionnez un PDF',
                 'row_attr' => ['placeholder' => 'Sélectionnez un fichier'],])
             ->add('texte')
-            ->add('icone')
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])
