@@ -3,7 +3,8 @@
  * dans le formulaire de recherche de l'API avec postionnement du curseur au début du champ
  * @param formEPIElt élément HTML qui est le formulaire de recherche
  */
-function insererChoixDansFormRecherche(formEPIElt) {
+ function insererChoixDansFormRecherche(formEPIElt) {
+     console.log("dans insérer")
     let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
     formAPIElt.value = commune;
     formAPIElt.focus();
