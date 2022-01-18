@@ -12,7 +12,14 @@
 /* Ajustement du style dû à la modification de l'emplacement de la liste déroulante du choix de communes */
 #rechercheForm {
     z-index: 500;
-    margin: auto;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+#rechercheForm label {
+    padding: 20px;
 }
 
 #form_commune {

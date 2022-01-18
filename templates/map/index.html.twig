@@ -1,8 +1,27 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div id="bLog">
+        {% if not app.user %}
+            <h3>Affichage de la carte</h3>
+        {% else %}
+            <h3>Gestion de la carte</h3>
+        {% endif %}    
+        
+        <div id="header-content">
         <div id="Ah3">
-            <h3>Affichage des données</h3>
+        {% if not app.user %}
+            {#<h3>Affichage de la carte</h3>#}
+            {{ form_start(rechercheForm) }}
+                {{ form_errors(rechercheForm) }}
+                <div class="row">
+                    {{ form_label(rechercheForm.commune) }}
+                    {{ form_widget(rechercheForm.commune) }}
+                </div>
+                {{ form_rest(rechercheForm) }}
+            {{ form_end(rechercheForm) }}
+        {#{% else %}
+            <h3>Gestion de la carte</h3> #}
+        {% endif %}    
         </div>
     {% if not app.user %}
         <!-- Button trigger modal -->
@@ -31,11 +50,10 @@
         </div>
     {% endif %}
     </div>
+    </div>
 
     <div class="container-fluid">
-        {% if not app.user %}
-            {{ form(rechercheForm) }}
-        {% endif %}
+      
         <div class="row">
 
             {# Affichage de la carte #}
