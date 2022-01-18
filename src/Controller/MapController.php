@@ -241,7 +241,7 @@ class MapController extends AbstractController
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-            if(array_key_exists('photo', $_POST)) {
+            if(array_key_exists($_FILES)) {
                 $photoFile = $elementForm->get('photo')->getData();
                 if ($photoFile) {
                     $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
