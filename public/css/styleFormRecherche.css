@@ -1,0 +1,26 @@
+/* Modification du style du formulaire de recherche de l'API */
+.geocoder-control.leaflet-control {
+    width: 275px;
+    margin: auto;
+}
+
+.leaflet-top.leaflet-left {
+    width: 100%;
+    display: flex;
+}
+
+/* Ajustement du style dû à la modification de l'emplacement de la liste déroulante du choix de communes */
+#rechercheForm {
+    z-index: 500;
+    margin: auto;
+}
+
+#form_commune {
+    width: 275px;
+    margin: auto;
+}
+
+.geocoder-control-input {
+    position: static;
+}
+

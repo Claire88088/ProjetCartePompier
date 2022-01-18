@@ -33,12 +33,14 @@
     </div>
 
     <div class="container-fluid">
+        {% if not app.user %}
+            {{ form(rechercheForm) }}
+        {% endif %}
         <div class="row">
 
             {# Affichage de la carte #}
             <div id="mapid" class="col" ></div>
 
-            {# TODO { form(rechercheForm) }} #}
 
             {% if app.user %}
                 <div id="form">
