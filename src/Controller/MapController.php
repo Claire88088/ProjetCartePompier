@@ -79,6 +79,7 @@ class MapController extends AbstractController
     /**
      * Affichage de la liste des calques créés pour la modification/suppression
      * @Route("/calques-list", name="calques_list")
+     * @IsGranted("ROLE_USER")
      */
     public function calquesListAction(EntityManagerInterface $em): Response
     {
@@ -161,6 +162,7 @@ class MapController extends AbstractController
     /**
      * Choix du calque sur lequel ajouter un élément
      * @Route("/choice-calque", name="choice_calque")
+     * @IsGranted("ROLE_USER")
      */
     public function choiceCalqueAction(EntityManagerInterface $em, Request $request): Response
     {
@@ -190,6 +192,7 @@ class MapController extends AbstractController
     /**
      * Ajout d'un nouvel élément
      * @Route("/map/add-element-{idCalque}", name="add_element")
+     * @IsGranted("ROLE_USER")
      */
     public function addElementAction(EntityManagerInterface $em, Request $request, int $idCalque, SluggerInterface $slugger): Response
     {
