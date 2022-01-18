@@ -2,54 +2,52 @@
 {% block body %}
     <div id="bLog">
         {% if not app.user %}
-            <h3>Affichage de la carte</h3>
+        <h3>Affichage de la carte</h3>
         {% else %}
-            <h3>Gestion de la carte</h3>
+        <h3>Gestion de la carte</h3>
         {% endif %}    
         
         <div id="header-content">
-        <div id="Ah3">
-        {% if not app.user %}
-            {#<h3>Affichage de la carte</h3>#}
-            {{ form_start(rechercheForm) }}
-                {{ form_errors(rechercheForm) }}
-                <div class="row">
-                    {{ form_label(rechercheForm.commune) }}
-                    {{ form_widget(rechercheForm.commune) }}
-                </div>
-                {{ form_rest(rechercheForm) }}
-            {{ form_end(rechercheForm) }}
-        {#{% else %}
-            <h3>Gestion de la carte</h3> #}
-        {% endif %}    
-        </div>
-    {% if not app.user %}
-        <!-- Button trigger modal -->
-        <div id ="aFlex">
-            <a id="log" class="btn btn-primary col" role="button" data-toggle="modal" data-target="#exampleModal">Se connecter</a>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Connexion</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+            <div id="Ah3">
+            {% if not app.user %}
+                {{ form_start(rechercheForm) }}
+                    {{ form_errors(rechercheForm) }}
+                    <div class="row">
+                        {{ form_label(rechercheForm.commune) }}
+                        {{ form_widget(rechercheForm.commune) }}
                     </div>
-                    <div class="modal-body">
-                        {{ render(controller('App\\Controller\\SecurityController::login')) }}
+                    {{ form_rest(rechercheForm) }}
+                {{ form_end(rechercheForm) }}
+            {% endif %}    
+            </div>
+
+        {% if not app.user %}
+            <!-- Button trigger modal -->
+            <div id ="aFlex">
+                <a id="log" class="btn btn-primary col" role="button" data-toggle="modal" data-target="#exampleModal">Se connecter</a>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Connexion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{ render(controller('App\\Controller\\SecurityController::login')) }}
+                        </div>
                     </div>
                 </div>
             </div>
+        {% else %}
+            <div id ="aFlex">
+                <a id="log" class="btn btn-primary col" href="{{ path('app_logout') }}" role="button">Se déconnecter</a>*
+            </div>
+        {% endif %}
         </div>
-    {% else %}
-        <div id ="aFlex">
-            <a id="log" class="btn btn-primary col" href="{{ path('app_logout') }}" role="button">Se déconnecter</a>*
-        </div>
-    {% endif %}
-    </div>
     </div>
 
     <div class="container-fluid">
