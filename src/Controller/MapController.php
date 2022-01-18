@@ -236,40 +236,46 @@ class MapController extends AbstractController
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-            $photoFile = $elementForm->get('photo')->getData();
-            if ($photoFile) {
-                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+            if(array_key_exists('photo', $_POST)) {
+                $photoFile = $elementForm->get('photo')->getData();
+                if ($photoFile) {
+                    $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
 
-                // Move the file to the directory where brochures are stored
-                try {
-                    $photoFile->move(
-                        $this->getParameter('uploads_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $photoFile->move(
+                            $this->getParameter('uploads_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+                    $element->setPhoto($newFilename);
                 }
-                $element->setPhoto($newFilename);
             }
             $em->persist($element);
 
-            // on ajoute les données au Point
-            $point->setElement($element);
-            $coordGPS = $request->request->get('element')['coordonnees'];
-            $longitude = $coordGPS['longitude'];
-            $latitude = $coordGPS['latitude'];
-            $point->setLongitude($longitude);
-            $point->setLatitude($latitude);
-            $point->setRang(1);
+            foreach ($_POST as $name => $value) {
+                echo $name;
 
-            $em->persist($point);
+                // on ajoute les données au Point
+                $point->setElement($element);
+                $coordGPS = $request->request->get($name)['coordonnees'];
+                $longitude = $coordGPS['longitude'];
+                $latitude = $coordGPS['latitude'];
+                $point->setLongitude($longitude);
+                $point->setLatitude($latitude);
+                $point->setRang(1);
 
-            $em->flush();
-            $this->addFlash('success', 'L\'élément a bien été ajouté !');
-            return $this->redirectToRoute('map');
+                $em->persist($point);
+
+                $em->flush();
+                $this->addFlash('success', 'L\'élément a bien été ajouté !');
+                return $this->redirectToRoute('map');
+            }
         }
 
         return $this->render('map/add-element.html.twig', [
