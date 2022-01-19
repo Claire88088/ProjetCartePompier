@@ -3,7 +3,7 @@
  * @param elem élément qui contient le curseur à déplacer
  * @param caretPos position à laquelle mettre le curseur
  */
-function setCaretPosition(elem, caretPos) {
+ function setCaretPosition(elem, caretPos) {
     if(elem != null) {
         if(elem.createTextRange) {
             var range = elem.createTextRange();

@@ -1,10 +1,10 @@
 /**
- * Renvoie les coordonnées GPS d'une adresse
+ * Récupère les coordonnées GPS d'une adresse
  * @param address
  * @param postCode
  * @returns {Promise<*>}
  */
-async function coordFromAddressWithFetch(address, postCode) {
+ async function coordFromAddressWithFetch(address, postCode) {
     let formatedAddress = address.replace(/ /g, '+');
     const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${formatedAddress}&postcode=${postCode}`);
 
