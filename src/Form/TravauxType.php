@@ -25,7 +25,6 @@ class TravauxType extends AbstractType
             ->add('dateFin', DateTimeType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('icone')
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])

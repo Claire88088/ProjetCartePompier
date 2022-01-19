@@ -229,18 +229,27 @@ class MapController extends AbstractController
                 break;
             case 'AUTOROUTE':
                 $elementForm = $this->createForm(AutorouteType::class, $element);
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
                 $elementForm->add('typeElement', ChoiceType::class, [
                     'choices'  => $options,
                 ]);
                 break;
             case 'TRAVAUX':
                 $elementForm = $this->createForm(TravauxType::class, $element);
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
+
                 break;
             case 'PI':
                 $elementForm = $this->createForm(PIType::class, $element);
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
                 break;
             case 'AUTRE':
                 $elementForm = $this->createForm(ElementType::class, $element);
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
                 break;
 
         }

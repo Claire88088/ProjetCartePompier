@@ -35,7 +35,6 @@ class PIType extends AbstractType
                 'help' => 'Sélectionnez une photo',
                 'row_attr' => ['placeholder' => 'Sélectionnez un fichier'],])
             ->add('texte')
-            ->add('icone')
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])

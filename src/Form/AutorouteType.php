@@ -12,7 +12,6 @@ class AutorouteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('icone')
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])
