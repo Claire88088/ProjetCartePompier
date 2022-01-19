@@ -258,26 +258,35 @@ class MapController extends AbstractController
         $elementForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
         $elementForm->handleRequest($request);
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-
+            // Test si dans le POST, il y'a des envois de fichiers
             if(isset($_FILES)) {
-
                 $photoFile = $elementForm->get('photo')->getData();
-                if ($photoFile) {
-                    $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $pdfFile = $elementForm->get('lien')->getData();
+                if ($photoFile || $pdfFile) {
+                    $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
                     // this is needed to safely include the file name as part of the URL
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+                    $safePhotoFilename = $slugger->slug($originalPhotoFilename);
+                    $safePdfFilename = $slugger->slug($originalPdfFilename);
+
+                    $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+                    $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
 
                     // Move the file to the directory where brochures are stored
                     try {
                         $photoFile->move(
-                            $this->getParameter('uploads_directory'),
-                            $newFilename
+                            $this->getParameter('uploads_photos'),
+                            $newPhotoName
+                        );
+                        $pdfFile->move(
+                            $this->getParameter('uploads_pdf'),
+                            $newPdfName
                         );
                     } catch (FileException $e) {
                         // ... handle exception if something happens during file upload
                     }
-                    $element->setPhoto($newFilename);
+                    $element->setPhoto($newPhotoName);
+                    $element->setLien($newPdfName);
                 }
             }
             $em->persist($element);

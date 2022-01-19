@@ -177,11 +177,11 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
             let formName = document.getElementsByTagName("form")[0].name;
 
             // Récupères le champs de latitude et le remplis au avec la latitude du point (au clique)
-            var inputLat = document.getElementById(formName+'_coordonnees_latitude');
+            var inputLat = document.getElementById(formName + '_coordonnees_latitude');
             inputLat.setAttribute("value", jp.features[0].geometry.coordinates[1]);
 
             // idem
-            var inputLong = document.getElementById(formName+'_coordonnees_longitude');
+            var inputLong = document.getElementById(formName + '_coordonnees_longitude');
             inputLong.setAttribute("value", jp.features[0].geometry.coordinates[0]);
         });
         req.send(data);
@@ -189,47 +189,49 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
         newMarker.bindPopup(newPopup).addTo(myMap);
 
     }
+
     myMap.on("click", addMarker);
 
-}
 
 // Permet au champs d'upload d'afficher le nom du ficher donné.
-$('.custom-file-input').on('change', function(event) {
-    var inputFile = event.currentTarget;
-    $(inputFile).parent()
-        .find('.custom-file-label')
-        .html(inputFile.files[0].name);
-});
+    $('.custom-file-input').on('change', function (event) {
+        var inputFile = event.currentTarget;
+        $(inputFile).parent()
+            .find('.custom-file-label')
+            .html(inputFile.files[0].name);
+    });
 
 // Cache dans les formulaires la latitude et la longitude
-$("fieldset.form-group").css("display", "none");
+    $("fieldset.form-group").css("display", "none");
 
 // Récupère le nom du formulaire courant
-let formName = document.getElementsByTagName("form")[0].name;
+    let formName = document.getElementsByTagName("form")[0].name;
 // Récupère le select des icones comprenant les options
-let selectIcone = document.getElementById(formName+"_icone");
+    let selectIcone = document.getElementById(formName + "_icone");
 
 // boucle sur le select pour avoir chaque options
-for (let i = 0; i < selectIcone.length; i++) {
-    let option = selectIcone[i];
-    let valOption = selectIcone[i].label;
-    // construction du chemin vers les icones
-    cheminIcone = "/MarkersIcons/" + valOption;
-    // set l'attribut nécessaire pour afficher les images par la suite
-    option.setAttribute('data-imagesrc', cheminIcone)
+    for (let i = 0; i < selectIcone.length; i++) {
+        let option = selectIcone[i];
+        let valOption = selectIcone[i].label;
+        // construction du chemin vers les icones
+        cheminIcone = "/MarkersIcons/" + valOption;
+        // set l'attribut nécessaire pour afficher les images par la suite
+        option.setAttribute('data-imagesrc', cheminIcone)
 
-    let iconeName = option.childNodes[0].textContent
-    let splitIconeName = iconeName.split("-")[1]
-    option.innerHTML = splitIconeName
-}
+        let iconeName = option.childNodes[0].textContent
+        let splitIconeName = iconeName.split("-")[1]
+        option.innerHTML = splitIconeName
+    }
+
 
 // Fonction jQuery UI pour reconstruire un select option en div et y inclure des images
-$('#'+formName+'_icone').ddslick({
-    onSelected: function(selectedData){
-        // remet le nom sur le input icone pour qu'il repasse dans le formulaire avec l'id de l'icone selectionnée
-        $("input.dd-selected-value").attr("name", formName+"[icone]")
-    }
-});
+    $('#' + formName + '_icone').ddslick({
+        onSelected: function (selectedData) {
+            // remet le nom sur le input icone pour qu'il repasse dans le formulaire avec l'id de l'icone selectionnée
+            $("input.dd-selected-value").attr("name", formName + "[icone]")
+        }
+    });
+}
 
 // Remplis la liste d'icones.
 /*let divIcones = document.querySelectorAll('icones');
