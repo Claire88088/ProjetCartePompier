@@ -106,7 +106,6 @@ bCalques.prepend(titreCalque);
 //----------------------------------------------------
 // Recherche et géocodage
 searchAddress(myMap);
-//preChooseCommune();
 
 
 // Test de récupération de données envoyées en JSON par l'appli
@@ -117,10 +116,7 @@ fetch(`http://127.0.0.1:8000/testJson`).then(function(response) {
     });
 });
 
-
-
-
-
+//----------------------------------------------------
 // Fonction d'ajout d'un marqueur uniquement a une url précise.
 var newMarker;
 if (window.location.pathname.substr(0,16) == "/map/add-element") {
@@ -210,73 +206,34 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
     });
 }
 
-// Remplis la liste d'icones.
-/*let divIcones = document.querySelectorAll('icones');
-let ulDropDownIcones = document.getElementById("dropdown-ul");
-let whiteB = document.getElementById("dropdownMenuButton")
-whiteB.style.background = "white";
-whiteB.style.color = "black"
-
-for (let i = 0; i < divIcones.length; i++) {
-    divIconeValeur = divIcones[i].attributes[1].value;
-    cheminIcone = "/MarkersIcons/"+divIconeValeur;
-
-    let liIcone = document.createElement("li");
-    let imgIcone = document.createElement("img");
-    let hr = document.createElement("hr")
-
-    hr.style.margin = "0";
-
-    liIcone.setAttribute('id', "liIconeId"+i)
-    liIcone.style.textAlign = "center";
-    liIcone.style.padding = "10px 0px 10px 0px"
-    imgIcone.setAttribute('src', cheminIcone);
-
-    ulDropDownIcones.appendChild(liIcone);
-    liIcone.appendChild(imgIcone);
-
-    if (i !== divIcones.length-1 ) {
-        liIcone.insertAdjacentElement("afterend", hr)
-    }
-}
-
-$("#dropdown-ul").children('li').hover(function() {
-    $(this).css("background-color", "lightgrey")
-}, function() {
-    $(this).css("background-color", "white")
-});
-*/
-
 preChooseCommune();
 
 //-------------------------------------------------------------------------------
 // Test affichage des pop up pour les établissements répertoriés
 // Normalement on récupère les données en JSON
-let monEr = {
-    id:	1,
-    calque:	"1",
-    type:	"immeuble",
-    latitude: 0.440375,
-    longitude: 46.580224,
-    description:	"description de mon immeuble",
-    photo:	"ceci est une photo",
-    lien:	"../pdf/etat_presence_vierge.pdf" // TODO : mettre dans un emplacement sécurisé
-};
-let monErJSON = JSON.stringify(monEr);
-
-// on créé un marqueur pour l'er
-let erMarker = L.marker([monEr.longitude, monEr.latitude]).bindPopup(`<p>${monEr.photo}</p><p>${monEr.description}</p><a id="lienPdf" href="#">voir le pdf</a><div id="dialog" style="display:none">
-    <div>
-    <iframe src="${monEr.lien}"></iframe>
-    </div>
-</div> `);
-erMarker.addTo(myMap);
-
-let popupElt = document.getElementsByClassName('leaflet-popup');
-console.log('mon pop '+popupElt)
-let lienPdfElt = document.getElementById('lienPdf');
-lienPdfElt.addEventListener('click', e =>{
-    document.getElementById('dialog').dialog();
-})
-
-//preChooseCommune();
+// let monEr = {
+//     id:	1,
+//     calque:	"1",
+//     type:	"immeuble",
+//     latitude: 0.440375,
+//     longitude: 46.580224,
+//     description:	"description de mon immeuble",
+//     photo:	"ceci est une photo",
+//     lien:	"../pdf/etat_presence_vierge.pdf" // TODO : mettre dans un emplacement sécurisé
+// };
+// let monErJSON = JSON.stringify(monEr);
+//
+// // on créé un marqueur pour l'er
+// let erMarker = L.marker([monEr.longitude, monEr.latitude]).bindPopup(`<p>${monEr.photo}</p><p>${monEr.description}</p><a id="lienPdf" href="#">voir le pdf</a><div id="dialog" style="display:none">
+//     <div>
+//     <iframe src="${monEr.lien}"></iframe>
+//     </div>
+// </div> `);
+// erMarker.addTo(myMap);
+//
+// let popupElt = document.getElementsByClassName('leaflet-popup');
+// console.log('mon pop '+popupElt)
+// let lienPdfElt = document.getElementById('lienPdf');
+// lienPdfElt.addEventListener('click', e =>{
+//     document.getElementById('dialog').dialog();
+// })

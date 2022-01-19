@@ -314,7 +314,6 @@ class MapController extends AbstractController
         return $this->render('map/add-element.html.twig', [
             'form' => $elementForm->createView(),
             'typeCalque' => $typeCalqueChoisi,
-            'icones' => $icones
         ]);
     }
 }
