@@ -145,6 +145,51 @@ searchControl.on("results", (data) => {
     }
 });
 
+// Test de récupération de données envoyées en JSON par l'appli
+// on récupère les données envoyées à l'url 'http://127.0.0.1:8000/testJson' via la méthode envoiEnJSON du MapController
+fetch(`http://127.0.0.1:8000/testJson`).then(function(response) {
+    response.text().then(function(text) {
+        //console.log(text);
+    });
+});
+
+
+
+// Test : utilisation d'une liste déroulante pour préchoisir la commune et utiliser la valeur dans le formulaire de l'API pour pouvoir utiliser la suggestion d'adresses
+// Plusieurs cas :
+
+// on récupère la valeur de la commune sélectionnée par défaut
+let communeElt = document.getElementById('form_commune');
+//let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
+
+
+
+// Cas 1 : on met la valeur au moment du chargement de la page
+// on la met dans l'input du formulaire de l'API
+let formAPIElt = document.getElementsByClassName('geocoder-control-input')[0];
+insererChoixDansFormRecherche(formAPIElt);
+
+
+// Cas 2 : on met la valeur quand on change le choix de la commune
+communeElt.addEventListener('change', event => {
+    insererChoixDansFormRecherche(formAPIElt);
+});
+
+// Cas 3 : on met la valeur quand on n'est plus sur le champ du formulaire de l'API
+formAPIElt.addEventListener('focusout', event => {
+    let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
+    formAPIElt.value = commune;
+});
+
+formAPIElt.addEventListener('click', event => {
+    // on met le curseur au début du input (avant le code postal et le nom de la commune)
+    setCaretPosition(formAPIElt, 0);
+});
+
+// TODO on garde le focus si on essaye de changer mais qu'on choisit la même valeur finalement
+
+
+
 // Fonction d'ajout d'un marqueur uniquement a une url précise.
 var newMarker;
 if (window.location.pathname.substr(0,16) == "/map/add-element") {
@@ -268,48 +313,6 @@ $("#dropdown-ul").children('li').hover(function() {
 });
 */
 
-// Test de récupération de données envoyées en JSON par l'appli
-// on récupère les données envoyées à l'url 'http://127.0.0.1:8000/testJson' via la méthode envoiEnJSON du MapController
-fetch(`http://127.0.0.1:8000/testJson`).then(function(response) {
-    response.text().then(function(text) {
-        //console.log(text);
-    });
-});
-
-
-
-// Test : utilisation d'une liste déroulante pour préchoisir la commune et utiliser la valeur dans le formulaire de l'API pour pouvoir utiliser la suggestion d'adresses
-// Plusieurs cas :
-
-// on récupère la valeur de la commune sélectionnée par défaut
-let communeElt = document.getElementById('form_commune');
-//let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
-
-
-
-// Cas 1 : on met la valeur au moment du chargement de la page
-// on la met dans l'input du formulaire de l'API
-let formAPIElt = document.getElementsByClassName('geocoder-control-input')[0];
-insererChoixDansFormRecherche(formAPIElt);
-
-
-// Cas 2 : on met la valeur quand on change le choix de la commune
-communeElt.addEventListener('change', event => {
-    insererChoixDansFormRecherche(formAPIElt);
-});
-
-// Cas 3 : on met la valeur quand on n'est plus sur le champ du formulaire de l'API
-formAPIElt.addEventListener('focusout', event => {
-    let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
-    formAPIElt.value = commune;
-});
-
-formAPIElt.addEventListener('click', event => {
-    // on met le curseur au début du input (avant le code postal et le nom de la commune)
-    setCaretPosition(formAPIElt, 0);
-});
-
-// TODO on garde le focus si on essaye de changer mais qu'on choisit la même valeur finalement
 
 //-------------------------------------------------------------------------------
 // Test affichage des pop up pour les établissements répertoriés
