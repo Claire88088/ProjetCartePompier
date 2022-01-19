@@ -211,6 +211,7 @@ class MapController extends AbstractController
             $options[$type->getNom()] = $type;
         }
 
+        // on récupère les liens des icones
         $liensIcones = [];
         foreach($icones as $icone)  {
             $liensIcones[$icone->getLien()] = $icone;

@@ -122,6 +122,12 @@
     padding: 5px!important;
 }
 
+.dd-selected-image, .dd-option-image {
+    position: absolute;
+    left: 0;
+    margin-left: 10px;
+}
+
 .dd-options.dd-click-off-close {
     overflow-y: auto!important;
     overflow-x: hidden!important;
@@ -130,6 +136,7 @@
 
 .dd-option-text {
     line-height: 32px !important;
+    margin-left: 17px;
 }
 
 .dd-selected-image, .dd-option-image {
