@@ -4,7 +4,6 @@
  * @param formEPIElt élément HTML qui est le formulaire de recherche
  */
  function insererChoixDansFormRecherche(formEPIElt) {
-     console.log("dans insérer")
     let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
     formAPIElt.value = commune;
     formAPIElt.focus();
