@@ -16,11 +16,10 @@
                   crossorigin=""
             />
             <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.css">
-            <!-- jQuery -->
-            <link href="css/smoothness/jquery-ui-1.9.0.custom.css" rel="stylesheet">
             <!-- styles perso -->
             <link rel="stylesheet" href="{{ asset('css/style.css') }}">
             <link rel="stylesheet" href="{{ asset('css/styleFormRecherche.css') }}">
+
         {% endblock %}
     </head>
 
@@ -47,11 +46,15 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <!-- bootstrap -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <!-- msDropDown -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js"></script>
         <!-- scripts perso -->
         <script src="{{ asset('js/setCaretPosition.js') }}"></script>
         <script src="{{ asset('js/insererChoixDansFormRecherche.js') }}"></script>
         <script src="{{ asset('js/coordFromAddressWithFetch.js') }}"></script>
         <script src="{{ asset('js/script.js') }}" async></script>
+
         {% endblock %}
     </body>
 </html>

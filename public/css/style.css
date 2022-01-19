@@ -109,3 +109,37 @@
 #calque{
     margin: 30px;
 }
+
+.dd-container {
+    width: 100%!important;
+}
+
+.dd-container > *  {
+    width: 100%!important;
+}
+
+.dd-selected {
+    padding: 5px!important;
+}
+
+.dd-options.dd-click-off-close {
+    overflow-y: auto!important;
+    overflow-x: hidden!important;
+    height:183px !important;
+}
+
+.dd-option-text {
+    line-height: 32px !important;
+}
+
+.dd-selected-image, .dd-option-image {
+    transform: translateY(25%);
+}
+
+.dd-option.dd-option-selected {
+
+}
+
+.dd-selected-text, .dd-option-text {
+    margin-bottom: 0!important;
+}

@@ -201,20 +201,34 @@ $('.custom-file-input').on('change', function(event) {
         .html(inputFile.files[0].name);
 });
 
+// Cache dans les formulaires la latitude et la longitude
+$("fieldset.form-group").css("display", "none");
+
+
 let formName = document.getElementsByTagName("form")[0].name;
 let selectIcone = document.getElementById(formName+"_icone");
 
+// boucle sur les options des icones
 for (let i = 0; i < selectIcone.length; i++) {
     let option = selectIcone[i];
     let valOption = selectIcone[i].label;
-    console.log(valOption)
+    // construction du chemin vers les icones
+    cheminIcone = "/MarkersIcons/" + valOption;
+    // set l'attribut nécessaire pour afficher les images par
+    option.setAttribute('data-imagesrc', cheminIcone)
+
+    let iconeName = option.childNodes[0].textContent
+    let splitIconeName = iconeName.split("-")[1]
+    option.innerHTML = splitIconeName
 }
 
-
-
-
-    cheminIcone = "/MarkersIcons/"+selectIcone.textContent;
-
+// Fonction jQuery UI pour reconstruire un select option en div et y inclure des images
+$('#'+formName+'_icone').ddslick({
+    onSelected: function(selectedData){
+        // remet le nom sur le input icone pour qu'il repasse dans le formulaire avec l'id de l'icone selectionnée
+        $("input.dd-selected-value").attr("name", formName+"[icone]")
+    }
+});
 
 // Remplis la liste d'icones.
 /*let divIcones = document.querySelectorAll('icones');
