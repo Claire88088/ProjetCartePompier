@@ -194,6 +194,7 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
         // set l'attribut nécessaire pour afficher les images par la suite
         option.setAttribute('data-imagesrc', cheminIcone)
 
+        // set le nom de l'icone a partir du lien
         let iconeName = option.childNodes[0].textContent
         let splitIconeName = iconeName.split("-")[1]
         option.innerHTML = splitIconeName
