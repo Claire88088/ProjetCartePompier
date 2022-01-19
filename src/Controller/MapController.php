@@ -271,7 +271,7 @@ class MapController extends AbstractController
 
                     $issetPhoto = isset($_FILES[$name]["name"]["photo"]);
                     $issetLien = isset($_FILES[$name]["name"]["lien"]);
-                    
+
                     // Test si dans le POST, il y'a des envois de fichiers
                     if ($issetPhoto && !$issetLien) {
                         $photoFile = $elementForm->get('photo')->getData();
