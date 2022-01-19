@@ -10,11 +10,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
 
 //---------------------------------------------------------------
 // Icone d'un feu,
-/*var iconFeu = L.icon({
+var iconFeu = L.icon({
     iconUrl: '../MarkersIcons/icons8-gaz-24.png',
     iconSize: [35, 39]
 });
-*/
+
 
 //-----------------------------------------------------------------------
 // affichage d'un calque
@@ -104,12 +104,46 @@ var ligne = document.createElement('hr');
 bCalques.prepend(titreCalque);
 
 //----------------------------------------------------
-// Recherche d'une adresse avec pré-sélection de la commune
-searchAddress(myMap);
-preChooseCommune(); // après searchAddress car on a besoin que le form soit déjà créé 
+// Recherche et géocodage
+const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
 
+// on créé le formulaire de recherche
+const searchControl = L.esri.Geocoding.geosearch({
+    // Position de la barre de recherche
+    position: "topleft",
+    placeholder: "Entrez une adresse à rechercher",
+    useMapBounds: false, // permet de filter les résultats à l'aide du cadre de délimitation statique fourni
+    providers: [L.esri.Geocoding.arcgisOnlineProvider({ // utilisation du service de géocodage de ArcGIS
+        countries: "FR",
+        apikey: apiKey,
+        categories: 'Address',
+        nearby: {
+            lat: 46.816487,
+            lng: 0.548146
+        },
+    })]
+}).addTo(myMap);
 
-//--------------------------------------------------------------------------------
+// on créé un "groupe de marqueurs affichés sur le même calque" qui recevra les résultats de la recherche
+const results = L.layerGroup().addTo(myMap);
+
+// l'événement "results" a lieu quand le geocoder a trouvé des résultats
+searchControl.on("results", (data) => {
+    results.clearLayers();
+    for (let i = data.results.length - 1; i >= 0; i--) {
+        const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000)/100000}, ${Math.round(data.results[i].latlng.lat * 100000)/100000}`;
+        // on créé un marqueur pour l'adresse trouvée et on l'affiche via le layerGroup
+        const marker = L.marker(data.results[i].latlng, {icon: iconFeu});
+        // on affiche dans la pop up uniquement l'adresse et la ville
+        let longLabel = data.results[i].properties.LongLabel;
+        let shortLabel = longLabel.split(',');
+        let label = shortLabel.splice(0, 3);
+
+        marker.bindPopup(`<p>${label}</p>`);
+        results.addLayer(marker);
+        marker.openPopup();
+    }
+});
 
 // Fonction d'ajout d'un marqueur uniquement a une url précise.
 var newMarker;
@@ -170,17 +204,18 @@ $('.custom-file-input').on('change', function(event) {
 // Cache dans les formulaires la latitude et la longitude
 $("fieldset.form-group").css("display", "none");
 
-
+// Récupère le nom du formulaire courant
 let formName = document.getElementsByTagName("form")[0].name;
+// Récupère le select des icones comprenant les options
 let selectIcone = document.getElementById(formName+"_icone");
 
-// boucle sur les options des icones
+// boucle sur le select pour avoir chaque options
 for (let i = 0; i < selectIcone.length; i++) {
     let option = selectIcone[i];
     let valOption = selectIcone[i].label;
     // construction du chemin vers les icones
     cheminIcone = "/MarkersIcons/" + valOption;
-    // set l'attribut nécessaire pour afficher les images par
+    // set l'attribut nécessaire pour afficher les images par la suite
     option.setAttribute('data-imagesrc', cheminIcone)
 
     let iconeName = option.childNodes[0].textContent
@@ -243,7 +278,38 @@ fetch(`http://127.0.0.1:8000/testJson`).then(function(response) {
 
 
 
+// Test : utilisation d'une liste déroulante pour préchoisir la commune et utiliser la valeur dans le formulaire de l'API pour pouvoir utiliser la suggestion d'adresses
+// Plusieurs cas :
 
+// on récupère la valeur de la commune sélectionnée par défaut
+let communeElt = document.getElementById('form_commune');
+//let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
+
+
+
+// Cas 1 : on met la valeur au moment du chargement de la page
+// on la met dans l'input du formulaire de l'API
+let formAPIElt = document.getElementsByClassName('geocoder-control-input')[0];
+insererChoixDansFormRecherche(formAPIElt);
+
+
+// Cas 2 : on met la valeur quand on change le choix de la commune
+communeElt.addEventListener('change', event => {
+    insererChoixDansFormRecherche(formAPIElt);
+});
+
+// Cas 3 : on met la valeur quand on n'est plus sur le champ du formulaire de l'API
+formAPIElt.addEventListener('focusout', event => {
+    let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
+    formAPIElt.value = commune;
+});
+
+formAPIElt.addEventListener('click', event => {
+    // on met le curseur au début du input (avant le code postal et le nom de la commune)
+    setCaretPosition(formAPIElt, 0);
+});
+
+// TODO on garde le focus si on essaye de changer mais qu'on choisit la même valeur finalement
 
 //-------------------------------------------------------------------------------
 // Test affichage des pop up pour les établissements répertoriés
