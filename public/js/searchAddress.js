@@ -1,10 +1,10 @@
 /**
- * permet de rechercher une adresse avec aide à la saisie via le formulaire de ESRI
+ * permet de créer un formulaire ESRI (avec fonction suggestion d'adresse),
+ * de rechercher cette adresse
  * et d'ajouter un marqueur et une pop up au niveau de l'adresse trouvée
  * @param myMap carte Leaflet
  */
  function searchAddress(myMap) {
-    // Géocodage
     const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
 
     // on créé le formulaire de recherche
@@ -17,8 +17,8 @@
             countries: 'FR',
             categories: 'Address',
             nearby: {
-                lat: 0.340375,
-                lng: 46.580224
+                lat: 46.580224,
+                lng: 0.340375
             },
         })]
     }).addTo(myMap);
@@ -41,9 +41,7 @@
             results.addLayer(marker);
             marker.openPopup();
         }
-    });
-
-    
+    });   
 }
 
 

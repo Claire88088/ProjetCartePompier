@@ -105,83 +105,8 @@ bCalques.prepend(titreCalque);
 
 //----------------------------------------------------
 // Recherche d'une adresse avec pré-sélection de la commune
-//searchAddress(myMap);
-//---------------------------------------------------------------------------------------------------
-// Géocodage
-const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
-
-// on créé le formulaire de recherche
-const searchControl = L.esri.Geocoding.geosearch({
-    position: "topleft",
-    placeholder: "Entrez une adresse à rechercher",
-    useMapBounds: false, // permet de filter les résultats à l'aide du cadre de délimitation statique fourni
-    providers: [L.esri.Geocoding.arcgisOnlineProvider({ // utilisation du service de géocodage de ArcGIS
-        apikey: apiKey,
-        countries: 'FR',
-        categories: 'Address',
-        //********* */ TODO : voir pour le nearby ******************
-        /*nearby: {
-            //lat: 0.340375,
-            //lng: 46.580224
-            lat: 46.580224,
-            lng: 0.340375
-        },*/
-    })]
-}).addTo(myMap);
-
-// on créé un "groupe de marqueurs affichés sur le même calque" qui recevra les résultats de la recherche
-const results = L.layerGroup().addTo(myMap);
-
-// l'événement "results" a lieu quand le geocoder a trouvé des résultats
-searchControl.on("results", (data) => {
-    results.clearLayers();
-    for (let i = data.results.length - 1; i >= 0; i--) {
-        const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000)/100000}, ${Math.round(data.results[i].latlng.lat * 100000)/100000}`;
-        // on créé un marqueur pour l'adresse trouvée et on l'affiche via le layerGroup
-        const marker = L.marker(data.results[i].latlng);
-        // on affiche dans la pop up uniquement l'adresse et la ville
-        let longLabel = data.results[i].properties.LongLabel;
-        let shortLabel = longLabel.split(',');
-        let label = shortLabel.splice(0, 3);
-        marker.bindPopup(`<p>${label}</p>`)
-        results.addLayer(marker);
-        marker.openPopup();
-    }
-});
-//preChooseCommune(); // après searchAddress car on a besoin que le form soit déjà créé 
-
-// Test : utilisation d'une liste déroulante pour préchoisir la commune et utiliser la valeur dans le formulaire de l'API pour pouvoir utiliser la suggestion d'adresses
-// Plusieurs cas :
-
-// on récupère la valeur de la commune sélectionnée par défaut
-let communeElt = document.getElementById('form_commune');
-//let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
-
-
-
-// Cas 1 : on met la valeur au moment du chargement de la page
-// on la met dans l'input du formulaire de l'API
-let formAPIElt = document.getElementsByClassName('geocoder-control-input')[0];
-insererChoixDansFormRecherche(formAPIElt);
-
-
-// Cas 2 : on met la valeur quand on change le choix de la commune
-communeElt.addEventListener('change', event => {
-    insererChoixDansFormRecherche(formAPIElt);
-});
-
-// Cas 3 : on met la valeur quand on n'est plus sur le champ du formulaire de l'API
-formAPIElt.addEventListener('focusout', event => {
-    let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
-    formAPIElt.value = commune;
-});
-
-formAPIElt.addEventListener('click', event => {
-    // on met le curseur au début du input (avant le code postal et le nom de la commune)
-    setCaretPosition(formAPIElt, 0);
-});
-
-// TODO on garde le focus si on essaye de changer mais qu'on choisit la même valeur finalement
+searchAddress(myMap);
+preChooseCommune(); // après searchAddress car on a besoin que le form soit déjà créé 
 
 
 //--------------------------------------------------------------------------------
