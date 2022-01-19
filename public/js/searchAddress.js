@@ -9,35 +9,37 @@
 
     // on créé le formulaire de recherche
     const searchControl = L.esri.Geocoding.geosearch({
+        // Position de la barre de recherche
         position: "topleft",
         placeholder: "Entrez une adresse à rechercher",
         useMapBounds: false, // permet de filter les résultats à l'aide du cadre de délimitation statique fourni
         providers: [L.esri.Geocoding.arcgisOnlineProvider({ // utilisation du service de géocodage de ArcGIS
+            countries: "FR",
             apikey: apiKey,
-            countries: 'FR',
             categories: 'Address',
             nearby: {
-                lat: 46.580224,
-                lng: 0.340375
+                lat: 46.816487,
+                lng: 0.548146
             },
         })]
     }).addTo(myMap);
-
+    
     // on créé un "groupe de marqueurs affichés sur le même calque" qui recevra les résultats de la recherche
     const results = L.layerGroup().addTo(myMap);
-
+    
     // l'événement "results" a lieu quand le geocoder a trouvé des résultats
     searchControl.on("results", (data) => {
         results.clearLayers();
         for (let i = data.results.length - 1; i >= 0; i--) {
             const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000)/100000}, ${Math.round(data.results[i].latlng.lat * 100000)/100000}`;
             // on créé un marqueur pour l'adresse trouvée et on l'affiche via le layerGroup
-            const marker = L.marker(data.results[i].latlng);
+            const marker = L.marker(data.results[i].latlng, {icon: iconFeu});
             // on affiche dans la pop up uniquement l'adresse et la ville
             let longLabel = data.results[i].properties.LongLabel;
             let shortLabel = longLabel.split(',');
             let label = shortLabel.splice(0, 3);
-            marker.bindPopup(`<p>${label}</p>`)
+    
+            marker.bindPopup(`<p>${label}</p>`);
             results.addLayer(marker);
             marker.openPopup();
         }
