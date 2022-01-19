@@ -257,58 +257,86 @@ class MapController extends AbstractController
 
         $elementForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
         $elementForm->handleRequest($request);
-        if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-            // Test si dans le POST, il y'a des envois de fichiers
-            if(isset($_FILES)) {
-                $photoFile = $elementForm->get('photo')->getData();
-                $pdfFile = $elementForm->get('lien')->getData();
-                if ($photoFile || $pdfFile) {
-                    $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    // this is needed to safely include the file name as part of the URL
-                    $safePhotoFilename = $slugger->slug($originalPhotoFilename);
-                    $safePdfFilename = $slugger->slug($originalPdfFilename);
 
-                    $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
-                    $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+        // ici name correspond au nom du formulaire
+        foreach ($_POST as $name => $value) {
+            if ($elementForm->isSubmitted() && $elementForm->isValid()) {
 
-                    // Move the file to the directory where brochures are stored
-                    try {
-                        $photoFile->move(
-                            $this->getParameter('uploads_photos'),
-                            $newPhotoName
-                        );
-                        $pdfFile->move(
-                            $this->getParameter('uploads_pdf'),
-                            $newPdfName
-                        );
-                    } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
+
+                    $photoFile = null;
+                    $pdfFile = null;
+
+                    $newPhotoName = null;
+                    $newPdfName = null;
+
+                    $issetPhoto = isset($_FILES[$name]["name"]["photo"]);
+                    $issetLien = isset($_FILES[$name]["name"]["lien"]);
+                    
+                    // Test si dans le POST, il y'a des envois de fichiers
+                    if ($issetPhoto && !$issetLien) {
+                        $photoFile = $elementForm->get('photo')->getData();
+                        if ($photoFile) {
+                            $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                            $safePhotoFilename = $slugger->slug($originalPhotoFilename);
+                            $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+                        }
+                    } else if ($issetLien && !$issetPhoto) {
+                        $pdfFile = $elementForm->get('lien')->getData();
+                        if ($pdfFile) {
+                            $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
+                            $safePdfFilename = $slugger->slug($originalPdfFilename);
+                            $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+                        }
+                    } else if ($issetLien && $issetPhoto) {
+                        $photoFile = $elementForm->get('photo')->getData();
+                        $pdfFile = $elementForm->get('lien')->getData();
+                        if ($photoFile && $pdfFile) {
+                            $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                            $safePhotoFilename = $slugger->slug($originalPhotoFilename);
+                            $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+                            $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
+                            $safePdfFilename = $slugger->slug($originalPdfFilename);
+                            $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+                        }
                     }
-                    $element->setPhoto($newPhotoName);
-                    $element->setLien($newPdfName);
-                }
+                        // Move the file to the directory where photos/pdf are stored
+                        try {
+                        if ($photoFile) {
+                            $photoFile->move(
+                                $this->getParameter('uploads_photos'),
+                                $newPhotoName
+                            );
+                        }
+                        if ($pdfFile) {
+                            $pdfFile->move(
+                                $this->getParameter('uploads_pdf'),
+                                $newPdfName
+                            );
+                        }
+                        } catch (FileException $e) {
+                            // ... handle exception if something happens during file upload
+                        }
+                        $element->setPhoto($newPhotoName);
+                        $element->setLien($newPdfName);
             }
-            $em->persist($element);
 
-            // ici name correspond au nom du formulaire
-            foreach ($_POST as $name => $value) {
+                $em->persist($element);
 
-                // on ajoute les données au Point
-                $point->setElement($element);
-                $coordGPS = $request->request->get($name)['coordonnees'];
-                $longitude = $coordGPS['longitude'];
-                $latitude = $coordGPS['latitude'];
-                $point->setLongitude($longitude);
-                $point->setLatitude($latitude);
-                $point->setRang(1);
+                    // on ajoute les données au Point
+                    $point->setElement($element);
+                    $coordGPS = $request->request->get($name)['coordonnees'];
+                    $longitude = $coordGPS['longitude'];
+                    $latitude = $coordGPS['latitude'];
+                    $point->setLongitude($longitude);
+                    $point->setLatitude($latitude);
+                    $point->setRang(1);
 
-                $em->persist($point);
+                    $em->persist($point);
 
-                $em->flush();
-                $this->addFlash('success', 'L\'élément a bien été ajouté !');
-                return $this->redirectToRoute('map');
-            }
+                    $em->flush();
+                    $this->addFlash('success', 'L\'élément a bien été ajouté !');
+                    return $this->redirectToRoute('map');
         }
 
         return $this->render('map/add-element.html.twig', [
