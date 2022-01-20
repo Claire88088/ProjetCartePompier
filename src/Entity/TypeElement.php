@@ -28,7 +28,7 @@ class TypeElement
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TypeCalque")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeCalque", inversedBy="typesElement")
      */
     private $typeCalque;
 
@@ -42,11 +42,14 @@ class TypeElement
 
     /**
      * @param mixed $typeCalque
-     * @return TypeElement
+     * @return self
      */
     public function setTypeCalque($typeCalque)
     {
-        $this->typeCalque = $typeCalque;
+        if (!$typeCalque->getTypesElement()->contains($this)) {
+            $this->typeCalque = $typeCalque;
+            $typeCalque->addTypeElement($this);
+        }
         return $this;
     }
 
