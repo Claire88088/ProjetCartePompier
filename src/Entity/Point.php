@@ -33,7 +33,7 @@ class Point
     private $rang;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Element")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Element", inversedBy="points")
      */
     private $element;
 
@@ -48,9 +48,13 @@ class Point
     /**
      * @param mixed $element
      */
-    public function setElement($element): void
+    public function setElement($element): self
     {
-        $this->element = $element;
+        if (!$element->getPoints()->contains($this)) {
+            $this->element = $element;
+            $element->addPoint($this);
+        }
+        return $this;
     }
 
     public function getId(): ?int

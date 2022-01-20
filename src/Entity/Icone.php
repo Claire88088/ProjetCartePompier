@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\IconeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +27,17 @@ class Icone
      * @ORM\Column(type="string", length=255)
      */
     private $lien;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="App\Entity\Element", mappedBy="icone")
+     */
+    private $elements;
+
+    public function __construct()
+    {
+        $this->elements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,5 +71,40 @@ class Icone
     public function __toString()
     {
         return $this->lien;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getElements()
+    {
+        return $this->elements;
+    }
+
+    /**
+     * @param Element $element
+     * @return self
+     */
+    public function addElement(Element $element): self
+    {
+        if (!$this->elements->contains($element)) {
+            $this->elements->add($element);
+            $element->setIcone($this);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Element $element
+     * @return self
+     */
+    public function removeElement(Element $element): self
+    {
+        if ($this->elements->removeElement($element)) {
+            if ($element->getIcone() === $this) {
+                $element->setIcone(null);
+            }
+        }
+        return $this;
     }
 }

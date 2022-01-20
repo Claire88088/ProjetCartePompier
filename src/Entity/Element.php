@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ElementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,18 +44,29 @@ class Element
     private $dateFin;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TypeElement")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeElement", inversedBy="elements")
      */
     private $typeElement;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Icone")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Icone", inversedBy="elements")
      */
     private $icone;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="App\Entity\Point", mappedBy="element")
+     */
+    private $points;
+
+    public function __construct()
+    {
+        $this->points = new ArrayCollection();
     }
 
     /**
@@ -71,7 +83,10 @@ class Element
      */
     public function setTypeElement($typeElement)
     {
-        $this->typeElement = $typeElement;
+        if (!$typeElement->getElements()->contains($this)) {
+            $this->typeElement = $typeElement;
+            $typeElement->addElement($this);
+        }
         return $this;
     }
 
@@ -89,7 +104,10 @@ class Element
      */
     public function setIcone($icone)
     {
-        $this->icone = $icone;
+        if (!$icone->getElements()->contains($this)) {
+            $this->icone = $icone;
+            $icone->addElement($this);
+        }
         return $this;
     }
 
@@ -150,6 +168,41 @@ class Element
     {
         $this->dateFin = $dateFin;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPoints()
+    {
+        return $this->points;
+    }
+
+    /**
+     * @param Point $point
+     * @return self
+     */
+    public function addPoint(Point $point): self
+    {
+        if (!$this->points->contains($point)) {
+            $this->points->add($point);
+            $point->setElement($this);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Point $point
+     * @return self
+     */
+    public function removePoint(Point $point): self
+    {
+        if ($this->points->removeElement($point)) {
+            if ($point->getElement() === $this) {
+                $point->setElement(null);
+            }
+        }
         return $this;
     }
 }

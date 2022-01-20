@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TypeElementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +32,17 @@ class TypeElement
      * @ORM\ManyToOne(targetEntity="App\Entity\TypeCalque", inversedBy="typesElement")
      */
     private $typeCalque;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="App\Entity\Element", mappedBy="typeElement")
+     */
+    private $elements;
+
+    public function __construct()
+    {
+        $this->elements = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -85,5 +97,40 @@ class TypeElement
     public function __toString()
     {
         return $this->nom;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getElements()
+    {
+        return $this->elements;
+    }
+
+    /**
+     * @param Element $element
+     * @return self
+     */
+    public function addElement(Element $element): self
+    {
+        if (!$this->elements->contains($element)) {
+            $this->elements->add($element);
+            $element->setTypeElement($this);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Element $element
+     * @return self
+     */
+    public function removeElement(Element $element): self
+    {
+        if ($this->elements->removeElement($element)) {
+            if ($element->getTypeElement() === $this) {
+                $element->setTypeElement(null);
+            }
+        }
+        return $this;
     }
 }
