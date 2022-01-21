@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Element;
+use App\Entity\Point;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\TypeCalque;
@@ -74,6 +76,17 @@ class AppFixtures extends Fixture
         $typeElementEltAutoroute = new TypeElement();
         $typeElementEltAutoroute->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueAutoroute))->setNom('Element Auto')->setType('AUTRE');
         $manager->persist($typeElementEltAutoroute);
+
+        $manager->flush();
+
+        
+        $element1 = new Element();
+        $element1->setTypeElement($manager->getRepository('App:TypeElement')->find($typeElementImmeuble->getId()))->setIcone()->setTexte('Ehpad Le Village');
+        $manager->persist($element1);
+
+        $element2 = new Element();
+        $element2->setTypeElement($manager->getRepository('App:TypeElement')->find($typeElementIndustrie->getId()))->setIcone()->setTexte('Industrie 1');
+        $manager->persist($element2);
 
         $manager->flush();
     }
