@@ -19,6 +19,22 @@ class TypeCalqueRepository extends ServiceEntityRepository
         parent::__construct($registry, TypeCalque::class);
     }
 
+    public function findAllElementsToShow()
+    {
+        $query = $this->_em->createQueryBuilder('tc');
+        return $query->select('tc')
+            ->from(TypeCalque::class, 'tc')
+            ->innerJoin('App\Entity\TypeElement', 'te')
+            ->where('tc.id = te.typeCalque')
+            ->innerJoin('App\Entity\Element', 'e')
+            ->where('te.id = e.typeElement')
+            ->innerJoin('App\Entity\Icone', 'i')
+            ->where('e.icone = i.id')
+            ->innerJoin('App\Entity\Point', 'p')
+            ->where('e.id = p.element')
+            ->getQuery()->getResult();
+    }
+
     // /**
     //  * @return TypeCalque[] Returns an array of TypeCalque objects
     //  */
