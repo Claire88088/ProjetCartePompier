@@ -70,6 +70,14 @@ class TypeElement
         return $this->id;
     }
 
+    public function setId(int $id): ?int
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+
     public function getNom(): ?string
     {
         return $this->nom;
