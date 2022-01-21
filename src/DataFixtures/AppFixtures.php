@@ -34,8 +34,6 @@ class AppFixtures extends Fixture
         $typeCalquePiscine->setNom('Piscines')->setType('AUTRE');
         $manager->persist($typeCalquePiscine);
 
-        $manager->flush();
-
         $typeElementImmeuble = new TypeElement();
         $typeElementImmeuble->setTypeCalque($typeCalqueER)->setNom('Immeuble')->setType('IMMEUBLE');
         $manager->persist($typeElementImmeuble);
@@ -72,8 +70,6 @@ class AppFixtures extends Fixture
         $typeElementEltAutoroute->setTypeCalque($typeCalqueAutoroute)->setNom('Element Auto')->setType('AUTRE');
         $manager->persist($typeElementEltAutoroute);
 
-        $manager->flush();
-
         $iconeBatiment = new Icone();
         $iconeBatiment->setLien('icons8-bâtiment-24.png');
         $manager->persist($iconeBatiment);
@@ -94,8 +90,6 @@ class AppFixtures extends Fixture
         $iconeEchelle->setLien('icons8-échelle-24.png');
         $manager->persist($iconeEchelle);
 
-        $manager->flush();
-
         $element1 = new Element();
         $element1->setTypeElement($typeElementImmeuble)->setIcone($iconeBatiment)->setTexte('Ehpad Le Village');
         $manager->persist($element1);
@@ -103,8 +97,6 @@ class AppFixtures extends Fixture
         $element2 = new Element();
         $element2->setTypeElement($typeElementIndustrie)->setIcone($iconeUsine)->setTexte('Industrie 1');
         $manager->persist($element2);
-
-        $manager->flush();
 
         $point1 = new Point();
         $point1->setElement($element1)->setLatitude(46.832612)->setLongitude(0.552458)->setRang(1);
