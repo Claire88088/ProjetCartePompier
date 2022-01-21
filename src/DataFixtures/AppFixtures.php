@@ -14,7 +14,6 @@ class AppFixtures extends Fixture
         $typeCalqueER= new TypeCalque();
         $typeCalqueER->setId(1)->setNom('Etablissements Répertoriés')->setType('ER');
         $manager->persist($typeCalqueER);
-        
 
         $typeCalque2 = new TypeCalque();
         $typeCalque2->setId(2)->setNom('Travaux')->setType('TRAVAUX');
