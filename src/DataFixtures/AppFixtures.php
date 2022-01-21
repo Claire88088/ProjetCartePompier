@@ -36,46 +36,40 @@ class AppFixtures extends Fixture
 
         $manager->flush();
 
-        $calqueER = $manager->getRepository('App:TypeCalque')->find($typeCalqueER->getId());
-        $calqueTravaux = $manager->getRepository('App:TypeCalque')->find($typeCalqueTravaux->getId());
-        $calqueAutoroute = $manager->getRepository('App:TypeCalque')->find($typeCalqueAutoroute->getId());
-        $calquePI = $manager->getRepository('App:TypeCalque')->find($typeCalquePI->getId());
-        //$calquePiscine = $manager->getRepository('App:TypeCalque')->find($typeCalquePiscine->getId());
-
         $typeElementImmeuble = new TypeElement();
-        $typeElementImmeuble->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueER))->setNom('Immeuble')->setType('IMMEUBLE');
+        $typeElementImmeuble->setTypeCalque($typeCalqueER)->setNom('Immeuble')->setType('IMMEUBLE');
         $manager->persist($typeElementImmeuble);
 
         $typeElementIndustrie = new TypeElement();
-        $typeElementIndustrie->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueER))->setNom('Industrie')->setType('INDUSTRIE');
+        $typeElementIndustrie->setTypeCalque($typeCalqueER)->setNom('Industrie')->setType('INDUSTRIE');
         $manager->persist($typeElementIndustrie);
 
         $typeElementTravaux = new TypeElement();
-        $typeElementTravaux->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueTravaux))->setNom('Travaux')->setType('TRAVAUX');
+        $typeElementTravaux->setTypeCalque($typeCalqueTravaux)->setNom('Travaux')->setType('TRAVAUX');
         $manager->persist($typeElementTravaux);
 
         $typeElementAcces = new TypeElement();
-        $typeElementAcces->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueAutoroute))->setNom('Accès barrière de sécurité')->setType('ACCES');
+        $typeElementAcces->setTypeCalque($typeCalqueAutoroute)->setNom('Accès barrière de sécurité')->setType('ACCES');
         $manager->persist($typeElementAcces);
 
         $typeElementEchangeur = new TypeElement();
-        $typeElementEchangeur->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueAutoroute))->setNom('Echangeur')->setType('ECHANGEUR');
+        $typeElementEchangeur->setTypeCalque($typeCalqueAutoroute)->setNom('Echangeur')->setType('ECHANGEUR');
         $manager->persist($typeElementEchangeur);
 
         $typeElementPKm = new TypeElement();
-        $typeElementPKm->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueAutoroute))->setNom('Point kilométrique')->setType('PK');
+        $typeElementPKm->setTypeCalque($typeCalqueAutoroute)->setNom('Point kilométrique')->setType('PK');
         $manager->persist($typeElementPKm);
 
         $typeElementPI = new TypeElement();
-        $typeElementPI->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calquePI))->setNom('Poteau incendie')->setType('PI');
+        $typeElementPI->setTypeCalque($typeCalquePI)->setNom('Poteau incendie')->setType('PI');
         $manager->persist($typeElementPI);
 
         $typeElementEcoleMat = new TypeElement();
-        $typeElementEcoleMat->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueER))->setNom('Ecole Maternelle')->setType('AUTRE');
+        $typeElementEcoleMat->setTypeCalque($typeCalqueER)->setNom('Ecole Maternelle')->setType('AUTRE');
         $manager->persist($typeElementEcoleMat);
 
         $typeElementEltAutoroute = new TypeElement();
-        $typeElementEltAutoroute->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueAutoroute))->setNom('Element Auto')->setType('AUTRE');
+        $typeElementEltAutoroute->setTypeCalque($typeCalqueAutoroute)->setNom('Element Auto')->setType('AUTRE');
         $manager->persist($typeElementEltAutoroute);
 
         $manager->flush();
@@ -102,19 +96,23 @@ class AppFixtures extends Fixture
 
         $manager->flush();
 
-        $iconeBatiment = $manager->getRepository('App:Icone')->find($iconeBatiment->getId());
-        $iconeEssence = $manager->getRepository('App:Icone')->find($iconeEssence->getId());
-        $iconeGaz = $manager->getRepository('App:Icone')->find($iconeGaz->getId());
-        $iconeUsine = $manager->getRepository('App:Icone')->find($iconeUsine->getId());
-        $iconeEchelle = $manager->getRepository('App:Icone')->find($iconeEchelle->getId());
-
         $element1 = new Element();
-        $element1->setTypeElement($manager->getRepository('App:TypeElement')->find($typeElementImmeuble->getId()))->setIcone($iconeBatiment)->setTexte('Ehpad Le Village');
+        $element1->setTypeElement($typeElementImmeuble)->setIcone($iconeBatiment)->setTexte('Ehpad Le Village');
         $manager->persist($element1);
 
         $element2 = new Element();
-        $element2->setTypeElement($manager->getRepository('App:TypeElement')->find($typeElementIndustrie->getId()))->setIcone($iconeUsine)->setTexte('Industrie 1');
+        $element2->setTypeElement($typeElementIndustrie)->setIcone($iconeUsine)->setTexte('Industrie 1');
         $manager->persist($element2);
+
+        $manager->flush();
+
+        $point1 = new Point();
+        $point1->setElement($element1)->setLatitude(46.832612)->setLongitude(0.552458)->setRang(1);
+        $manager->persist($point1);
+
+        $point2 = new Point();
+        $point2->setElement($element2)->setLatitude(46.812177)->setLongitude(0.554433)->setRang(1);
+        $manager->persist($point2);
 
         $manager->flush();
     }
