@@ -8,6 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\TypeCalque;
 use App\Entity\TypeElement;
+use App\Entity\Icone;
 
 class AppFixtures extends Fixture
 {
@@ -79,13 +80,40 @@ class AppFixtures extends Fixture
 
         $manager->flush();
 
+        $iconeBatiment = new Icone();
+        $iconeBatiment->setLien('icons8-bâtiment-24.png');
+        $manager->persist($iconeBatiment);
+
+        $iconeEssence = new Icone();
+        $iconeEssence->setLien('icons8-essence-24.png');
+        $manager->persist($iconeEssence);
+
+        $iconeGaz = new Icone();
+        $iconeGaz->setLien('icons8-gaz-24.png');
+        $manager->persist($iconeGaz);
+
+        $iconeUsine = new Icone();
+        $iconeUsine->setLien('icons8-usine-24.png');
+        $manager->persist($iconeUsine);
+
+        $iconeEchelle = new Icone();
+        $iconeEchelle->setLien('icons8-échelle-24.png');
+        $manager->persist($iconeEchelle);
+
+        $manager->flush();
+
+        $iconeBatiment = $manager->getRepository('App:Icone')->find($iconeBatiment->getId());
+        $iconeEssence = $manager->getRepository('App:Icone')->find($iconeEssence->getId());
+        $iconeGaz = $manager->getRepository('App:Icone')->find($iconeGaz->getId());
+        $iconeUsine = $manager->getRepository('App:Icone')->find($iconeUsine->getId());
+        $iconeEchelle = $manager->getRepository('App:Icone')->find($iconeEchelle->getId());
         
         $element1 = new Element();
-        $element1->setTypeElement($manager->getRepository('App:TypeElement')->find($typeElementImmeuble->getId()))->setIcone()->setTexte('Ehpad Le Village');
+        $element1->setTypeElement($manager->getRepository('App:TypeElement')->find($typeElementImmeuble->getId()))->setIcone($iconeBatiment)->setTexte('Ehpad Le Village');
         $manager->persist($element1);
 
         $element2 = new Element();
-        $element2->setTypeElement($manager->getRepository('App:TypeElement')->find($typeElementIndustrie->getId()))->setIcone()->setTexte('Industrie 1');
+        $element2->setTypeElement($manager->getRepository('App:TypeElement')->find($typeElementIndustrie->getId()))->setIcone($iconeUsine)->setTexte('Industrie 1');
         $manager->persist($element2);
 
         $manager->flush();
