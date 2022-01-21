@@ -32,6 +32,10 @@ class TypeCalqueRepository extends ServiceEntityRepository
             ->where('e.icone = i.id')
             ->innerJoin('App\Entity\Point', 'p')
             ->where('e.id = p.element')
+            /*
+            ->setParameter('type', 'ER')
+            ->andWhere('tc.type = :type')
+            */
             ->getQuery()->getResult();
     }
 

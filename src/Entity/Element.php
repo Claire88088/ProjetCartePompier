@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ElementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -70,18 +71,18 @@ class Element
     }
 
     /**
-     * @return mixed
+     * @return TypeElement
      */
-    public function getTypeElement()
+    public function getTypeElement(): ?TypeElement
     {
         return $this->typeElement;
     }
 
     /**
-     * @param mixed $typeElement
+     * @param TypeElement $typeElement
      * @return Element
      */
-    public function setTypeElement($typeElement)
+    public function setTypeElement(TypeElement $typeElement)
     {
         if (!$typeElement->getElements()->contains($this)) {
             $this->typeElement = $typeElement;
@@ -91,18 +92,18 @@ class Element
     }
 
     /**
-     * @return mixed
+     * @return Icone
      */
-    public function getIcone()
+    public function getIcone(): ?Icone
     {
         return $this->icone;
     }
 
     /**
-     * @param mixed $icone
+     * @param Icone $icone
      * @return Element
      */
-    public function setIcone($icone)
+    public function setIcone(Icone $icone)
     {
         if (!$icone->getElements()->contains($this)) {
             $this->icone = $icone;
@@ -174,7 +175,7 @@ class Element
     /**
      * @return Collection
      */
-    public function getPoints()
+    public function getPoints(): ?Collection
     {
         return $this->points;
     }

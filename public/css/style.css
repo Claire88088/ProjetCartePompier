@@ -59,6 +59,10 @@
     text-align: center;
 }
 
+input {
+    text-align: center;
+}
+
 #bLog #summ {
     margin-top: .5rem;
     text-align: center

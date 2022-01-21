@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Repository\TypeCalqueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity(repositoryClass=TypeCalqueRepository::class)
@@ -71,14 +71,13 @@ class TypeCalque
 
     public function __toString()
     {
-        $calqueToString = $this->nom;
-        return $calqueToString;
+        return $this->nom;
     }
 
     /**
      * @return Collection
      */
-    public function getTypesElement(): ?PersistentCollection
+    public function getTypesElement(): ?Collection
     {
         return $this->typesElement;
     }

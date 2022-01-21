@@ -69,10 +69,13 @@ class MapController extends AbstractController
     {
         // TODO changer le nom des variables (mais a priori on changement la façon de passer les valeurs)
         // TODO : code différent dans testClaire
+
         $calques = $em->getRepository('App:TypeCalque')->findAll();
+        $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
 
         return $this->render('envoi-donnees-JS.html.twig', [
             'calques' => $calques,
+            'elements' => $elements
         ]);
     }
 

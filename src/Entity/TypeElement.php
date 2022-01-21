@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TypeElementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,18 +46,18 @@ class TypeElement
     }
 
     /**
-     * @return mixed
+     * @return TypeCalque
      */
-    public function getTypeCalque()
+    public function getTypeCalque(): ?TypeCalque
     {
         return $this->typeCalque;
     }
 
     /**
-     * @param mixed $typeCalque
+     * @param TypeCalque $typeCalque
      * @return self
      */
-    public function setTypeCalque($typeCalque)
+    public function setTypeCalque(TypeCalque $typeCalque)
     {
         if (!$typeCalque->getTypesElement()->contains($this)) {
             $this->typeCalque = $typeCalque;
