@@ -20,7 +20,7 @@ class TypeElementRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return TypeElement[] Returns an array of TypeElement objects
+    //  * @return TypeElementFixtures[] Returns an array of TypeElementFixtures objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TypeElementRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TypeElement
+    public function findOneBySomeField($value): ?TypeElementFixtures
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')
