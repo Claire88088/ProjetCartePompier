@@ -4,15 +4,41 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\TypeCalque;
+use App\Entity\TypeElement;
 
-class TypeElement extends Fixture
+class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $typeElement1 = new TypeElement();
-        $typeElement1->setId(1)->setTypeCalque(1)->setNom('Immeuble')->setType('IMMEUBLE');
-        $manager->persist($typeElement1);
+        $typeCalqueER= new TypeCalque();
+        $typeCalqueER->setId(1)->setNom('Etablissements Répertoriés')->setType('ER');
+        $manager->persist($typeCalqueER);
+        
 
+        $typeCalque2 = new TypeCalque();
+        $typeCalque2->setId(2)->setNom('Travaux')->setType('TRAVAUX');
+        $manager->persist($typeCalque2);
+
+        $typeCalque3 = new TypeCalque();
+        $typeCalque3->setId(3)->setNom('Autoroute')->setType('AUTOROUTE');
+        $manager->persist($typeCalque3);
+
+        $typeCalque4 = new TypeCalque();
+        $typeCalque4->setId(4)->setNom('Poteaux Incendie')->setType('PI');
+        $manager->persist($typeCalque4);
+
+        $typeCalque5 = new TypeCalque();
+        $typeCalque5->setId(5)->setNom('Piscines')->setType('AUTRE');
+        $manager->persist($typeCalque5);
+
+        //$manager->flush();
+
+        $typeElement1 = new TypeElement();
+        $calqueERId = $typeCalqueER->getId();
+        $typeElement1->setId(1)->setTypeCalque($manager->getRepository('App:TypeCalque')->find($calqueERId))->setNom('Immeuble')->setType('IMMEUBLE');
+        $manager->persist($typeElement1);
+/*
         $typeElement2 = new TypeElement();
         $typeElement2->setId(2)->setTypeCalque(1)->setNom('Industrie')->setType('INDUSTRIE');
         $manager->persist($typeElement2);
@@ -44,13 +70,7 @@ class TypeElement extends Fixture
         $typeElement9 = new TypeElement();
         $typeElement9->setId(9)->setTypeCalque(3)->setNom('Element Auto')->setType('AUTRE');
         $manager->persist($typeElement9);
-
+*/
         $manager->flush();
-    }
-    public function getDependencies()
-    {
-        return array(
-            TypeCalqueFixtures::class,
-        );
     }
 }
