@@ -1,7 +1,10 @@
 {% extends 'map/index.html.twig' %}
 
+{% block title %}Ajout élément{% endblock %}
+
 {% block global %}
-    <p>Ajout d'un élément sur le calque {{ nomCalque }}</p>
+    <p>Ajout d'un élément sur le calque "{{ nomCalque }}"</p>
+    <p>Cliquer sur la carte pour sélectionner l'endroit où ajouter le nouvel élément</p>
     {{ form(form) }}
 {# DIV DES ICONES #}
 {#   <div class="dropdown form-group">#}
