@@ -15,9 +15,9 @@
     #}
 
     <label for="inputNom">Nom de compte</label>
-    <input type="text" value="{{ last_username }}" name="nom" id="inputNom" class="form-control" autocomplete="username" required autofocus>
+    <input id="username" type="text" value="{{ last_username }}" name="nom" id="inputNom" class="form-control" autocomplete="username" autofocus required>
     <label for="inputPassword">Mot de passe</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    <input id="password" type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"

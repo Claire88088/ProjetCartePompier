@@ -13,9 +13,12 @@
 #rechercheForm {
     z-index: 500;
     color: white;
-    display: flex;
+    display:flex;
     justify-content: center;
-    align-items: baseline;
+}
+
+#rechercheForm > div {
+    display:flex;
 }
 
 #rechercheForm label {
