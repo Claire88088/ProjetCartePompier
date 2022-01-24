@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -37,9 +38,16 @@ class PIType extends AbstractType
                         'mimeTypesMessage' => "La photos n'est pas au bon format", ])
                 ],
                 'data_class' => null,
-                'help' => 'Sélectionnez une photo',
-                'row_attr' => ['placeholder' => 'Sélectionnez un fichier'],])
-            ->add('texte')
+                'attr' => array(
+                    'placeholder' => 'Sélectionnez une photo'
+                    ),
+                ])
+            ->add('texte', TextareaType::class, array(
+            'label' => 'Description',
+            'attr' => array(
+                'placeholder' => 'Entrez une description'
+                )
+            ))
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])

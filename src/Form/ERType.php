@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -42,8 +44,10 @@ class ERType extends AbstractType
                         'mimeTypesMessage' => "La photos n'est pas au bon format", ])
                 ],
                 'data_class' => null,
-                'help' => 'Sélectionnez une photo',
-                'row_attr' => ['placeholder' => 'Sélectionnez un fichier'],])
+                'attr' => array(
+                    'placeholder' => 'Sélectionnez une photo'
+                    ),
+                ])
             ->add('lien', FileType::class, [
                 'label' => 'Lien (PDF)',
                 'mapped' => false,
@@ -56,9 +60,16 @@ class ERType extends AbstractType
                         'mimeTypesMessage' => 'Seul les fichiers PDF sont acceptés', ])
                 ],
                 'data_class' => null,
-                'help' => 'Sélectionnez un PDF',
+                'attr' => array(
+                    'placeholder' => 'Sélectionnez un PDF'
+                ),
                 'row_attr' => ['placeholder' => 'Sélectionnez un fichier'],])
-            ->add('texte')
+            ->add('texte', TextareaType::class, array(
+            'label' => 'Description',
+            'attr' => array(
+                'placeholder' => 'Entrez une description'
+                )
+            ))
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])

@@ -134,6 +134,10 @@ input#calque_nom{
     margin: 30px;
 }
 
+textarea {
+    text-align: center;
+}
+
 .dd-container {
     width: 100%!important;
 }

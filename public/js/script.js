@@ -164,7 +164,7 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
 
     myMap.on("click", addMarker);
 
-
+//----------------------------------------------------
 // Permet au champs d'upload d'afficher le nom du ficher donné.
     $('.custom-file-input').on('change', function (event) {
         var inputFile = event.currentTarget;
@@ -173,15 +173,15 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
             .html(inputFile.files[0].name);
     });
 
+//----------------------------------------------------
 // Cache dans les formulaires la latitude et la longitude
     $("fieldset.form-group").css("display", "none");
 
-// Récupère le nom du formulaire courant
+//----------------------------------------------------
+// Récupère le nom du formulaire [1] de la page
     let formName = document.querySelectorAll("form")[1].name;
-    console.log(formName)
     // Récupère le select des icones comprenant les options
     let selectIcone = document.getElementById(formName + "_icone");
-    console.log(selectIcone)
 
 // boucle sur le select pour avoir chaque options
     for (let i = 0; i < selectIcone.length; i++) {
@@ -198,7 +198,6 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
         option.innerHTML = splitIconeName
     }
 
-
 // Fonction jQuery UI pour reconstruire un select option en div et y inclure des images
     $('#' + formName + '_icone').ddslick({
         onSelected: function (selectedData) {
@@ -208,6 +207,8 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
     });
 }
 
+//----------------------------------------------------
+// fonction de choix des communes
 preChooseCommune();
 
 //-------------------------------------------------------------------------------

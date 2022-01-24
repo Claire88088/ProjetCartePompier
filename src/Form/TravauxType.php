@@ -25,12 +25,16 @@ class TravauxType extends AbstractType
             ->add('dateDeb', DateTimeType::class, [
                 'label' => 'Date de début des travaux',
                 'widget' => 'single_text',
-                //'html5' => false,
-                //'format' => 'dd-MM-yyyy HH:mm'
+                'attr' => array(
+                    'placeholder' => 'Entrez la date de début'
+                ),
             ])
             ->add('dateFin', DateTimeType::class, [
                 'label' => 'Date de fin des travaux',
                 'widget' => 'single_text',
+                'attr' => array(
+                    'placeholder' => 'Entrez la date de fin'
+                ),
             ])
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
