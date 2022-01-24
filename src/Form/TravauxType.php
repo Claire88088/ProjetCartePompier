@@ -18,11 +18,13 @@ class TravauxType extends AbstractType
     {
         $builder
             ->add('dateDeb', DateTimeType::class, [
+                'label' => 'Date de début des travaux',
                 'widget' => 'single_text',
                 //'html5' => false,
                 //'format' => 'dd-MM-yyyy HH:mm'
             ])
             ->add('dateFin', DateTimeType::class, [
+                'label' => 'Date de fin des travaux',
                 'widget' => 'single_text',
             ])
             ->add('coordonnees', PointType::class, [
