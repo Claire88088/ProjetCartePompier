@@ -13,7 +13,6 @@
                     <a href="{{ path('add_element', { 'idCalque':calque.id }) }}" class="am">
                         {{ calque.nom }}
                     </a>
-                    <input id="{{ calque.nom }}" type="text" value="{{ calque.nom }}" disabled/>
                 </div>
                 {% if is_granted('ROLE_ADMIN') %}
                 <div>
