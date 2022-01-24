@@ -108,6 +108,10 @@ input#calque_nom{
     margin-bottom: 10px;
 }
 
+.divClqNom > input {
+    text-align: center;
+}
+
 .listClq:first-child {
     margin-top: 10px;
 }

@@ -177,9 +177,11 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
     $("fieldset.form-group").css("display", "none");
 
 // Récupère le nom du formulaire courant
-    let formName = document.getElementsByTagName("form")[0].name;
-// Récupère le select des icones comprenant les options
+    let formName = document.querySelectorAll("form")[1].name;
+    console.log(formName)
+    // Récupère le select des icones comprenant les options
     let selectIcone = document.getElementById(formName + "_icone");
+    console.log(selectIcone)
 
 // boucle sur le select pour avoir chaque options
     for (let i = 0; i < selectIcone.length; i++) {
