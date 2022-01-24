@@ -11,18 +11,10 @@
         </div>
         {% endif %}
 
-
-        {% if not app.user %}
         <div id="header-content">
+        {% if not app.user %}
             <div id="Ah3UnLog">
-                {{ form_start(rechercheForm) }}
-                    {{ form_errors(rechercheForm) }}
-                    <div>
-                        {{ form_label(rechercheForm.commune) }}
-                        {{ form_widget(rechercheForm.commune) }}
-                    </div>
-                    {{ form_rest(rechercheForm) }}
-                {{ form_end(rechercheForm) }}
+                {{ render(controller('App\\Controller\\MapController::rechercheFormAction')) }}
 
 
                 <!-- Button trigger modal -->
@@ -49,16 +41,9 @@
             </div>
         {% else %}
 
-{#            <div id="header-content">#}
-{#                <div id="Ah3Log">#}
-{#                    {{ form_start(rechercheForm) }}#}
-{#                    {{ form_errors(rechercheForm) }}#}
-{#                    <div>#}
-{#                        {{ form_label(rechercheForm.commune) }}#}
-{#                        {{ form_widget(rechercheForm.commune) }}#}
-{#                    </div>#}
-{#                    {{ form_rest(rechercheForm) }}#}
-{#                    {{ form_end(rechercheForm) }}#}
+            <div id="Ah3Log">
+            {{ render(controller('App\\Controller\\MapController::rechercheFormAction')) }}
+            </div>
 
             <div id ="aLog">
                 <a id="log" class="btn btn-primary col" href="{{ path('app_logout') }}" role="button">Se déconnecter</a>

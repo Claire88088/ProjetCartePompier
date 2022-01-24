@@ -1,0 +1,8 @@
+{{ form_start(rechercheForm) }}
+    {{ form_errors(rechercheForm) }}
+        <div>
+        {{ form_label(rechercheForm.commune) }}
+        {{ form_widget(rechercheForm.commune) }}
+        </div>
+    {{ form_rest(rechercheForm) }}
+{{ form_end(rechercheForm) }}
