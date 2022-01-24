@@ -15,6 +15,10 @@ class ElementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('icone', ChoiceType::class, [
+                'label' => 'Icône',
+                'choices' => $options['data']
+            ])
             ->add('photo', FileType::class, [
                 'label' => 'Photo (jpeg ou png)',
                 'mapped' => false,
@@ -55,7 +59,6 @@ class ElementType extends AbstractType
                 'label' => 'Date de fin',
                 'widget' => 'single_text',
             ])
-            ->add('icone')
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])

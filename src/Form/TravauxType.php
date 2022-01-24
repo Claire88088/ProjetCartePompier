@@ -11,12 +11,17 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class TravauxType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('icone', ChoiceType::class, [
+                'label' => 'Icône',
+                'choices' => $options['data']
+            ])
             ->add('dateDeb', DateTimeType::class, [
                 'label' => 'Date de début des travaux',
                 'widget' => 'single_text',

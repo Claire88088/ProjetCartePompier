@@ -6,12 +6,21 @@ use App\Entity\Element;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AutorouteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('typeElement', ChoiceType::class, [
+                'label' => "Type d'élément",
+                'choices'  => $options['data']['typeEltChoices'],
+            ])
+            ->add('icone', ChoiceType::class, [
+                'label' => 'Icône',
+                'choices' => $options['data']['iconeChoices']
+            ])
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])
