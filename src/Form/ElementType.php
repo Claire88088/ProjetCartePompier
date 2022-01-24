@@ -20,6 +20,9 @@ class ElementType extends AbstractType
                 'label' => 'Icône',
                 'choices' => $options['data'],
             ])
+            ->add('texte', TextareaType::class, [
+                'label' => 'Description'
+            ])
             ->add('photo', FileType::class, [
                 'label' => 'Photo (jpeg ou png)',
                 'mapped' => false,

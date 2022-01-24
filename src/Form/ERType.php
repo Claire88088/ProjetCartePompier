@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ERType extends AbstractType
 {
@@ -30,6 +31,9 @@ class ERType extends AbstractType
             ->add('icone', ChoiceType::class, [
                 'label' => 'Icône',
                 'choices' => $options['data']['iconeChoices']
+            ])
+            ->add('texte', TextareaType::class, [
+                'label' => 'Description'
             ])
             ->add('photo', FileType::class, [
                 'label' => 'Photo (jpeg ou png)',
