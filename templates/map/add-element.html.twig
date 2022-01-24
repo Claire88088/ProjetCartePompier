@@ -3,8 +3,9 @@
 {% block title %}Ajout élément{% endblock %}
 
 {% block global %}
-    <p>Ajout d'un élément sur le calque "{{ nomCalque }}"</p>
-    <p>Cliquer sur la carte pour sélectionner l'endroit où ajouter le nouvel élément</p>
+    <h4>Ajout d'un élément sur le calque "{{ nomCalque }}"</h4>
+    <label>Emplacement de l'élément</label>
+    <p id="position" class="form-control">Cliquez sur la carte </br>pour sélectionner l'endroit où ajouter le nouvel élément</p>
     {{ form(form) }}
 {# DIV DES ICONES #}
 {#   <div class="dropdown form-group">#}

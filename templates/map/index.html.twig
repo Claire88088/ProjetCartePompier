@@ -60,7 +60,7 @@
 
 
             {% if app.user %}
-                <div id="form">
+                <div id="form" class="mt-2">
                     {% for msg in app.session.flashBag.get('success') %}
                         <p>{{ msg }}</p>
                     {% endfor %}
