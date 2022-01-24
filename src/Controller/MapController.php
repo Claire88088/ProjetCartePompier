@@ -49,6 +49,12 @@ class MapController extends AbstractController
      */
     public function indexAction(EntityManagerInterface $em): Response
     {
+        return $this->render('map/index.html.twig', [
+        ]);
+    }
+
+    public function rechercheFormAction(EntityManagerInterface $em): Response
+    {
         // TODO : créer une entité pour le formulaire
         $rechercheForm = $this->createFormBuilder(null, ['attr' => ['id' => 'rechercheForm']])
             //->add('adresseRecherche')
