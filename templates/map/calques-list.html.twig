@@ -10,7 +10,9 @@
         {% for calque in calques %}
             <div class="divClqEntier">
                 <div class="divClqNom">
-                    <input id="{{ calque.nom }}" type="text" value="{{ calque.nom }}" disabled/>
+                    <a href="{{ path('add_element', { 'idCalque':calque.id }) }}" class="am">
+                        {{ calque.nom }}
+                    </a>
                 </div>
                 {% if is_granted('ROLE_ADMIN') %}
                 <div>

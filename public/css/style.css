@@ -111,8 +111,18 @@ input#calque_nom{
     margin-bottom: 10px;
 }
 
-.divClqNom > input {
+.divClqNom {
     text-align: center;
+    background-color: #F0F0F0;
+}
+
+.divClqNom a {
+    text-decoration: none;
+    color: #6D6D6D;
+}
+
+.divClqNom a:hover {
+    color: #212529;
 }
 
 .listClq:first-child {
