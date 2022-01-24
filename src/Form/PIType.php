@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PIType extends AbstractType
 {
@@ -23,6 +24,9 @@ class PIType extends AbstractType
             ->add('icone', ChoiceType::class, [
                 'label' => 'Icône',
                 'choices' => $options['data']
+            ])
+            ->add('texte', TextareaType::class, [
+                'label' => 'Description'
             ])
             ->add('photo', FileType::class, [
                 'label' => 'Photo (jpeg ou png)',
@@ -39,7 +43,6 @@ class PIType extends AbstractType
                 'data_class' => null,
                 'help' => 'Sélectionnez une photo',
                 'row_attr' => ['placeholder' => 'Sélectionnez un fichier'],])
-            ->add('texte')
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])
