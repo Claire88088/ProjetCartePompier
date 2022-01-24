@@ -27,6 +27,16 @@ class Commune
      */
     private $codePostal;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $longitude;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -56,9 +66,51 @@ class Commune
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @param mixed $latitude
+     */
+    public function setLatitude($latitude): void
+    {
+        $this->latitude = $latitude;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param mixed $longitude
+     */
+    public function setLongitude($longitude): void
+    {
+        $this->longitude = $longitude;
+    }
+
     public function __toString()
     {
         $communeToString = $this->codePostal . ' ' . $this->nom;
         return $communeToString;
+    }
+
+    public function __toStringLat()
+    {
+        return $this->latitude;
+    }
+
+    public function __toStringLong()
+    {
+        return $this->longitude;
     }
 }

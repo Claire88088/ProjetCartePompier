@@ -55,14 +55,21 @@ class MapController extends AbstractController
 
     public function rechercheFormAction(EntityManagerInterface $em): Response
     {
+
         // TODO : créer une entité pour le formulaire
         $rechercheForm = $this->createFormBuilder(null, ['attr' => ['id' => 'rechercheForm']])
-            //->add('adresseRecherche')
-            ->add('commune', EntityType::class, [
+            ->add('commune', EntityType::class, array(
                 'class' => Commune::class,
+                'choices' => $em->getRepository(Commune::class)->findAll(),
                 'mapped' => false,
+                'choice_attr' => function($choice) {
+                    return [
+                        'latitude' => $choice->__toStringLat(),
+                        'longitude' => $choice->__toStringLong()
+                    ];
+                },
                 'label' => 'Choisir une commune (si recherche hors Châtellerault)'
-            ])
+            ))
             ->getForm();
 
         return $this->render('recherche-form.html.twig', [
