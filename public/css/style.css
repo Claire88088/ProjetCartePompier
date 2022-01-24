@@ -22,21 +22,24 @@
     text-align: center;
 }
 
-#aLog, #aUnlog {
+#aUnlog {
     position: absolute;
     width: 300px;
     top: 66px;
 }
 
 #aLog {
-    right: 205px;
+    width: 100%;
+    padding-top: 18px;
+}
+
+#aLog > a {
+    width: 60%;
 }
 
 #aUnlog {
     right: 12px;
 }
-
-
 
 #bLog {
     top:0;

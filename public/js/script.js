@@ -209,7 +209,21 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
 
 //----------------------------------------------------
 // fonction de choix des communes
+let formCommune = document.getElementById("form_commune");
+var evt = document.createEvent('HTMLEvents');
+evt.initEvent('change', false, true);
+formCommune.dispatchEvent(evt)
+
+formCommune.addEventListener("change", function() {
+    let selectedCommune = formCommune.options[formCommune.selectedIndex];
+    let communeLat = selectedCommune.getAttribute('latitude')
+    let communeLong = selectedCommune.getAttribute('longitude')
+    console.log(communeLat)
+    console.log(communeLong)
+});
 preChooseCommune();
+
+
 
 //-------------------------------------------------------------------------------
 // Test affichage des pop up pour les établissements répertoriés
