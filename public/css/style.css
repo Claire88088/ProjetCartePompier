@@ -8,6 +8,11 @@
     margin-top: 58px;
 }
 
+h4, .titre_4 {
+    /*margin-top: 20px;*/
+    margin-bottom: 20px;
+}
+
 .modal-open {
     padding: 0!important;
 }
@@ -190,4 +195,9 @@ textarea {
 
 .dd-selected-text, .dd-option-text {
     margin-bottom: 0!important;
+}
+
+/* formulaire d'ajout d'élément */
+#position {
+    height: auto;
 }
