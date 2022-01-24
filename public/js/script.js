@@ -105,8 +105,22 @@ bCalques.prepend(titreCalque);
 
 //----------------------------------------------------
 // Recherche et géocodage
-searchAddress(myMap);
+let formCommune = document.getElementById("form_commune");
 
+let selectedCommune = formCommune.options[formCommune.selectedIndex];
+let communeLat = selectedCommune.getAttribute('latitude')
+let communeLong = selectedCommune.getAttribute('longitude')
+searchControl = searchAddress(myMap, communeLat, communeLong);
+console.log(searchControl)
+
+
+formCommune.addEventListener('change', event => {
+    for (prop in searchControl){prop=null}
+    selectedCommune = formCommune.options[formCommune.selectedIndex];
+    communeLat = selectedCommune.getAttribute('latitude')
+    communeLong = selectedCommune.getAttribute('longitude')
+    searchAddress(myMap, communeLat, communeLong);
+});
 
 // Test de récupération de données envoyées en JSON par l'appli
 // on récupère les données envoyées à l'url 'http://127.0.0.1:8000/testJson' via la méthode envoiEnJSON du MapController
@@ -146,7 +160,7 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
             newPopup.setContent(popupContenu);
 
             // Récupération du nom du formulaire parce que l'id des champs lat et long changent en fonction du form
-            let formName = document.getElementsByTagName("form")[0].name;
+            let formName = document.getElementsByTagName("form")[1].name;
 
             // Récupères le champs de latitude et le remplis au avec la latitude du point (au clique)
             var inputLat = document.getElementById(formName + '_coordonnees_latitude');
@@ -209,19 +223,8 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
 
 //----------------------------------------------------
 // fonction de choix des communes
-let formCommune = document.getElementById("form_commune");
-var evt = document.createEvent('HTMLEvents');
-evt.initEvent('change', false, true);
-formCommune.dispatchEvent(evt)
 
-formCommune.addEventListener("change", function() {
-    let selectedCommune = formCommune.options[formCommune.selectedIndex];
-    let communeLat = selectedCommune.getAttribute('latitude')
-    let communeLong = selectedCommune.getAttribute('longitude')
-    console.log(communeLat)
-    console.log(communeLong)
-});
-preChooseCommune();
+// preChooseCommune();
 
 
 

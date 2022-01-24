@@ -4,10 +4,10 @@
  * @param formAPIElt élément HTML qui est le formulaire de recherche
  * @param communeElt élément HTML où on choisit la commune
  */
- function insererChoixDansFormRecherche(formAPIElt, communeElt) {
-    let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
-    formAPIElt.value = commune;
-    formAPIElt.focus();
-    // on met le curseur au début du input (avant le code postal et le nom de la commune)
-    setCaretPosition(formAPIElt, 0);
-}
+//  function insererChoixDansFormRecherche(formAPIElt, communeElt) {
+//     let commune = ` ${communeElt.options[communeElt.selectedIndex].text} `;
+//     formAPIElt.value = commune;
+//     formAPIElt.focus();
+//     // on met le curseur au début du input (avant le code postal et le nom de la commune)
+//     setCaretPosition(formAPIElt, 0);
+// }
