@@ -21,9 +21,12 @@ class ElementType extends AbstractType
                 'label' => 'Icône',
                 'choices' => $options['data'],
             ])
-            ->add('texte', TextareaType::class, [
-                'label' => 'Description'
-            ])
+            ->add('texte', TextareaType::class, array(
+                'label' => 'Description',
+                'attr' => array(
+                    'placeholder' => 'Entrez une description'
+                )
+            ))
             ->add('photo', FileType::class, [
                 'label' => 'Photo (jpeg ou png)',
                 'mapped' => false,
@@ -57,12 +60,6 @@ class ElementType extends AbstractType
                     'placeholder' => 'Sélectionnez un PDF'
                     ),
                 ])
-            ->add('texte',TextareaType::class, array(
-                'label' => 'Description',
-                'attr' => array(
-                    'placeholder' => 'Entrez une description'
-                    )
-                ))
             ->add('dateDeb', DateTimeType::class, [
                 'label' => 'Date de début',
                 'widget'=> 'single_text',

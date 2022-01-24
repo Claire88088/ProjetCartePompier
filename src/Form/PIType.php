@@ -25,9 +25,12 @@ class PIType extends AbstractType
                 'label' => 'Icône',
                 'choices' => $options['data']
             ])
-            ->add('texte', TextareaType::class, [
-                'label' => 'Description'
-            ])
+            ->add('texte', TextareaType::class, array(
+                'label' => 'Description',
+                'attr' => array(
+                    'placeholder' => 'Entrez une description'
+                )
+            ))
             ->add('photo', FileType::class, [
                 'label' => 'Photo (jpeg ou png)',
                 'mapped' => false,
@@ -45,12 +48,6 @@ class PIType extends AbstractType
                     'placeholder' => 'Sélectionnez une photo'
                     ),
                 ])
-            ->add('texte', TextareaType::class, array(
-            'label' => 'Description',
-            'attr' => array(
-                'placeholder' => 'Entrez une description'
-                )
-            ))
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])

@@ -26,14 +26,14 @@ class TravauxType extends AbstractType
                 'label' => 'Date de début des travaux',
                 'widget' => 'single_text',
                 'attr' => array(
-                    'placeholder' => 'Entrez la date de début'
+                    'placeholder' => 'Entrez la date de début des travaux'
                 ),
             ])
             ->add('dateFin', DateTimeType::class, [
                 'label' => 'Date de fin des travaux',
                 'widget' => 'single_text',
                 'attr' => array(
-                    'placeholder' => 'Entrez la date de fin'
+                    'placeholder' => 'Entrez la date de fin des travaux'
                 ),
             ])
             ->add('coordonnees', PointType::class, [

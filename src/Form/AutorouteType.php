@@ -13,13 +13,13 @@ class AutorouteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('typeElement', ChoiceType::class, [
-                'label' => "Type d'élément",
-                'choices'  => $options['data']['typeEltChoices'],
-            ])
             ->add('icone', ChoiceType::class, [
                 'label' => 'Icône',
                 'choices' => $options['data']['iconeChoices']
+            ])
+            ->add('typeElement', ChoiceType::class, [
+                'label' => "Type d'élément",
+                'choices'  => $options['data']['typeEltChoices'],
             ])
             ->add('coordonnees', PointType::class, [
                 'mapped' => false

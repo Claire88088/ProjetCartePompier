@@ -23,17 +23,20 @@ class ERType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('typeElement', ChoiceType::class, [
-                'label' => "Type d'élément",
-                'choices'  => $options['data']['typeEltChoices'],
-            ])
             ->add('icone', ChoiceType::class, [
                 'label' => 'Icône',
                 'choices' => $options['data']['iconeChoices']
             ])
-            ->add('texte', TextareaType::class, [
-                'label' => 'Description'
+            ->add('typeElement', ChoiceType::class, [
+                'label' => "Type d'élément",
+                'choices'  => $options['data']['typeEltChoices'],
             ])
+            ->add('texte', TextareaType::class, array(
+                'label' => 'Description',
+                'attr' => array(
+                    'placeholder' => 'Entrez une description'
+                )
+            ))
             ->add('photo', FileType::class, [
                 'label' => 'Photo (jpeg ou png)',
                 'mapped' => false,
@@ -67,12 +70,6 @@ class ERType extends AbstractType
                     'placeholder' => 'Sélectionnez un PDF'
                 ),
                 'row_attr' => ['placeholder' => 'Sélectionnez un fichier'],])
-            ->add('texte', TextareaType::class, array(
-            'label' => 'Description',
-            'attr' => array(
-                'placeholder' => 'Entrez une description'
-                )
-            ))
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])
