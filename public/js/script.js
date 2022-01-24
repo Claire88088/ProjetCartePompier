@@ -85,7 +85,7 @@ for (let i = 0; i < clqsElts.length; i++) {
 // pour ajouter l'icône de gestion des calques à la carte :
 // cette icône contient la liste des calques (avec les points associés)
 //L.control.layers(null, overlayMapsO /* affichage des calques en continu, { collapsed:false } */).addTo(myMap);
-L.control.layers(null, calquesObjet /* affichage des calques en continu, { collapsed:false } */).addTo(myMap);
+L.control.layers(null, calquesObjet, { collapsed:false }).addTo(myMap);
 
 
 //--------------------------------------------------------------------

@@ -8,6 +8,10 @@
     margin-top: 58px;
 }
 
+.modal-open {
+    padding: 0!important;
+}
+
 .row{
     height: 100%;
 }
@@ -18,9 +22,21 @@
     text-align: center;
 }
 
-#log {
-    margin: 10px 10px 10px 10px;
+#aLog, #aUnlog {
+    position: absolute;
+    width: 300px;
+    top: 66px;
 }
+
+#aLog {
+    right: 205px;
+}
+
+#aUnlog {
+    right: 12px;
+}
+
+
 
 #bLog {
     top:0;
@@ -29,13 +45,21 @@
     background-color: #323737;
 }
 
-#header-content {
+#h3 {
     display: flex;
 }
 
-#Ah3 {
-    flex: 0 0 70%;
+#header-content {
     text-align: center;
+    display: flex;
+}
+
+#h3 > h3, #Ah3UnLog {
+    flex: 0 0 100%;
+}
+
+#h3 > h3, #Ah3Log {
+    flex: 0 0 75%;
 }
 
 #bLog h3 {
@@ -45,21 +69,13 @@
     text-align: center;
 }
 
-#bLog div {
-    
-}
-
-#aFlex {
-    flex: 0 0 20%;
-}
-
 #form {
     flex: 0 0 25%;
     padding: 10px 10px 10px 10px;
     text-align: center;
 }
 
-input {
+input#calque_nom{
     text-align: center;
 }
 
