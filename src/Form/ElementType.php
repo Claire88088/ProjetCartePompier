@@ -41,16 +41,18 @@ class ElementType extends AbstractType
                         ],
                         'mimeTypesMessage' => 'Seul les fichiers PDF sont acceptés', ])
                 ],
-                'data_class' => null,
+                'data_class'   => null,
                 'help' => 'Sélectionnez un PDF',
                 'row_attr' => ['placeholder' => 'Sélectionnez un fichier'],])
             ->add('texte')
             ->add('dateDeb', DateTimeType::class, [
-                'widget' => 'single_text',
+                'label' => 'Date de début',
+                'widget'=> 'single_text',
                 //'html5' => false,
                 //'format' => 'dd-MM-yyyy HH:mm'
             ])
             ->add('dateFin', DateTimeType::class, [
+                'label' => 'Date de fin',
                 'widget' => 'single_text',
             ])
             ->add('icone')
