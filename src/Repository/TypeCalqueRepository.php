@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\TypeCalque;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,20 +23,16 @@ class TypeCalqueRepository extends ServiceEntityRepository
     public function findAllElementsToShow()
     {
         $query = $this->_em->createQueryBuilder('tc');
-        return $query->select('tc')
+        return $query->select('tc.nom, te.nom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien')
             ->from(TypeCalque::class, 'tc')
             ->innerJoin('App\Entity\TypeElement', 'te')
             ->where('tc.id = te.typeCalque')
             ->innerJoin('App\Entity\Element', 'e')
-            ->where('te.id = e.typeElement')
+            ->andWhere('te.id = e.typeElement')
             ->innerJoin('App\Entity\Icone', 'i')
-            ->where('e.icone = i.id')
+            ->andWhere('e.icone = i.id')
             ->innerJoin('App\Entity\Point', 'p')
-            ->where('e.id = p.element')
-            /*
-            ->setParameter('type', 'ER')
-            ->andWhere('tc.type = :type')
-            */
+            ->andWhere('e.id = p.element')
             ->getQuery()->getResult();
     }
 

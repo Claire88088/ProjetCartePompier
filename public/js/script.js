@@ -124,9 +124,9 @@ formCommune.addEventListener('change', event => {
 
 // Test de récupération de données envoyées en JSON par l'appli
 // on récupère les données envoyées à l'url 'http://127.0.0.1:8000/testJson' via la méthode envoiEnJSON du MapController
-fetch(`http://127.0.0.1:8000/testJson`).then(function(response) {
+fetch('http://127.0.0.1:8000/envoi-calques').then(function(response) {
     response.text().then(function(text) {
-        //console.log(text);
+        console.log(text);
     });
 });
 

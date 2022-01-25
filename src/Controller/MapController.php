@@ -26,6 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -84,12 +85,22 @@ class MapController extends AbstractController
         // TODO : code différent dans testClaire
 
         $calques = $em->getRepository('App:TypeCalque')->findAll();
-        $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
 
         return $this->render('envoi-donnees-JS.html.twig', [
             'calques' => $calques,
-            'elements' => $elements
         ]);
+    }
+
+    /**
+     * @param EntityManagerInterface $em
+     * @Route("/envoi-calques", name="envoi_calques")
+     * @return JsonResponse
+     */
+    public function envoiCalques(EntityManagerInterface $em): JsonResponse
+    {
+        $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
+
+        return new JsonResponse($elements);
     }
 
 
