@@ -85,6 +85,9 @@ class MapController extends AbstractController
         // TODO : code différent dans testClaire
 
         $calques = $em->getRepository('App:TypeCalque')->findAll();
+        $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
+
+        dump($elements);
 
         $erElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnER();
         $autoElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnAutoroute();
@@ -106,7 +109,6 @@ class MapController extends AbstractController
     public function envoiCalques(EntityManagerInterface $em): JsonResponse
     {
         $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
-
         return new JsonResponse($elements);
     }
 
