@@ -219,5 +219,5 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
 // lienPdfElt.addEventListener('click', e =>{
 //     document.getElementById('dialog').dialog();
 // })
-
+*/
 });
