@@ -22,13 +22,18 @@ $(document).ready(function(){
     function createObjetFromElementsToShowElt(elementsToShowElt)
     {
         let eltsToShow = JSON.parse(elementsToShowElt[0].attributes[1].value);
-        let calqueId = eltsToShow[0].calqueId;
         let calqueNom = eltsToShow[0].calqueNom;
 
         let markersTab = [];
         for (let i = 0; i < eltsToShow.length; i++) {
+            // création des icones pour chaque élément
+            var eltIcone = L.icon({
+                iconUrl: `../MarkersIcons/${eltsToShow[i].lienIcone}`,
+                iconSize: [35, 39]
+            });
+
             // création des marqueurs pour chaque élément
-            let marker = L.marker([eltsToShow[i].latitude, eltsToShow[i].longitude]).bindPopup(eltsToShow[i].texte);
+            let marker = L.marker([eltsToShow[i].latitude, eltsToShow[i].longitude], {icon: eltIcone}).bindPopup(eltsToShow[i].texte);
             markersTab.push(marker);
         }
         let markersGroup = L.layerGroup(markersTab);
@@ -36,6 +41,7 @@ $(document).ready(function(){
         // ajout du couple nom du calque / "groupe de marqueurs à afficher" sur ce calque
         calquesObjet[calqueNom] = markersGroup;
     }
+
     // récupération des éléments à afficher
     var erEltsToShowElt = $('.erEltsToShow');
     var autoEltsToShowElt = $('.autoEltsToShow');
@@ -46,17 +52,17 @@ $(document).ready(function(){
 
     // création des groupes de marqueurs par calque
     createObjetFromElementsToShowElt(erEltsToShowElt);
-    createObjetFromElementsToShowElt(autoEltsToShowElt);
-    createObjetFromElementsToShowElt(piEltsToShowElt);
+    //createObjetFromElementsToShowElt(autoEltsToShowElt);
+    //createObjetFromElementsToShowElt(piEltsToShowElt);
 
     // ajout l'icône de gestion des calques à la carte :
     // cette icône contient la liste des calques (avec les points associés)
     L.control.layers(null, calquesObjet, { collapsed:false }).addTo(myMap);
 
-//----------------------------------------------------------------------
-// récupération des noms des calques que l'on a passé via twig
-/*var clqsElts = document.querySelectorAll('.calques');
-*/
+    //----------------------------------------------------------------------
+    // récupération des noms des calques que l'on a passé via twig
+    /*var clqsElts = document.querySelectorAll('.calques');
+    */
 //--------------------------------------------------------------------
 // Style : Ajout d'éléments pour simplifier et rendre l'affichage plus compréhensible pour les utilisateurs
 var bCalques = document.getElementsByClassName('leaflet-control-layers-overlays')[0];
