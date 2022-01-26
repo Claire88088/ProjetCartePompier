@@ -56,7 +56,7 @@ $(document).ready(function(){
 //----------------------------------------------------------------------
 // récupération des noms des calques que l'on a passé via twig
 /*var clqsElts = document.querySelectorAll('.calques');
-
+*/
 //--------------------------------------------------------------------
 // Style : Ajout d'éléments pour simplifier et rendre l'affichage plus compréhensible pour les utilisateurs
 var bCalques = document.getElementsByClassName('leaflet-control-layers-overlays')[0];
@@ -219,5 +219,5 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
 // lienPdfElt.addEventListener('click', e =>{
 //     document.getElementById('dialog').dialog();
 // })
-*/
+
 });
