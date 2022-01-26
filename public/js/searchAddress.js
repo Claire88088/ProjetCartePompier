@@ -5,6 +5,7 @@
  * @param myMap carte Leaflet
  */
  function searchAddress(myMap, communeLat, communeLong) {
+    myMap.setView([communeLat, communeLong], 13)
     const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
     console.log(communeLat, communeLong)
     // on créé le formulaire de recherche
