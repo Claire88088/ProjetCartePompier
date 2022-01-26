@@ -31,9 +31,9 @@ $(document).ready(function(){
     //----------------------------------------------------------------------
     // récupération des noms des calques que l'on a passé via twig
     // var clqsElts = document.querySelectorAll('.calques');
-    
+
     //--------------------------------------------------------------------
-    // Style : Ajout d'éléments pour simplifier et rendre l'affichage plus compréhensible pour les utilisateurs
+    // 3. STYLISATION DE L'"ICONE" de gestion des calques
     var bCalques = document.getElementsByClassName('leaflet-control-layers-overlays')[0];
 
     var titreCalque = document.createElement('label');
@@ -48,7 +48,7 @@ $(document).ready(function(){
     bCalques.prepend(titreCalque);
 
     //----------------------------------------------------
-    // Recherche et géocodage
+    // 4. RECHERCHE D'UNE ADRESSE
     let formCommune = document.getElementById("form_commune");
 
     let selectedCommune = formCommune.options[formCommune.selectedIndex];
@@ -68,6 +68,7 @@ $(document).ready(function(){
     });
 
     //----------------------------------------------------
+    // 5. AJOUT D'UN NOUVEAU MARQUEUR
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
     var newMarker;
     if (window.location.pathname.substr(0,16) == "/map/add-element") {
@@ -158,39 +159,13 @@ $(document).ready(function(){
         });
     }
 
-    //----------------------------------------------------
-    // fonction de choix des communes
-
-    // preChooseCommune();
-
-    //-------------------------------------------------------------------------------
-    // Test affichage des pop up pour les établissements répertoriés
-    // Normalement on récupère les données en JSON
-    // let monEr = {
-    //     id:	1,
-    //     calque:	"1",
-    //     type:	"immeuble",
-    //     latitude: 0.440375,
-    //     longitude: 46.580224,
-    //     description:	"description de mon immeuble",
-    //     photo:	"ceci est une photo",
-    //     lien:	"../pdf/etat_presence_vierge.pdf" // TODO : mettre dans un emplacement sécurisé
-    // };
-    // let monErJSON = JSON.stringify(monEr);
-    //
-    // // on créé un marqueur pour l'er
-    // let erMarker = L.marker([monEr.longitude, monEr.latitude]).bindPopup(`<p>${monEr.photo}</p><p>${monEr.description}</p><a id="lienPdf" href="#">voir le pdf</a><div id="dialog" style="display:none">
-    //     <div>
-    //     <iframe src="${monEr.lien}"></iframe>
-    //     </div>
-    // </div> `);
-    // erMarker.addTo(myMap);
-    //
-    // let popupElt = document.getElementsByClassName('leaflet-popup');
-    // console.log('mon pop '+popupElt)
-    // let lienPdfElt = document.getElementById('lienPdf');
-    // lienPdfElt.addEventListener('click', e =>{
-    //     document.getElementById('dialog').dialog();
-    // })
+    //---------------------------------------------------------------------------------------------
+    // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
+    $('#er_Ajouter').click(function(e){
+        $('#position').css('background', 'white');
+        if (!$('#er_coordonnees_longitude')[0].value) {
+            $('#position').css('background', 'red')
+        }
+    });
 
 });
