@@ -84,8 +84,15 @@ $(document).ready(function(){
             var lat = tab.latlng.lat;
             var long = tab.latlng.lng;
 
+            // récupération de l'icône choisie
+            var iconeLien = $('.dd-selected-image').attr('src');
+            var newIcon = L.icon({
+                iconUrl: `..${iconeLien}`,
+                iconSize: [35, 39]
+            });
+
             // Création d'un marqueur et d'une popup
-            newMarker = new L.marker(e.latlng);
+            newMarker = new L.marker(e.latlng, {icon: newIcon});
             var newPopup = new L.popup();
             const data = null;
 
@@ -100,7 +107,7 @@ $(document).ready(function(){
                 // Récupération du nom du formulaire parce que l'id des champs lat et long changent en fonction du form
                 let formName = document.getElementsByTagName("form")[1].name;
 
-                // Récupères le champs de latitude et le remplis au avec la latitude du point (au clique)
+                // Récupère le champ de latitude et le remplit avec la latitude du point (au clique)
                 var inputLat = document.getElementById(formName + '_coordonnees_latitude');
                 inputLat.setAttribute("value", jp.features[0].geometry.coordinates[1]);
 
@@ -135,7 +142,7 @@ $(document).ready(function(){
         // Récupère le select des icones comprenant les options
         let selectIcone = document.getElementById(formName + "_icone");
 
-    // boucle sur le select pour avoir chaque options
+    // boucle sur le select pour avoir chaque option
         for (let i = 0; i < selectIcone.length; i++) {
             let option = selectIcone[i];
             let valOption = selectIcone[i].label;
@@ -157,15 +164,18 @@ $(document).ready(function(){
                 $("input.dd-selected-value").attr("name", formName + "[icone]")
             }
         });
+
+        //---------------------------------------------------------------------------------------------
+        // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
+        $('#' + formName + '_Ajouter').click(function(e){
+            $('#position').css({background: "white", color: "#6D6D6D"});
+            if (!$('#' + formName + '_coordonnees_longitude')[0].value) {
+                $('#position').css({background: "red", color: "white"});
+            }
+        });
+
     }
 
-    //---------------------------------------------------------------------------------------------
-    // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
-    $('#er_Ajouter').click(function(e){
-        $('#position').css('background', 'white');
-        if (!$('#er_coordonnees_longitude')[0].value) {
-            $('#position').css('background', 'red')
-        }
-    });
+
 
 });
