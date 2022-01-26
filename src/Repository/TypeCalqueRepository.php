@@ -20,10 +20,17 @@ class TypeCalqueRepository extends ServiceEntityRepository
         parent::__construct($registry, TypeCalque::class);
     }
 
-    public function findAllElementsToShow()
+    public function findAllInArray()
+    {
+        return $this->createQueryBuilder('tc')->getQuery()->getArrayResult();
+    }
+
+    // TODO : factoriser les reque^tes
+
+    public function findAllElementsToShowOnER()
     {
         $query = $this->_em->createQueryBuilder('tc');
-        return $query->select('tc.nom, te.nom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien')
+        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien')
             ->from(TypeCalque::class, 'tc')
             ->innerJoin('App\Entity\TypeElement', 'te')
             ->where('tc.id = te.typeCalque')
@@ -33,7 +40,45 @@ class TypeCalqueRepository extends ServiceEntityRepository
             ->andWhere('e.icone = i.id')
             ->innerJoin('App\Entity\Point', 'p')
             ->andWhere('e.id = p.element')
-            ->getQuery()->getResult();
+            ->andWhere('tc.type = :type')
+            ->setParameter('type', 'ER')
+            ->getQuery()->getArrayResult();
+    }
+
+    public function findAllElementsToShowOnAutoroute()
+    {
+        $query = $this->_em->createQueryBuilder('tc');
+        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien')
+            ->from(TypeCalque::class, 'tc')
+            ->innerJoin('App\Entity\TypeElement', 'te')
+            ->where('tc.id = te.typeCalque')
+            ->innerJoin('App\Entity\Element', 'e')
+            ->andWhere('te.id = e.typeElement')
+            ->innerJoin('App\Entity\Icone', 'i')
+            ->andWhere('e.icone = i.id')
+            ->innerJoin('App\Entity\Point', 'p')
+            ->andWhere('e.id = p.element')
+            ->andWhere('tc.type = :type')
+            ->setParameter('type', 'AUTOROUTE')
+            ->getQuery()->getArrayResult();
+    }
+
+    public function findAllElementsToShowOnPI()
+    {
+        $query = $this->_em->createQueryBuilder('tc');
+        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien')
+            ->from(TypeCalque::class, 'tc')
+            ->innerJoin('App\Entity\TypeElement', 'te')
+            ->where('tc.id = te.typeCalque')
+            ->innerJoin('App\Entity\Element', 'e')
+            ->andWhere('te.id = e.typeElement')
+            ->innerJoin('App\Entity\Icone', 'i')
+            ->andWhere('e.icone = i.id')
+            ->innerJoin('App\Entity\Point', 'p')
+            ->andWhere('e.id = p.element')
+            ->andWhere('tc.type = :type')
+            ->setParameter('type', 'PI')
+            ->getQuery()->getArrayResult();
     }
 
     // /**

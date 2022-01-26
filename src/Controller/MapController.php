@@ -86,8 +86,15 @@ class MapController extends AbstractController
 
         $calques = $em->getRepository('App:TypeCalque')->findAll();
 
+        $erElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnER();
+        $autoElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnAutoroute();
+        $piElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnPI();
+
         return $this->render('envoi-donnees-JS.html.twig', [
             'calques' => $calques,
+            'erElements' => $erElements,
+            'autoElements' => $autoElements,
+            'piElements' => $piElements
         ]);
     }
 

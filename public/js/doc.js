@@ -1,74 +1,121 @@
-$(document).ready(function(){
+// Création de la carte avec un fond de carte OSM centrée sur chatellerault
+// 13 : c'est le zoom entre minZoom et maxZoom (cf après)
+let myMap = L.map('mapid').setView([46.816487, 0.548146], 13);
 
-    // Création de la carte avec un fond de carte OSM centrée sur chatellerault
-    // 13 : c'est le zoom entre minZoom et maxZoom (cf après)
-    let myMap = L.map('mapid').setView([46.816487, 0.548146], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+    attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
+    minZoom: 1,
+    maxZoom: 20
+}).addTo(myMap);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-        attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
-        minZoom: 1,
-        maxZoom: 20
-    }).addTo(myMap);
+//---------------------------------------------------------------
+// Icone d'un feu,
+/*var iconFeu = L.icon({
+    iconUrl: '../MarkersIcons/icons8-gaz-24.png',
+    iconSize: [35, 39]
+});
+*/
+
+//-----------------------------------------------------------------------
+// affichage d'un calque
+// on créé des marqueurs
+/*var littleton = L.marker([46.580224, 0.340375]).bindPopup('This is Littleton, CO.');
+var littleton2 = L.marker([46.580224, 0.341485]).bindPopup('Test');
+// on créé un "groupe de marqueurs pour un calque" cad un ensemble de marqueurs qui appartiendront au même calque
+var citiesGroup = L.layerGroup([littleton, littleton2]); // groupe de marqueurs à afficher ensuite dans un calque
+*/
+
+// récupération des éléments à afficher (envoi via Twig)-----------------------
+var eltsToShowElt = $('.elementsToShow');
+var eltsToShow = JSON.parse(eltsToShowElt[0].attributes[1].value);
+
+var eltsMarkersTab = [];
+for (var i=0; i<eltsToShow.length; i++) {
+    var eltMarker = L.marker([eltsToShow[i].latitude, eltsToShow[i].longitude]).bindPopup(eltsToShow[i].texte).addTo(myMap);
+    eltsMarkersTab.push(eltMarker);
+}
+
+// on créé un "groupe de marqueurs pour un calque"
+let ERGroup = L.layerGroup(eltsMarkersTab);
+
+//------------------------------------------------
 
 
-    // récupération des éléments à afficher (envoi via Twig)-----------------------
+// récupération des données à afficher avec des marqueurs sur le calque correspondant (test avec envoi des données via Twig = via des div)
+// on a besoin au minimum des lat et long des points à afficher pour créer des marqueurs
+var autorouteElts = document.querySelectorAll('.elementsAutoroute');
 
-    /**
-     * Ajoute un groupe de marqueurs (bilbiothèque Leaflet)
-     * créé à partir d'un élément HTML qui a reçu des données de Symfony
-     * à un objet qui sera utilisé pour afficher la gestion des calques
-     * @param elementsToShowElt élément HTML qui contient les données en attribut
-     */
-    function createObjetFromElementsToShowElt(elementsToShowElt)
-    {
-        let eltsToShow = JSON.parse(elementsToShowElt[0].attributes[1].value);
-        let calqueId = eltsToShow[0].calqueId;
-        let calqueNom = eltsToShow[0].calqueNom;
+let marqueursTab = [];
 
-        let markersTab = [];
-        for (let i = 0; i < eltsToShow.length; i++) {
-            // création des marqueurs pour chaque élément
-            let marker = L.marker([eltsToShow[i].latitude, eltsToShow[i].longitude]).bindPopup(eltsToShow[i].texte);
-            markersTab.push(marker);
-        }
-        let markersGroup = L.layerGroup(markersTab);
+// on créé les marqueurs correspondant
+for (let i = 0; i < autorouteElts.length; i++) {
+    latlongAutoElt = autorouteElts[i].attributes[1].value;
+    //console.log(latlongAutoElt.split(" "));
 
-        // ajout du couple nom du calque / "groupe de marqueurs à afficher" sur ce calque
-        calquesObjet[calqueNom] = markersGroup;
-    }
-    // récupération des éléments à afficher
-    var erEltsToShowElt = $('.erEltsToShow');
-    var autoEltsToShowElt = $('.autoEltsToShow');
-    var piEltsToShowElt = $('.piEltsToShow');
+    marqueurTest = L.marker(latlongAutoElt.split(" ")).bindPopup('marqueur issu de la BD').addTo(myMap);
+    marqueursTab.push(marqueurTest);
+}
 
-    //pour ajouter un calque il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
-    var calquesObjet = {};
+// on créé un "groupe de marqueurs pour un calque"
+let testGroup = L.layerGroup(marqueursTab);
 
-    // création des groupes de marqueurs par calque
-    createObjetFromElementsToShowElt(erEltsToShowElt);
-    createObjetFromElementsToShowElt(autoEltsToShowElt);
-    createObjetFromElementsToShowElt(piEltsToShowElt);
+// // Création d'un calque
+// var overlayMapsT = [];
+// var overlayMapsO = {};
+// var city = [];
 
-    // ajout l'icône de gestion des calques à la carte :
-    // cette icône contient la liste des calques (avec les points associés)
-    L.control.layers(null, calquesObjet, { collapsed:false }).addTo(myMap);
+// // Test de création d'un tableau de points pour layers.
+// var keys = Object.keys(cities._layers);
+// for (let i=0; i < keys.length; i++) {
+//
+//     city[i] = cities._layers[keys[i]];
+//
+// }
+
+// var clq = document.querySelectorAll('.calques');
+// for (let i = 0; i < clq.length; i++) {
+//     clqs = clq[i].attributes[1].value;
+//     overlayMapsT[i] = clqs;
+//     overlayMapsO[overlayMapsT[i]] = cities;
+// }
+//
+// L.control.layers(null, overlayMapsO /* affichage des calques en continu, { collapsed:false } */).addTo(myMap);
 
 //----------------------------------------------------------------------
 // récupération des noms des calques que l'on a passé via twig
-/*var clqsElts = document.querySelectorAll('.calques');
+var clqsElts = document.querySelectorAll('.calques');
+
+//pour ajouter un calque il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
+var calquesTab = [];
+var calquesObjet = {};
+
+for (let i = 0; i < clqsElts.length; i++) {
+    nomClq = clqsElts[i].attributes[1].value;
+
+    calquesTab[i] = nomClq;
+    calquesObjet[calquesTab[i]] = testGroup;
+    //overlayMapsT[i] = nomClq; // tableau de noms de calques
+    //overlayMapsO[overlayMapsT[i]] = citiesGroup; // objet qui contient : pour chaque calque -> un groupe de villes associé
+}
+
+// pour ajouter l'icône de gestion des calques à la carte :
+// cette icône contient la liste des calques (avec les points associés)
+//L.control.layers(null, overlayMapsO /* affichage des calques en continu, { collapsed:false } */).addTo(myMap);
+L.control.layers(null, calquesObjet, { collapsed:false }).addTo(myMap);
+
 
 //--------------------------------------------------------------------
-// Style : Ajout d'éléments pour simplifier et rendre l'affichage plus compréhensible pour les utilisateurs
+// Ajout d'éléments pour simplifier et rendre l'affichage plus compréhensible pour les utilisateurs
 var bCalques = document.getElementsByClassName('leaflet-control-layers-overlays')[0];
 
 var titreCalque = document.createElement('label');
-    titreCalque.style.textAlign = 'center';
-    titreCalque.style.fontSize = '.9rem';
-        titreCalque.appendChild(document.createTextNode('Affichage des calques'));
+titreCalque.style.textAlign = 'center';
+titreCalque.style.fontSize = '.9rem';
+titreCalque.appendChild(document.createTextNode('Affichage des calques'));
 
 var ligne = document.createElement('hr');
-    ligne.style.margin = 'auto';
-        titreCalque.appendChild(ligne);
+ligne.style.margin = 'auto';
+titreCalque.appendChild(ligne);
 
 bCalques.prepend(titreCalque);
 
@@ -80,6 +127,7 @@ let selectedCommune = formCommune.options[formCommune.selectedIndex];
 let communeLat = selectedCommune.getAttribute('latitude')
 let communeLong = selectedCommune.getAttribute('longitude')
 searchControl = searchAddress(myMap, communeLat, communeLong);
+console.log(searchControl)
 
 
 formCommune.addEventListener('change', event => {
@@ -90,7 +138,13 @@ formCommune.addEventListener('change', event => {
     searchAddress(myMap, communeLat, communeLong);
 });
 
-
+// Test de récupération de données envoyées en JSON par l'appli
+// on récupère les données envoyées à l'url 'http://127.0.0.1:8000/testJson' via la méthode envoiEnJSON du MapController
+/*fetch('http://127.0.0.1:8000/envoi-calques').then(function(response) {
+    response.text().then(function(text) {
+        //console.log(text);
+    });
+});*/
 
 //----------------------------------------------------
 // Fonction d'ajout d'un marqueur uniquement a une url précise.
@@ -219,5 +273,3 @@ if (window.location.pathname.substr(0,16) == "/map/add-element") {
 // lienPdfElt.addEventListener('click', e =>{
 //     document.getElementById('dialog').dialog();
 // })
-
-});
