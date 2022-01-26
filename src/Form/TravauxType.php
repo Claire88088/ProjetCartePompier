@@ -18,10 +18,10 @@ class TravauxType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('icone', ChoiceType::class, [
+            /*->add('icone', ChoiceType::class, [
                 'label' => 'Icône',
                 'choices' => $options['data']
-            ])
+            ])*/
             ->add('dateDeb', DateTimeType::class, [
                 'label' => 'Date de début des travaux',
                 'widget' => 'single_text',

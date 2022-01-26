@@ -204,7 +204,6 @@ class MapController extends AbstractController
         // on choisit sur quel calque on veut mettre l'élément
         $choixCalqueForm = $this->createFormBuilder()
             ->add('calque', EntityType::class, [
-                'label' => 'Choisir le calque sur lequel ajouter un élément :',
                 'class' => TypeCalque::class,
                 'mapped' => false,
             ])
@@ -251,42 +250,69 @@ class MapController extends AbstractController
         foreach($icones as $icone)  {
             $liensIcones[$icone->getLien()] = $icone;
         }
-
+    /*
         $data = [];
         $data['typeEltChoices'] = $options;
         $data['iconeChoices'] = $liensIcones; 
-        //$elementForm = $this->createForm(DefaultElementType::class, $element);
+      */
         // on créé le formulaire en fonction du type de calque
         switch ($typeCalqueChoisi) {
             case 'ER':
+                $elementForm = $this->createForm(ERType::class, $element);
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
+                $elementForm->add('typeElement', ChoiceType::class, [
+                    'choices'  => $options,
+                ]);
+
+                /*
                 $elementForm = $this->createForm(ERType::class, $element, [
                     'data_class' => null,
                     'data' => $data,
-                ]);
+                ]);*/
                 break;
             case 'AUTOROUTE':
-                $elementForm = $this->createForm(AutorouteType::class, $element, [
+                $elementForm = $this->createForm(AutorouteType::class, $element);
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
+                $elementForm->add('typeElement', ChoiceType::class, [
+                    'choices'  => $options,
+                ]);
+                /*
+                    $elementForm = $this->createForm(AutorouteType::class, $element, [
                     'data_class' => null,
                     'data' => $data,
-                ]);
+                ]);*/
                 break;
             case 'TRAVAUX':
+                $elementForm = $this->createForm(TravauxType::class, $element);
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
+                /*
                 $elementForm = $this->createForm(TravauxType::class, $element, [
                     'data_class' => null,
                     'data' => $liensIcones,
-                ]);
+                ]);*/
                 break;
             case 'PI':
+                $elementForm = $this->createForm(PIType::class, $element);
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
+                /*
                 $elementForm = $this->createForm(PIType::class, $element, [
                     'data_class' => null,
                     'data' => $liensIcones,
-                ]);
+                ]);*/
                 break;
             case 'AUTRE':
+                $elementForm = $this->createForm(ElementType::class, $element);
+                $elementForm->add('icone', ChoiceType::class, array(
+                    'choices' => $liensIcones));
+                /*
                 $elementForm = $this->createForm(ElementType::class, $element, [
                     'data_class' => null,
                     'data' => $liensIcones,
-                ]);
+                ]);*/
                 break;
 
         }
@@ -294,9 +320,10 @@ class MapController extends AbstractController
         $elementForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
         $elementForm->handleRequest($request);
 
+        if ($elementForm->isSubmitted() && $elementForm->isValid()) {
         // ici name correspond au nom du formulaire
-        foreach ($_POST as $name => $value) {
-            if ($elementForm->isSubmitted() && $elementForm->isValid()) {
+        /*foreach ($_POST as $name => $value) {*/
+            foreach ($_POST as $name => $value) /*if ($elementForm->isSubmitted() && $elementForm->isValid()) */{
 
                 $photoFile = null;
                 $pdfFile = null;

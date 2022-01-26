@@ -23,14 +23,14 @@ class ERType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('icone', ChoiceType::class, [
+            /*->add('icone', ChoiceType::class, [
                 'label' => 'Icône',
                 'choices' => $options['data']['iconeChoices']
             ])
             ->add('typeElement', ChoiceType::class, [
                 'label' => "Type d'élément",
                 'choices'  => $options['data']['typeEltChoices'],
-            ])
+            ])*/
             ->add('texte', TextareaType::class, array(
                 'label' => 'Description',
                 'attr' => array(

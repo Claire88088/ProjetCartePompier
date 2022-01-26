@@ -21,12 +21,13 @@ class PIType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('icone', ChoiceType::class, [
+            /*->add('icone', ChoiceType::class, [
                 'label' => 'Icône',
                 'choices' => $options['data']
-            ])
+            ])*/
             ->add('texte', TextareaType::class, array(
                 'label' => 'Description',
+                'required' => false,
                 'attr' => array(
                     'placeholder' => 'Entrez une description'
                 )
