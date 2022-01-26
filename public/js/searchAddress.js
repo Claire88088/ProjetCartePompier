@@ -6,13 +6,13 @@
  */
  function searchAddress(myMap, communeLat, communeLong) {
     const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
-
+    console.log(communeLat, communeLong)
     // on créé le formulaire de recherche
     let searchControl = L.esri.Geocoding.geosearch({
         // Position de la barre de recherche
         position: "topleft",
         placeholder: "Entrez une adresse à rechercher",
-        useMapBounds: true, // permet de filter les résultats à l'aide du cadre de délimitation statique fourni
+        useMapBounds: false, // permet de filter les résultats à l'aide du cadre de délimitation statique fourni
         providers: [L.esri.Geocoding.arcgisOnlineProvider({ // utilisation du service de géocodage de ArcGIS
             countries: "FR",
             apikey: apiKey,

@@ -85,11 +85,13 @@ let formCommune = document.getElementById("form_commune");
 let selectedCommune = formCommune.options[formCommune.selectedIndex];
 let communeLat = selectedCommune.getAttribute('latitude')
 let communeLong = selectedCommune.getAttribute('longitude')
-searchControl = searchAddress(myMap, communeLat, communeLong);
-
+geocoderObject = searchAddress(myMap, communeLat, communeLong);
 
 formCommune.addEventListener('change', event => {
-    for (prop in searchControl){prop=null}
+    console.log(geocoderObject)
+    let geocoderControl = document.getElementsByClassName('geocoder-control leaflet-control')[0];
+    geocoderControl.parentNode.removeChild(geocoderControl);
+
     selectedCommune = formCommune.options[formCommune.selectedIndex];
     communeLat = selectedCommune.getAttribute('latitude')
     communeLong = selectedCommune.getAttribute('longitude')

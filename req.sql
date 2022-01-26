@@ -7,9 +7,9 @@ insert into users('nom', 'roles', 'password') values ('user', '["ROLE_USER"]', '
 
 /* peuplement commune */
 /* DELETE FROM commune; */
-insert into commune('nom', 'code_postal') values ('Buxerolles', '86180');
-insert into commune('nom', 'code_postal') values ('Poitiers', '86000');
-insert into commune('nom', 'code_postal') values ('Châtellerault', '86100');
+insert into commune('nom', 'code_postal', 'latitude', 'longitude') values ('Buxerolles', '86180', 46.6167, 0.4833);
+insert into commune('nom', 'code_postal', 'latitude', 'longitude') values ('Poitiers', '86000', 46.580224, 0.340375);
+insert into commune('nom', 'code_postal', 'latitude', 'longitude') values ('Châtellerault', '86100', 46.799999, 0.53333);
 
 /* peuplement icone */
 insert INTO icone('lien') VALUES ('icons8-bâtiment-24.png');
