@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    // Création de la carte avec un fond de carte OSM centrée sur chatellerault
+    // 1. CREATION DE LA CARTE avec un fond de carte OSM centrée sur chatellerault---------------------------------
     // 13 : c'est le zoom entre minZoom et maxZoom (cf après)
     let myMap = L.map('mapid').setView([46.816487, 0.548146], 13);
 
@@ -11,53 +11,22 @@ $(document).ready(function(){
     }).addTo(myMap);
 
 
-    // récupération des éléments à afficher (envoi via Twig)-----------------------
-
-    /**
-     * Ajoute un groupe de marqueurs (bilbiothèque Leaflet)
-     * créé à partir d'un élément HTML qui a reçu des données de Symfony
-     * à un objet qui sera utilisé pour afficher la gestion des calques
-     * @param elementsToShowElt élément HTML qui contient les données en attribut
-     */
-    function createObjetFromElementsToShowElt(elementsToShowElt)
-    {
-        let eltsToShow = JSON.parse(elementsToShowElt[0].attributes[1].value);
-        let calqueNom = eltsToShow[0].calqueNom;
-
-        let markersTab = [];
-        for (let i = 0; i < eltsToShow.length; i++) {
-            // création des icones pour chaque élément
-            var eltIcone = L.icon({
-                iconUrl: `../MarkersIcons/${eltsToShow[i].lienIcone}`,
-                iconSize: [35, 39]
-            });
-
-            // création des marqueurs pour chaque élément
-            let marker = L.marker([eltsToShow[i].latitude, eltsToShow[i].longitude], {icon: eltIcone}).bindPopup(eltsToShow[i].texte);
-            markersTab.push(marker);
-        }
-        let markersGroup = L.layerGroup(markersTab);
-
-        // ajout du couple nom du calque / "groupe de marqueurs à afficher" sur ce calque
-        calquesObjet[calqueNom] = markersGroup;
-    }
-
-    // récupération des éléments à afficher
+    // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
+    // récupération des éléments à afficher (transmis via Twig)
     var erEltsToShowElt = $('.erEltsToShow');
     var autoEltsToShowElt = $('.autoEltsToShow');
     var piEltsToShowElt = $('.piEltsToShow');
 
     //pour ajouter un calque il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
-    var calquesObjet = {};
+    var calquesWithGroupsObjet = {};
 
-    // création des groupes de marqueurs par calque
-    createObjetFromElementsToShowElt(erEltsToShowElt);
+    // ajout des calques avec leurs groupes de marqueurs à l'objet qui sera passé en paramètre du control de la gestion des calques
+    addCalquesWithGroupsToObjet(calquesWithGroupsObjet, erEltsToShowElt);
     //createObjetFromElementsToShowElt(autoEltsToShowElt);
     //createObjetFromElementsToShowElt(piEltsToShowElt);
 
-    // ajout l'icône de gestion des calques à la carte :
-    // cette icône contient la liste des calques (avec les points associés)
-    L.control.layers(null, calquesObjet, { collapsed:false }).addTo(myMap);
+    // ajout de l'"icône" de gestion des calques à la carte
+    L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
 
     //----------------------------------------------------------------------
     // récupération des noms des calques que l'on a passé via twig
