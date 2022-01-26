@@ -23,6 +23,7 @@ class ElementType extends AbstractType
             ])*/
             ->add('texte', TextareaType::class, array(
                 'label' => 'Description',
+                'required' => false,
                 'attr' => array(
                     'placeholder' => 'Entrez une description'
                 )
