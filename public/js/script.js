@@ -49,15 +49,16 @@ $(document).ready(function(){
 
     //----------------------------------------------------
     // 4. RECHERCHE D'UNE ADRESSE
+    // Pour la première commune selectionnée
     let formCommune = document.getElementById("form_commune");
 
     let selectedCommune = formCommune.options[formCommune.selectedIndex];
     let communeLat = selectedCommune.getAttribute('latitude')
     let communeLong = selectedCommune.getAttribute('longitude')
-    geocoderObject = searchAddress(myMap, communeLat, communeLong);
+    searchAddress(myMap, communeLat, communeLong);
 
+    // Au changement de commune dans la liste
     formCommune.addEventListener('change', event => {
-        console.log(geocoderObject)
         let geocoderControl = document.getElementsByClassName('geocoder-control leaflet-control')[0];
         geocoderControl.parentNode.removeChild(geocoderControl);
 

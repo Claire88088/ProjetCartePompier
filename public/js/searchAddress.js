@@ -7,7 +7,7 @@
  function searchAddress(myMap, communeLat, communeLong) {
     myMap.setView([communeLat, communeLong], 13)
     const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
-    console.log(communeLat, communeLong)
+
     // on créé le formulaire de recherche
     let searchControl = L.esri.Geocoding.geosearch({
         // Position de la barre de recherche
@@ -34,7 +34,7 @@
         for (let i = data.results.length - 1; i >= 0; i--) {
             const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000)/100000}, ${Math.round(data.results[i].latlng.lat * 100000)/100000}`;
             // on créé un marqueur pour l'adresse trouvée et on l'affiche via le layerGroup
-            const marker = L.marker(data.results[i].latlng, {icon: iconFeu});
+            const marker = L.marker(data.results[i].latlng);
             // on affiche dans la pop up uniquement l'adresse et la ville
             let longLabel = data.results[i].properties.LongLabel;
             let shortLabel = longLabel.split(',');
