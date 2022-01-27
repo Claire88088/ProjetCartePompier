@@ -325,17 +325,26 @@ class MapController extends AbstractController
         /*foreach ($_POST as $name => $value) {*/
             foreach ($_POST as $name => $value) /*if ($elementForm->isSubmitted() && $elementForm->isValid()) */{
 
+                $Photo = "";
+                $Lien = "";
+
                 $photoFile = null;
                 $pdfFile = null;
 
                 $newPhotoName = null;
                 $newPdfName = null;
 
-                $Photo = $_FILES[$name]["name"]["photo"];
-                dump($_FILES[$name]["name"]["photo"]);
+                $issetPhoto = isset($_FILES[$name]["name"]['photo']);
+                $issetLien = isset($_FILES[$name]["name"]['lien']);
 
-                $Lien = $_FILES[$name]["name"]["lien"];
-                dump($_FILES[$name]["name"]["lien"] == "");
+                if ($issetPhoto && $issetLien) {
+                    $Photo = $_FILES[$name]["name"]["photo"];
+                    $Lien = $_FILES[$name]["name"]["lien"];
+                } else if ($issetPhoto && !$issetLien) {
+                    $Photo = $_FILES[$name]["name"]["photo"];
+                } else if (!$issetPhoto && $issetLien) {
+                    $Lien = $_FILES[$name]["name"]["lien"];
+                }
 
                 // Test si dans le POST, il y'a des envois de fichiers
                 if ($Photo !== "" && $Lien === "") {
