@@ -293,6 +293,8 @@ class MapController extends AbstractController
                     'data_class' => null,
                     'data' => $liensIcones,
                 ]);*/
+                $typeTravaux = $em->getRepository('App:TypeElement')->findByTypeCalque($calqueChoisi)[0];
+                $element->setTypeElement($typeTravaux);
                 break;
             case 'PI':
                 $elementForm = $this->createForm(PIType::class, $element);
@@ -303,6 +305,8 @@ class MapController extends AbstractController
                     'data_class' => null,
                     'data' => $liensIcones,
                 ]);*/
+                $typePI = $em->getRepository('App:TypeElement')->findByTypeCalque($calqueChoisi)[0];
+                $element->setTypeElement($typePI);
                 break;
             case 'AUTRE':
                 $elementForm = $this->createForm(ElementType::class, $element);
