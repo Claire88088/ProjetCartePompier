@@ -38,7 +38,7 @@ class ElementType extends AbstractType
                             'image/png',
                             'image/jpeg',
                         ],
-                        'mimeTypesMessage' => "La photos n'est pas au bon format", ])
+                        'mimeTypesMessage' => "La photo n'est pas au bon format", ])
                 ],
                 'data_class' => null,
                 'attr' => array(
@@ -54,7 +54,7 @@ class ElementType extends AbstractType
                         'mimeTypes' => [ // Type mime des fichiers qu'il sera possible de joindre
                             'application/pdf',
                         ],
-                        'mimeTypesMessage' => 'Seul les fichiers PDF sont acceptés', ])
+                        'mimeTypesMessage' => 'Seuls les fichiers PDF sont acceptés', ])
                 ],
                 'data_class'   => null,
                 'attr' => array(
@@ -63,6 +63,7 @@ class ElementType extends AbstractType
                 ])
             ->add('dateDeb', DateTimeType::class, [
                 'label' => 'Date de début',
+                'required' => false,
                 'widget'=> 'single_text',
                 'attr' => array(
                     'placeholder' => 'Entrez la date de début'
@@ -70,6 +71,7 @@ class ElementType extends AbstractType
             ])
             ->add('dateFin', DateTimeType::class, [
                 'label' => 'Date de fin',
+                'required' => false,
                 'widget' => 'single_text',
                 'attr' => array(
                     'placeholder' => 'Entrez la date de fin'

@@ -42,7 +42,7 @@ class PIType extends AbstractType
                             'image/png',
                             'image/jpeg',
                         ],
-                        'mimeTypesMessage' => "La photos n'est pas au bon format", ])
+                        'mimeTypesMessage' => "La photo n'est pas au bon format", ])
                 ],
                 'data_class' => null,
                 'attr' => array(

@@ -31,6 +31,7 @@ class TravauxType extends AbstractType
             ])
             ->add('dateFin', DateTimeType::class, [
                 'label' => 'Date de fin des travaux',
+                'required' => false,
                 'widget' => 'single_text',
                 'attr' => array(
                     'placeholder' => 'Entrez la date de fin des travaux'
