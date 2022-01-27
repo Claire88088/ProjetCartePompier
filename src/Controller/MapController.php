@@ -84,31 +84,31 @@ class MapController extends AbstractController
         // TODO changer le nom des variables (mais a priori on changement la façon de passer les valeurs)
         // TODO : code différent dans testClaire
 
-        $calques = $em->getRepository('App:TypeCalque')->findAll();
-       //$elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
+//        $calques = $em->getRepository('App:TypeCalque')->findAll();
+//        $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
 
         $erElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnER();
         $autoElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnAutoroute();
         $piElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnPI();
 
         return $this->render('envoi-donnees-JS.html.twig', [
-            'calques' => $calques,
+//          'calques' => $calques,
             'erElements' => $erElements,
             'autoElements' => $autoElements,
             'piElements' => $piElements
         ]);
     }
 
-    /**
-     * @param EntityManagerInterface $em
-     * @Route("/envoi-calques", name="envoi_calques")
-     * @return JsonResponse
-     */
-    public function envoiCalques(EntityManagerInterface $em): JsonResponse
-    {
-        $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
-        return new JsonResponse($elements);
-    }
+//    /**
+//     * @param EntityManagerInterface $em
+//     * @Route("/envoi-calques", name="envoi_calques")
+//     * @return JsonResponse
+//     */
+//    public function envoiCalques(EntityManagerInterface $em): JsonResponse
+//    {
+//        $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
+//        return new JsonResponse($elements);
+//    }
 
 
     /**
@@ -331,25 +331,28 @@ class MapController extends AbstractController
                 $newPhotoName = null;
                 $newPdfName = null;
 
-                $issetPhoto = isset($_FILES[$name]["name"]["photo"]);
-                $issetLien = isset($_FILES[$name]["name"]["lien"]);
+                $Photo = $_FILES[$name]["name"]["photo"];
+                dump($_FILES[$name]["name"]["photo"]);
+
+                $Lien = $_FILES[$name]["name"]["lien"];
+                dump($_FILES[$name]["name"]["lien"] == "");
 
                 // Test si dans le POST, il y'a des envois de fichiers
-                if ($issetPhoto && !$issetLien) {
+                if ($Photo !== "" && $Lien === "") {
                     $photoFile = $elementForm->get('photo')->getData();
                     if ($photoFile) {
                         $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
                         $safePhotoFilename = $slugger->slug($originalPhotoFilename);
                         $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
                     }
-                } else if ($issetLien && !$issetPhoto) {
+                } else if ($Lien !==  "" && $Photo === "") {
                     $pdfFile = $elementForm->get('lien')->getData();
                     if ($pdfFile) {
                         $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
                         $safePdfFilename = $slugger->slug($originalPdfFilename);
                         $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
                     }
-                } else if ($issetLien && $issetPhoto) {
+                } else if ($Lien !== "" && $Photo !== "") {
                     $photoFile = $elementForm->get('photo')->getData();
                     $pdfFile = $elementForm->get('lien')->getData();
                     if ($photoFile && $pdfFile) {
