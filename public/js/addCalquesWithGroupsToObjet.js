@@ -79,7 +79,7 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt)
         }
         let photo = $("#photo").attr("photo")
 
-        $("#photoOuLien").append("<img style='width:80%; height: 95%' src="+photo+">")
+        $("#photoOuLien").append("<img style='width:80%; height: 92%' src="+photo+">")
     })
 
     $(document).on("click", "#lien", function() {

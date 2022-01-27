@@ -45,8 +45,6 @@
             marker.openPopup();
         }
     });
-
-    return searchControl;
 }
 
 
