@@ -45,6 +45,7 @@
             </div>
 
             <div id ="aLog">
+                <p>Vous êtes connecté en tant que : {{ app.user.nom }}</p>
                 <a id="log" class="btn btn-primary col" href="{{ path('app_logout') }}" role="button">Se déconnecter</a>
             </div>
         {% endif %}

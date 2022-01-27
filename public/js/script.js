@@ -88,11 +88,29 @@ $(document).ready(function(){
             var iconeLien = $('.dd-selected-image').attr('src');
             var newIcon = L.icon({
                 iconUrl: `..${iconeLien}`,
-                iconSize: [35, 39]
+                iconSize: [64, 64]
             });
 
-            // Création d'un marqueur et d'une popup
-            newMarker = new L.marker(e.latlng, {icon: newIcon});
+            // Création et ajout à la carte d'un marqueur avec l'icône choisie
+            newMarker = new L.marker(e.latlng, {icon: newIcon}).addTo(myMap);
+
+            // si l'utilisateur choisit une autre icône
+            $('.dd-option').on('click', function(){
+                // récupération de l'icône choisie
+                var iconeLien = $('.dd-selected-image').attr('src');
+                var newIcon = L.icon({
+                    iconUrl: `..${iconeLien}`,
+                    iconSize: [35, 39]
+                });
+
+                if (myMap.hasLayer(newMarker)) {
+                    myMap.removeLayer(newMarker)
+                    // Création d'un nouveau marqueur avec les anciennes coordonnées mais la nouvelle icone
+                    newMarker = new L.marker(e.latlng, {icon: newIcon}).addTo(myMap);
+                }
+            })
+
+            // création d'une popup
             var newPopup = new L.popup();
             const data = null;
 
@@ -117,7 +135,7 @@ $(document).ready(function(){
             });
             req.send(data);
 
-            newMarker.bindPopup(newPopup).addTo(myMap);
+            newMarker.bindPopup(newPopup);
 
         }
 
@@ -173,9 +191,5 @@ $(document).ready(function(){
                 $('#position').css({background: "red", color: "white"});
             }
         });
-
     }
-
-
-
 });
