@@ -48,7 +48,7 @@ class TypeCalqueRepository extends ServiceEntityRepository
     public function findAllElementsToShowOnAutoroute()
     {
         $query = $this->_em->createQueryBuilder('tc');
-        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien')
+        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien as lienIcone')
             ->from(TypeCalque::class, 'tc')
             ->innerJoin('App\Entity\TypeElement', 'te')
             ->where('tc.id = te.typeCalque')
@@ -66,7 +66,7 @@ class TypeCalqueRepository extends ServiceEntityRepository
     public function findAllElementsToShowOnPI()
     {
         $query = $this->_em->createQueryBuilder('tc');
-        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien')
+        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien as lienIcone')
             ->from(TypeCalque::class, 'tc')
             ->innerJoin('App\Entity\TypeElement', 'te')
             ->where('tc.id = te.typeCalque')
