@@ -206,13 +206,4 @@ $(document).ready(function(){
             }
         });
     }
-
-    function switchToWaitingBtn(formName) {
-        $('#' + formName + '_ajouter').html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n" +
-            "<span class=\"visually-hidden\">Ajout en cours...</span>")
-    }
-
-    function hideWaitingBtn(formName) {
-        $('#' + formName + '_ajouter').html("Ajouter cet élément");
-    }
 });
