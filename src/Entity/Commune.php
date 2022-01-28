@@ -101,16 +101,16 @@ class Commune
     public function __toString()
     {
         $communeToString = $this->codePostal . ' ' . $this->nom;
-        return $communeToString;
+        return strip_tags($communeToString);
     }
 
     public function __toStringLat()
     {
-        return $this->latitude;
+        return strip_tags($this->latitude);
     }
 
     public function __toStringLong()
     {
-        return $this->longitude;
+        return strip_tags($this->longitude);
     }
 }

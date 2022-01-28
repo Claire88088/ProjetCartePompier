@@ -103,7 +103,7 @@ class TypeElement
 
     public function __toString()
     {
-        return $this->nom;
+        return strip_tags($this->nom);
     }
 
     /**

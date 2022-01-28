@@ -71,7 +71,7 @@ class Icone
 
     public function __toString()
     {
-        return $this->lien;
+        return strip_tags($this->lien);
     }
 
     /**
