@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TypeElementRepository::class)
+ * @UniqueEntity("nom")
  */
 class TypeElement
 {
@@ -20,7 +21,10 @@ class TypeElement
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Le nom du type d'élément est obligatoire")
+     * @Assert\Type("string")
+     * @Assert\Length(max="50")
      */
     private $nom;
 
