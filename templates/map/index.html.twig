@@ -63,7 +63,7 @@
             {% if app.user %}
                 <div id="form" class="mt-2">
                     {% for msg in app.session.flashBag.get('success') %}
-                        <p>{{ msg }}</p>
+                        <div class="alert alert-success" role="alert">{{ msg }}</div>
                     {% endfor %}
                     {% block global %}
                             <button class="btn btn-primary" onclick="location.href='{{ path('calques_list') }}'">Lister les calques</button>

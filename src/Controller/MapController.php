@@ -321,7 +321,7 @@ class MapController extends AbstractController
 
         }
 
-        $elementForm->add('Ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
+        $elementForm->add('ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {

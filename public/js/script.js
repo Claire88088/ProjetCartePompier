@@ -79,6 +79,10 @@ $(document).ready(function(){
                 myMap.removeLayer(newMarker)
             }
 
+            // enlève l'alerte si il y en avait une
+            $('#position').removeClass('alert-danger');
+            hideWaitingBtn(formName);
+
             var tab = [];
             tab = e;
 
@@ -101,7 +105,7 @@ $(document).ready(function(){
                 var iconeLien = $('.dd-selected-image').attr('src');
                 var newIcon = L.icon({
                     iconUrl: `..${iconeLien}`,
-                    iconSize: [35, 39]
+                    iconSize: [64, 64]
                 });
 
                 if (myMap.hasLayer(newMarker)) {
@@ -118,6 +122,13 @@ $(document).ready(function(){
             // Requête XHTML pour retourner l'adresse selon des cordonnées GPS (lat et long)
             const req = new XMLHttpRequest();
             req.open("GET", "https://api-adresse.data.gouv.fr/reverse/?lon=" + long + "&lat=" + lat + "");
+
+            // on ajoute des loaders pour l'utilisateur
+            $('#loader').show();
+            $('#' + formName + '_ajouter').click(function(e) {
+                switchToWaitingBtn(formName);
+            });
+
             req.addEventListener("load", function () {
                 var jp = JSON.parse(req.responseText);
                 let popupContenu = jp.features[0].properties.label;
@@ -133,6 +144,8 @@ $(document).ready(function(){
                 // idem
                 var inputLong = document.getElementById(formName + '_coordonnees_longitude');
                 inputLong.setAttribute("value", jp.features[0].geometry.coordinates[0]);
+
+                $('#loader').hide();
             });
             req.send(data);
 
@@ -186,11 +199,20 @@ $(document).ready(function(){
 
         //---------------------------------------------------------------------------------------------
         // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
-        $('#' + formName + '_Ajouter').click(function(e){
-            $('#position').css({background: "white", color: "#6D6D6D"});
+        $('#' + formName + '_ajouter').click(function(e){
+            $('#position').removeClass('alert-danger');
             if (!$('#' + formName + '_coordonnees_longitude')[0].value) {
-                $('#position').css({background: "red", color: "white"});
+                $('#position').addClass('alert-danger');
             }
         });
+    }
+
+    function switchToWaitingBtn(formName) {
+        $('#' + formName + '_ajouter').html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n" +
+            "<span class=\"visually-hidden\">Ajout en cours...</span>")
+    }
+
+    function hideWaitingBtn(formName) {
+        $('#' + formName + '_ajouter').html("Ajouter cet élément");
     }
 });

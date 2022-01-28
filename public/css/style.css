@@ -94,7 +94,6 @@ input#calque_nom{
 #bLog #summ {
     margin-top: .5rem;
     text-align: center
-
 }
 
 #choixClq {
@@ -204,4 +203,8 @@ textarea {
 /* formulaire d'ajout d'élément */
 #position {
     height: auto;
+}
+
+#loader {
+    display: none;
 }
