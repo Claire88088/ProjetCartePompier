@@ -5,6 +5,7 @@
  * @param myMap carte Leaflet
  */
  function searchAddress(myMap, communeLat, communeLong) {
+    // centre la carte sur la commune choisie
     myMap.setView([communeLat, communeLong], 13)
     const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
 
@@ -24,6 +25,8 @@
             },
         })]
     }).addTo(myMap);
+    // on met le focus sur le champ du form créé
+    $('.geocoder-control-input').focus();
     
     // on créé un "groupe de marqueurs affichés sur le même calque" qui recevra les résultats de la recherche
     const results = L.layerGroup().addTo(myMap);

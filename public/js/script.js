@@ -58,9 +58,6 @@ $(document).ready(function(){
     // on créé le form de l'API et on recherche l'adresse
     searchAddress(myMap, communeLat, communeLong);
 
-    // on met le focus sur le champ du form de l'API
-    $('.geocoder-control-input').focus();
-
     // Au changement de commune dans la liste
     formCommune.addEventListener('change', event => {
         let geocoderControl = document.getElementsByClassName('geocoder-control leaflet-control')[0];
@@ -70,7 +67,6 @@ $(document).ready(function(){
         communeLat = selectedCommune.getAttribute('latitude')
         communeLong = selectedCommune.getAttribute('longitude')
         searchAddress(myMap, communeLat, communeLong);
-        $('.geocoder-control-input').focus();
     });
 
     //----------------------------------------------------
