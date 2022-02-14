@@ -23,11 +23,18 @@ $(document).ready(function(){
     var calqueList = $('.calquesNomsList');
 >>>>>>> bfb089ac502c63573791556886ce247a66020ad3
 
+    // on créé un cluster pour afficher les marqueurs sous forme de "clusters"
+    let clusterGroup =  L.markerClusterGroup();
+
     //pour ajouter un calque il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
     var calquesWithGroupsObjet = {};
 
+
     // ajout des calques avec leurs groupes de marqueurs à l'objet qui sera passé en paramètre du control de la gestion des calques
-    addCalquesWithGroupsToObjet(calquesWithGroupsObjet, eltsToShowElt, calqueList);
+    addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eltsToShowElt, calqueList);
+
+    // on ajoute le cluster à la carte
+    //myMap.addLayer(clusterGroup);
 
     // ajout de l'"icône" de gestion des calques à la carte
     L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
