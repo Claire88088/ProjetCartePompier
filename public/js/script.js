@@ -13,18 +13,21 @@ $(document).ready(function(){
 
     // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
     // récupération des éléments à afficher (transmis via Twig)
+<<<<<<< HEAD
     var erEltsToShowElt = $('.erEltsToShow');
 
     var autoEltsToShowElt = $('.autoEltsToShow');
     var piEltsToShowElt = $('.piEltsToShow');
+=======
+    var eltsToShowElt = $('.allEltsToShow');
+    var calqueList = $('.calquesNomsList');
+>>>>>>> bfb089ac502c63573791556886ce247a66020ad3
 
     //pour ajouter un calque il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
     var calquesWithGroupsObjet = {};
 
     // ajout des calques avec leurs groupes de marqueurs à l'objet qui sera passé en paramètre du control de la gestion des calques
-    addCalquesWithGroupsToObjet(calquesWithGroupsObjet, erEltsToShowElt);
-    //createObjetFromElementsToShowElt(autoEltsToShowElt);
-    //createObjetFromElementsToShowElt(piEltsToShowElt);
+    addCalquesWithGroupsToObjet(calquesWithGroupsObjet, eltsToShowElt, calqueList);
 
     // ajout de l'"icône" de gestion des calques à la carte
     L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
@@ -38,13 +41,13 @@ $(document).ready(function(){
     var bCalques = document.getElementsByClassName('leaflet-control-layers-overlays')[0];
 
     var titreCalque = document.createElement('label');
-        titreCalque.style.textAlign = 'center';
-        titreCalque.style.fontSize = '.9rem';
-            titreCalque.appendChild(document.createTextNode('Affichage des calques'));
+    titreCalque.style.textAlign = 'center';
+    titreCalque.style.fontSize = '.9rem';
+    titreCalque.appendChild(document.createTextNode('Affichage des calques'));
 
     var ligne = document.createElement('hr');
-        ligne.style.margin = 'auto';
-            titreCalque.appendChild(ligne);
+    ligne.style.margin = 'auto';
+    titreCalque.appendChild(ligne);
 
     bCalques.prepend(titreCalque);
 
@@ -83,7 +86,11 @@ $(document).ready(function(){
 
             // enlève l'alerte si il y en avait une
             $('#position').removeClass('alert-danger');
+<<<<<<< HEAD
             //hideWaitingBtn(formName);
+=======
+            //hideWaitingBtn(formName); -------TODO------------
+>>>>>>> bfb089ac502c63573791556886ce247a66020ad3
 
             var tab = [];
             tab = e;
@@ -121,7 +128,7 @@ $(document).ready(function(){
             var newPopup = new L.popup();
             const data = null;
 
-            // Requête XHTML pour retourner l'adresse selon des cordonnées GPS (lat et long)
+            // Requête XHTML pour retourner l'adresse selon des coordonnées GPS (lat et long)
             const req = new XMLHttpRequest();
             req.open("GET", "https://api-adresse.data.gouv.fr/reverse/?lon=" + long + "&lat=" + lat + "");
 
@@ -157,8 +164,8 @@ $(document).ready(function(){
 
         myMap.on("click", addMarker);
 
-    //----------------------------------------------------
-    // Permet au champs d'upload d'afficher le nom du ficher donné.
+        //----------------------------------------------------
+        // Permet au champs d'upload d'afficher le nom du ficher donné.
         $('.custom-file-input').on('change', function (event) {
             var inputFile = event.currentTarget;
             $(inputFile).parent()
@@ -166,17 +173,17 @@ $(document).ready(function(){
                 .html(inputFile.files[0].name);
         });
 
-    //----------------------------------------------------
-    // Cache dans les formulaires la latitude et la longitude
+        //----------------------------------------------------
+        // Cache dans les formulaires la latitude et la longitude
         $("fieldset.form-group").css("display", "none");
 
-    //----------------------------------------------------
-    // Récupère le nom du formulaire [1] de la page
+        //----------------------------------------------------
+        // Récupère le nom du formulaire [1] de la page
         let formName = document.querySelectorAll("form")[1].name;
         // Récupère le select des icones comprenant les options
         let selectIcone = document.getElementById(formName + "_icone");
 
-    // boucle sur le select pour avoir chaque option
+        // boucle sur le select pour avoir chaque option
         for (let i = 0; i < selectIcone.length; i++) {
             let option = selectIcone[i];
             let valOption = selectIcone[i].label;
@@ -191,7 +198,7 @@ $(document).ready(function(){
             option.innerHTML = splitIconeName
         }
 
-    // Fonction jQuery UI pour reconstruire un select option en div et y inclure des images
+        // Fonction jQuery UI pour reconstruire un select option en div et y inclure des images
         $('#' + formName + '_icone').ddslick({
             onSelected: function (selectedData) {
                 // remet le nom sur le input icone pour qu'il repasse dans le formulaire avec l'id de l'icone selectionnée

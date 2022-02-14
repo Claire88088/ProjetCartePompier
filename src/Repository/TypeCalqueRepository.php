@@ -26,6 +26,22 @@ class TypeCalqueRepository extends ServiceEntityRepository
     }
 
     // TODO : factoriser les reque^tes
+    public function findAllElementsToShow()
+    {
+        $query = $this->_em->createQueryBuilder('tc');
+        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien as lienIcone')
+            ->from(TypeCalque::class, 'tc')
+            ->innerJoin('App\Entity\TypeElement', 'te')
+            ->where('tc.id = te.typeCalque')
+            ->innerJoin('App\Entity\Element', 'e')
+            ->andWhere('te.id = e.typeElement')
+            ->innerJoin('App\Entity\Icone', 'i')
+            ->andWhere('e.icone = i.id')
+            ->innerJoin('App\Entity\Point', 'p')
+            ->andWhere('e.id = p.element')
+            ->getQuery()->getArrayResult();
+    }
+
 
     public function findAllElementsToShowOnER()
     {
