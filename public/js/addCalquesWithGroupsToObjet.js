@@ -11,7 +11,6 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
 {
     let eltsToShow = JSON.parse(elementsToShowElt[0].attributes[1].value);
     let calquesNoms = JSON.parse(calquesList[0].attributes[1].value);
-    console.log(eltsToShow)
 
     // on parcourt les noms des calques pour créer autant de tableaux de marqueurs et de groupes de marqueurs qu'il y a de calques
     let markersTabTab = [];
@@ -47,25 +46,32 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
                     let lien = eltsToShow[i].lien
 
                     if (photo === null && lien === null) {
+                        popupContenu +=
+                            '</br>'
+                            + '<div style="text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier cet élement</button></div>'
                     } else if (photo !== null && lien === null) {
                         popupContenu +=
                             '</br>'
-                            + '<div style="display: flex;">'
-                            + '<div style="flex:auto;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
+                            + '<div>'
+                            + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
+                            + '<div style="text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier cet élement</button></div>'
                             + '</div>';
                     } else if (lien !== null && photo === null) {
                         popupContenu +=
                             '</br>'
-                            + '<div style="display: flex;">'
-                            + '<div style="flex:auto;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
+                            + '<div>'
+                            + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
+                            + '<div id="modification" style="text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier cet élement</button></div>'
                             + '</div>';
                     } else {
                         popupContenu +=
                             '</br>'
                             + '<div style="display: flex;">'
-                            + '<div style="flex:auto;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
-                            + '<div style="flex:auto;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
-                            + '</div>';
+                            + '<div style="flex:auto; margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
+                            + '<div style="flex:auto; margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
+                            + '</div>'
+                            + '<div style="text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier cet élement</button></div>';
+
                     }
 
                     let popupPoints = new L.popup();
@@ -78,8 +84,8 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
                     // création des marqueurs pour chaque élément
                     let marker = L.marker([latitude, longitude], {idElement: eltsToShow[i].idElement, icon: eltIcone}).bindPopup(popupPoints);
 
-                    marker.addEventListener('click', function() {
-                        let idElement = this.options.idElement
+                    $(document).on("click", "#modification"+eltsToShow[i].idElement+"", function () {
+                        let idElement = marker.options.idElement
                         $.ajax({
                             url: '/map/edit-element-'+idElement+'',
                             type: 'GET',

@@ -82,36 +82,27 @@ $(document).ready(function(){
     // 5. AJOUT D'UN NOUVEAU MARQUEUR
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
     var newMarker;
-    if (window.location.pathname.substr(0,16) == "/map/add-element") {
-        function addMarker(e) {
-            // Enlève le dernier marqueur si il y'en a eu un
-            if (myMap.hasLayer(newMarker)) {
-                myMap.removeLayer(newMarker)
-            }
+    var urlAddElement = window.location.pathname.substr(0,16) == "/map/add-element";
+    var urlEditElement = window.location.pathname.substr(0,17) == "/map/edit-element";
+    if (urlAddElement || urlEditElement) {
+        if (urlAddElement) {
+            function addMarker(e) {
+                // Enlève le dernier marqueur si il y'en a eu un
+                if (myMap.hasLayer(newMarker)) {
+                    myMap.removeLayer(newMarker)
+                }
 
-            // enlève l'alerte si il y en avait une
-            $('#position').removeClass('alert-danger');
-            //hideWaitingBtn(formName);
-            //hideWaitingBtn(formName); -------TODO------------
+                // enlève l'alerte si il y en avait une
+                $('#position').removeClass('alert-danger');
+                //hideWaitingBtn(formName);
+                //hideWaitingBtn(formName); -------TODO------------
 
-            var tab = [];
-            tab = e;
+                var tab = [];
+                tab = e;
 
-            var lat = tab.latlng.lat;
-            var long = tab.latlng.lng;
+                var lat = tab.latlng.lat;
+                var long = tab.latlng.lng;
 
-            // récupération de l'icône choisie
-            var iconeLien = $('.dd-selected-image').attr('src');
-            var newIcon = L.icon({
-                iconUrl: `..${iconeLien}`,
-                iconSize: [30, 30]
-            });
-
-            // Création et ajout à la carte d'un marqueur avec l'icône choisie
-            newMarker = new L.marker(e.latlng, {icon: newIcon}).addTo(myMap);
-
-            // si l'utilisateur choisit une autre icône
-            $('.dd-option').on('click', function(){
                 // récupération de l'icône choisie
                 var iconeLien = $('.dd-selected-image').attr('src');
                 var newIcon = L.icon({
@@ -119,53 +110,65 @@ $(document).ready(function(){
                     iconSize: [30, 30]
                 });
 
-                if (myMap.hasLayer(newMarker)) {
-                    myMap.removeLayer(newMarker)
-                    // Création d'un nouveau marqueur avec les anciennes coordonnées mais la nouvelle icone
-                    newMarker = new L.marker(e.latlng, {icon: newIcon}).addTo(myMap);
-                }
-            })
+                // Création et ajout à la carte d'un marqueur avec l'icône choisie
+                newMarker = new L.marker(e.latlng, {icon: newIcon}).addTo(myMap);
 
-            // création d'une popup
-            var newPopup = new L.popup();
-            const data = null;
+                // si l'utilisateur choisit une autre icône
+                $('.dd-option').on('click', function () {
+                    // récupération de l'icône choisie
+                    var iconeLien = $('.dd-selected-image').attr('src');
+                    var newIcon = L.icon({
+                        iconUrl: `..${iconeLien}`,
+                        iconSize: [30, 30]
+                    });
 
-            // Requête XHTML pour retourner l'adresse selon des coordonnées GPS (lat et long)
-            const req = new XMLHttpRequest();
-            req.open("GET", "https://api-adresse.data.gouv.fr/reverse/?lon=" + long + "&lat=" + lat + "");
+                    if (myMap.hasLayer(newMarker)) {
+                        myMap.removeLayer(newMarker)
+                        // Création d'un nouveau marqueur avec les anciennes coordonnées mais la nouvelle icone
+                        newMarker = new L.marker(e.latlng, {icon: newIcon}).addTo(myMap);
+                    }
+                })
 
-            // on ajoute des loaders pour l'utilisateur
-            $('#loader').show();
-            $('#' + formName + '_ajouter').click(function(e) {
-                switchToWaitingBtn(formName);
-            });
+                // création d'une popup
+                var newPopup = new L.popup();
+                const data = null;
 
-            req.addEventListener("load", function () {
-                var jp = JSON.parse(req.responseText);
-                let popupContenu = jp.features[0].properties.label;
-                newPopup.setContent(popupContenu);
+                // Requête XHTML pour retourner l'adresse selon des coordonnées GPS (lat et long)
+                const req = new XMLHttpRequest();
+                req.open("GET", "https://api-adresse.data.gouv.fr/reverse/?lon=" + long + "&lat=" + lat + "");
 
-                // Récupération du nom du formulaire parce que l'id des champs lat et long changent en fonction du form
-                let formName = document.getElementsByTagName("form")[1].name;
+                // on ajoute des loaders pour l'utilisateur
+                $('#loader').show();
+                $('#' + formName + '_ajouter').click(function (e) {
+                    switchToWaitingBtn(formName);
+                });
 
-                // Récupère le champ de latitude et le remplit avec la latitude du point (au clique)
-                var inputLat = document.getElementById(formName + '_coordonnees_latitude');
-                inputLat.setAttribute("value", jp.features[0].geometry.coordinates[1]);
+                req.addEventListener("load", function () {
+                    var jp = JSON.parse(req.responseText);
+                    let popupContenu = jp.features[0].properties.label;
+                    newPopup.setContent(popupContenu);
 
-                // idem
-                var inputLong = document.getElementById(formName + '_coordonnees_longitude');
-                inputLong.setAttribute("value", jp.features[0].geometry.coordinates[0]);
+                    // Récupération du nom du formulaire parce que l'id des champs lat et long changent en fonction du form
+                    let formName = document.getElementsByTagName("form")[1].name;
 
-                $('#loader').hide();
-            });
-            req.send(data);
+                    // Récupère le champ de latitude et le remplit avec la latitude du point (au clique)
+                    var inputLat = document.getElementById(formName + '_coordonnees_latitude');
+                    inputLat.setAttribute("value", jp.features[0].geometry.coordinates[1]);
 
-            newMarker.bindPopup(newPopup);
+                    // idem
+                    var inputLong = document.getElementById(formName + '_coordonnees_longitude');
+                    inputLong.setAttribute("value", jp.features[0].geometry.coordinates[0]);
 
+                    $('#loader').hide();
+                });
+                req.send(data);
+
+                newMarker.bindPopup(newPopup);
+
+            }
+
+            myMap.on("click", addMarker);
         }
-
-        myMap.on("click", addMarker);
-
         //----------------------------------------------------
         // Permet au champs d'upload d'afficher le nom du ficher donné.
         $('.custom-file-input').on('change', function (event) {
