@@ -11,6 +11,7 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
 {
     let eltsToShow = JSON.parse(elementsToShowElt[0].attributes[1].value);
     let calquesNoms = JSON.parse(calquesList[0].attributes[1].value);
+    console.log(eltsToShow)
 
     // on parcourt les noms des calques pour créer autant de tableaux de marqueurs et de groupes de marqueurs qu'il y a de calques
     let markersTabTab = [];
@@ -75,7 +76,18 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
                     let longitude = eltsToShow[i].longitude
 
                     // création des marqueurs pour chaque élément
-                    let marker = L.marker([latitude, longitude], {icon: eltIcone}).bindPopup(popupPoints);
+                    let marker = L.marker([latitude, longitude], {idElement: eltsToShow[i].idElement, icon: eltIcone}).bindPopup(popupPoints);
+
+                    marker.addEventListener('click', function() {
+                        let idElement = this.options.idElement
+                        $.ajax({
+                            url: '/map/edit-element-'+idElement+'',
+                            type: 'GET',
+                            success: function(){
+                                document.location.replace("http://127.0.0.1:8000/map/edit-element-"+idElement+"");
+                            }
+                        });
+                    })
 
                     // on ajoute le marqueur au cluster (pour afficher des clusters de marqueurs) et au tableau des marqueurs (pour affichage sur le calque)
                     clusterGroup.addLayer(marker);
