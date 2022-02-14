@@ -16,6 +16,15 @@
                 crossorigin=""
         />
         <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.css">
+
+            <!-- liens vers la bibliothèque JS "Markercluster" pour faire des regroupements de marqueurs sur la carte -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.0/MarkerCluster.Default.min.css" />
+
+
+
+
+
         <!-- styles perso -->
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('css/styleFormRecherche.css') }}">
@@ -47,6 +56,9 @@
         <!-- msDropDown -->
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js"></script>
+        <!-- biblio JS "Markercluster" -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+
         <!-- scripts perso -->
         <script src="{{ asset('js/searchAddress.js') }}"></script>
         <script src="{{ asset('js/preChooseCommune.js') }}"></script>
@@ -57,6 +69,9 @@
         <script src="{{ asset('js/addMarker.js') }}"></script>
         <script src="{{ asset('js/switchToWaitingBtn.js') }}"></script>
         <script src="{{ asset('js/hideWaitingBtn.js') }}"></script>
+        <script src="{{ asset('js/addCluster.js') }}"></script>
+        <script src="{{ asset('js/addCluster2.js') }}"></script>
+
         <script src="{{ asset('js/script.js') }}"></script>
 
         {% endblock %}
