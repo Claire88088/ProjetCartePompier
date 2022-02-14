@@ -25,10 +25,6 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
 
             // on veut afficher les éléments par calque
             // on parcourt la liste des noms des calques
-            for (let j = 0; j < calquesNoms.length; j++) {
-
-                // si le nom du calque correspond à celui sur lequel est l'élément
-                if (calquesNoms[j] === eltsToShow[i].calqueNom) {
 
                     // on créé l'icone de l'élément
                     var eltIcone = L.icon({
@@ -96,6 +92,10 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
                     })
 
                     // on ajoute le marqueur au cluster (pour afficher des clusters de marqueurs) et au tableau des marqueurs (pour affichage sur le calque)
+            for (let j = 0; j < calquesNoms.length; j++) {
+
+                // si le nom du calque correspond à celui sur lequel est l'élément
+                if (calquesNoms[j] === eltsToShow[i].calqueNom) {
                     clusterGroup.addLayer(marker);
                     markersTabTab[calquesNoms[j]].push(marker);
                     break;
