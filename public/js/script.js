@@ -13,9 +13,6 @@ $(document).ready(function(){
 
     // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
     // récupération des éléments à afficher (transmis via Twig)
-     var erEltsToShowElt = $('.erEltsToShow');
-     var autoEltsToShowElt = $('.autoEltsToShow');
-     var piEltsToShowElt = $('.piEltsToShow');
     var eltsToShowElt = $('.allEltsToShow');
     var calqueList = $('.calquesNomsList');
 
@@ -23,11 +20,7 @@ $(document).ready(function(){
     var calquesWithGroupsObjet = {};
 
     // ajout des calques avec leurs groupes de marqueurs à l'objet qui sera passé en paramètre du control de la gestion des calques
-    // addCalquesWithGroupsToObjet(calquesWithGroupsObjet, erEltsToShowElt);
-    //  addCalquesWithGroupsToObjet(calquesWithGroupsObjet, autoEltsToShowElt);
-    //  addCalquesWithGroupsToObjet(calquesWithGroupsObjet, piEltsToShowElt);
-    add22(calquesWithGroupsObjet, eltsToShowElt, calqueList);
-
+    addCalquesWithGroupsToObjet(calquesWithGroupsObjet, eltsToShowElt, calqueList);
 
     // ajout de l'"icône" de gestion des calques à la carte
     L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
