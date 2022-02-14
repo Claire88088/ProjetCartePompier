@@ -50,8 +50,7 @@ class MapController extends AbstractController
      */
     public function indexAction(EntityManagerInterface $em): Response
     {
-        return $this->render('map/index.html.twig', [
-        ]);
+        return $this->render('map/index.html.twig');
     }
 
     public function rechercheFormAction(EntityManagerInterface $em): Response
@@ -82,20 +81,28 @@ class MapController extends AbstractController
     public function envoiDonneesJSAction(EntityManagerInterface $em): Response
     {
         // TODO changer le nom des variables (mais a priori on changement la façon de passer les valeurs)
-        // TODO : code différent dans testClaire
+        // TODO : ne passer que la liste des noms des calques
 
-//        $calques = $em->getRepository('App:TypeCalque')->findAll();
-//        $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
+        $calques = $em->getRepository('App:TypeCalque')->findAll();
+
+        $calquesNomTab = [];
+        foreach ($calques as $calque) {
+            array_push($calquesNomTab, $calque->getNom());
+        }
+
 
         $erElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnER();
         $autoElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnAutoroute();
         $piElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnPI();
 
+        $allElements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
+
         return $this->render('envoi-donnees-JS.html.twig', [
-//          'calques' => $calques,
+            'calquesNomsList' => $calquesNomTab,
             'erElements' => $erElements,
             'autoElements' => $autoElements,
-            'piElements' => $piElements
+            'piElements' => $piElements,
+            'allElements' => $allElements
         ]);
     }
 
