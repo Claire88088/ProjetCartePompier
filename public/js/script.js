@@ -13,15 +13,13 @@ $(document).ready(function(){
 
     // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
     // récupération des éléments à afficher (transmis via Twig)
-<<<<<<< HEAD
+
     var erEltsToShowElt = $('.erEltsToShow');
 
     var autoEltsToShowElt = $('.autoEltsToShow');
     var piEltsToShowElt = $('.piEltsToShow');
-=======
     var eltsToShowElt = $('.allEltsToShow');
     var calqueList = $('.calquesNomsList');
->>>>>>> bfb089ac502c63573791556886ce247a66020ad3
 
     // on créé un cluster pour afficher les marqueurs sous forme de "clusters"
     let clusterGroup =  L.markerClusterGroup();
@@ -93,11 +91,8 @@ $(document).ready(function(){
 
             // enlève l'alerte si il y en avait une
             $('#position').removeClass('alert-danger');
-<<<<<<< HEAD
             //hideWaitingBtn(formName);
-=======
             //hideWaitingBtn(formName); -------TODO------------
->>>>>>> bfb089ac502c63573791556886ce247a66020ad3
 
             var tab = [];
             tab = e;
