@@ -44,16 +44,24 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt, 
                     console.log(photo)
                     if (photo === null && lien === null) {
                     } else if (photo !== null && lien === null) {
-                        popupContenu += "</br>" + photo
+                        popupContenu +=
+                            '</br>'
+                            + '<div style="display: flex;">'
+                            + '<div style="flex:auto;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
+                            + '</div>';
                     } else if (lien !== null && photo === null) {
-                        popupContenu += "</br>" + lien
+                        popupContenu +=
+                            '</br>'
+                            + '<div style="display: flex;">'
+                            + '<div style="flex:auto;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
+                            + '</div>';
                     } else {
                         popupContenu +=
                             '</br>'
                             + '<div style="display: flex;">'
                             + '<div style="flex:auto;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
                             + '<div style="flex:auto;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
-                            + '</div>'
+                            + '</div>';
                     }
 
                     let popupPoints = new L.popup();
