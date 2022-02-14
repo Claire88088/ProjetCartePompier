@@ -27,9 +27,8 @@ $(document).ready(function(){
     //pour ajouter un calque il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
     var calquesWithGroupsObjet = {};
 
-
     // ajout des calques avec leurs groupes de marqueurs à l'objet qui sera passé en paramètre du control de la gestion des calques
-    addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eltsToShowElt, calqueList);
+    addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eltsToShowElt, calqueList, myMap);
 
     // on ajoute le cluster à la carte
     //myMap.addLayer(clusterGroup);
@@ -37,9 +36,6 @@ $(document).ready(function(){
     // ajout de l'"icône" de gestion des calques à la carte
     L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
 
-    //----------------------------------------------------------------------
-    // récupération des noms des calques que l'on a passé via twig
-    // var clqsElts = document.querySelectorAll('.calques');
 
     //--------------------------------------------------------------------
     // 3. STYLISATION DE L'"ICONE" de gestion des calques
