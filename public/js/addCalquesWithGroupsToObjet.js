@@ -48,8 +48,19 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt)
         let longitude = eltsToShow[i].longitude
 
         // création des marqueurs pour chaque élément
-        let marker = L.marker([latitude, longitude], {icon: eltIcone}).bindPopup(popupPoints);
+        let marker = L.marker([latitude, longitude], {idElement: eltsToShow[i].idElement, icon: eltIcone}).bindPopup(popupPoints);
         markersTab.push(marker);
+
+        marker.addEventListener('click', function() {
+            let idElement = this.options.idElement
+            $.ajax({
+                url: '/map/edit-element-'+idElement+'',
+                type: 'GET',
+                success: function(){
+                    document.location.replace("http://127.0.0.1:8000/map/edit-element-"+idElement+"");
+                }
+            });
+        })
     }
     let markersGroup = L.layerGroup(markersTab);
 

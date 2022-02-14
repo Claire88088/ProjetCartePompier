@@ -422,4 +422,53 @@ class MapController extends AbstractController
             'nomCalque' => $calqueChoisi->getNom(),
         ]);
     }
+
+    /**
+     * Ajout d'un nouvel élément
+     * @Route("/map/edit-element-{idElement}", name="edit_element")
+     * @IsGranted("ROLE_USER")
+     */
+    public function editElementAction(EntityManagerInterface $em, Request $request, int $idElement): Response
+    {
+        $elementClique = $em->getRepository('App:Element')->find($idElement);
+        $idtypeElementC = $elementClique->getTypeElement();
+        $typeElement = $em->getRepository('App:TypeElement')->find($idtypeElementC);
+        $idTypeCalqueC = $typeElement->getTypeCalque();
+        $typeCalque = $em->getRepository('App:TypeCalque')->find($idTypeCalqueC);
+        $typeTypeCalqueC = $typeCalque->getType();
+
+        switch ($typeTypeCalqueC) {
+            case 'ER':
+                $elementForm = $this->createForm(ERType::class, $elementClique);
+                break;
+            case 'TRAVAUX':
+                $elementForm = $this->createForm(TravauxType::class, $elementClique);
+                break;
+            case 'AUTOROUTE':
+                $elementForm = $this->createForm(AutorouteType::class, $elementClique);
+                break;
+            case 'PI':
+                $elementForm = $this->createForm(PIType::class, $elementClique);
+                break;
+            case 'AUTRE':
+                $elementForm = $this->createForm(DefaultElementType::class, $elementClique);
+                break;
+        }
+
+        $elementForm->add('modifier', SubmitType::class, ['label' => 'Modifier cet élément']);
+        $elementForm->handleRequest($request);
+
+        if ($elementForm->isSubmitted() && $elementForm->isValid()) {
+            $em->persist($elementClique);
+            $em->flush();
+
+            $this->addFlash('success', "L'élement a bien été modifié");
+            return $this->redirectToRoute('map');
+        }
+
+        return $this->render('map/edit-element.html.twig', [
+            'idElement' => $idElement,
+            'form' => $elementForm->createView()
+        ]);
+    }
 }

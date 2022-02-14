@@ -14,6 +14,7 @@ $(document).ready(function(){
     // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
     // récupération des éléments à afficher (transmis via Twig)
     var erEltsToShowElt = $('.erEltsToShow');
+
     var autoEltsToShowElt = $('.autoEltsToShow');
     var piEltsToShowElt = $('.piEltsToShow');
 
@@ -82,7 +83,7 @@ $(document).ready(function(){
 
             // enlève l'alerte si il y en avait une
             $('#position').removeClass('alert-danger');
-            hideWaitingBtn(formName);
+            //hideWaitingBtn(formName);
 
             var tab = [];
             tab = e;
@@ -94,7 +95,7 @@ $(document).ready(function(){
             var iconeLien = $('.dd-selected-image').attr('src');
             var newIcon = L.icon({
                 iconUrl: `..${iconeLien}`,
-                iconSize: [64, 64]
+                iconSize: [30, 30]
             });
 
             // Création et ajout à la carte d'un marqueur avec l'icône choisie
@@ -106,7 +107,7 @@ $(document).ready(function(){
                 var iconeLien = $('.dd-selected-image').attr('src');
                 var newIcon = L.icon({
                     iconUrl: `..${iconeLien}`,
-                    iconSize: [64, 64]
+                    iconSize: [30, 30]
                 });
 
                 if (myMap.hasLayer(newMarker)) {
