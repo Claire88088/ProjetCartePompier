@@ -1,8 +1,11 @@
 /**
  * Ajoute un groupe de marqueurs (bilbiothèque Leaflet)
  * créé à partir d'un élément HTML qui a reçu des données de Symfony
- * à un objet qui sera utilisé pour afficher la gestion des calques
+ * à un objet (passé en paramètre) qui sera utilisé pour afficher la gestion des calques
+ * @param calquesWithGroupsObjet objet qui contiendra les couples nom du calque / "groupe de marqueurs à afficher" sur le calque
+ * @param clusterGroup objet Leaflet L.markerClusterGroup permettant de créer des "cluster" pour l'affichage des marqueurs
  * @param elementsToShowElt élément HTML qui contient les données en attribut
+ * @param calquesList [] tableau des noms des calques
  */
 function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt, calquesList)
 {
