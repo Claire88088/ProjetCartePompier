@@ -3,6 +3,15 @@
 {% block global %}
 <div class="sub-nav">
     <h4>Modification de l'élément {{ idElement }}</h4>
-    {{ form(form) }}
+    {{ form_start(form) }}
+
+    <fieldset class="form-group">
+    {{ form_label(form.coordonnees) }}
+    {{ form_errors(form.coordonnees) }}
+    {{ form_row(form.coordonnees.latitude , {'value' : latitude }) }}
+    {{ form_row(form.coordonnees.longitude, {'value' : longitude }) }}
+    </fieldset>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
 </div>
 {% endblock %}

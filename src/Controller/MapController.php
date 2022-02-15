@@ -412,18 +412,16 @@ class MapController extends AbstractController
     }
 
     /**
-     * Ajout d'un nouvel élément
+     * Modification d'un élément
      * @Route("/map/edit-element-{idElement}", name="edit_element")
      * @IsGranted("ROLE_USER")
      */
     public function editElementAction(EntityManagerInterface $em, Request $request, int $idElement): Response
     {
         $elementClique = $em->getRepository('App:Element')->find($idElement);
-        $idtypeElementC = $elementClique->getTypeElement();
-        $typeElement = $em->getRepository('App:TypeElement')->find($idtypeElementC);
-        $idTypeCalqueC = $typeElement->getTypeCalque();
-        $typeCalque = $em->getRepository('App:TypeCalque')->find($idTypeCalqueC);
-        $typeTypeCalqueC = $typeCalque->getType();
+        $typeTypeCalqueC = $elementClique->getTypeElement()->getTypeCalque()->getType();
+        $elementCliquePointLat = $elementClique->getPoints()[0]->getLatitude();
+        $elementCliquePointLong = $elementClique->getPoints()[0]->getLongitude();
 
         $icones = $em->getRepository('App:Icone')->findAll();
         $liensIcones = [];
@@ -477,7 +475,24 @@ class MapController extends AbstractController
 
         return $this->render('map/edit-element.html.twig', [
             'idElement' => $idElement,
-            'form' => $elementForm->createView()
+            'form' => $elementForm->createView(),
+            'latitude' => $elementCliquePointLat,
+            'longitude' => $elementCliquePointLong
         ]);
+    }
+
+    /**
+     * Suppression d'un élément
+     * @Route("/map/delete-element-{idElement}", name="delete_element")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function deleteTransaction(EntityManagerInterface $em, int $idElement): Response
+    {
+        $elementClique = $em->getRepository('App:Element')->find($idElement);
+        sleep(2);
+        $em->remove($elementClique);
+        $em->flush();
+        $this->addFlash('success', "L'élement a bien été supprimé");
+        return $this->redirectToRoute('map');
     }
 }

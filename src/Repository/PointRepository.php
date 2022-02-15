@@ -19,22 +19,18 @@ class PointRepository extends ServiceEntityRepository
         parent::__construct($registry, Point::class);
     }
 
-    // /**
-    //  * @return Point[] Returns an array of Point objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByIdElement(int $id)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('p.element = :val')
+            ->setParameter('val', $id)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Point

@@ -209,3 +209,9 @@ textarea {
 #loader {
     display: none;
 }
+
+.suppression, .suppression:hover, .suppression:active, .suppression:not(:disabled):not(.disabled):active   {
+    background-color: #cc0202;
+    border-color: #cc0202;
+    color: white;
+}

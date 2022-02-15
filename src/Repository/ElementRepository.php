@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Element;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,22 +20,22 @@ class ElementRepository extends ServiceEntityRepository
         parent::__construct($registry, Element::class);
     }
 
-    // /**
-    //  * @return Element[] Returns an array of Element objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findByIdWithPoint(int $id)
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
+            ->innerJoin('App\Entity\Point', 'p')
+            ->where('e.id = p.element')
+            ->andWhere('e.id = :val')
+            ->setParameter('val', $id)
             ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult();
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Element
