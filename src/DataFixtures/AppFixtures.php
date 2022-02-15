@@ -16,7 +16,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // 2 user
+        // 2 users
         $admin = new Users();
         $admin->setNom('admin')->setRoles(["ROLE_ADMIN"])->setPassword('$2y$13$42J55tM7N4R0jdqRc2/4DOrc9o0nt/7huhPRHBalH8bnO0bJ1T3D6');
         $manager->persist($admin);
