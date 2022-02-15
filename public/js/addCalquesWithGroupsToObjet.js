@@ -1,22 +1,26 @@
 /**
- * Ajoute un groupe de marqueurs (bilbiothèque Leaflet)
+ * Ajoute :
+ * 1. des groupes de marqueurs (bilbiothèque Leaflet) par calque
  * créé à partir d'un élément HTML qui a reçu des données de Symfony
  * à un objet (passé en paramètre) qui sera utilisé pour afficher la gestion des calques
+ * 2. des clusters de marqueurs par calque
  * @param calquesWithGroupsObjet objet qui contiendra les couples nom du calque / "groupe de marqueurs à afficher" sur le calque
- * @param clusterGroup objet Leaflet L.markerClusterGroup permettant de créer des "cluster" pour l'affichage des marqueurs
  * @param elementsToShowElt élément HTML qui contient les données en attribut
  * @param calquesList [] tableau des noms des calques
  * @param myMap objet Leaflet L.map carte sur laquelle on affiche
  */
-function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, elementsToShowElt, calquesList, myMap)
+function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt, calquesList, myMap)
 {
+    // traitement des données
     let eltsToShow = JSON.parse(elementsToShowElt[0].attributes[1].value);
     let calquesNoms = JSON.parse(calquesList[0].attributes[1].value);
 
-    // on parcourt les noms des calques pour créer autant de tableaux de marqueurs et de groupes de marqueurs qu'il y a de calques
-    let markersTabTab = [];
+    // on créé autant de tableaux et de clusters de marqueurs qu'il y a de calques
+    let markersTabTab = []; //contiendra les tableaux de marqueurs à afficher par calque
+    let clustersTab = []; // contiendra les "clusters" de marqueurs par calque
     for (let i = 0; i < calquesNoms.length; i++) {
         markersTabTab[calquesNoms[i]] = [];
+        clustersTab[calquesNoms[i]] = L.markerClusterGroup();
     }
 
     // on vérifie qu'il y a des éléments à afficher
@@ -90,15 +94,15 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
                 });
             })
 
-            //on ajoute le marqueur au cluster (pour afficher des clusters de marqueurs)
-            clusterGroup.addLayer(marker);
-
             // on veut afficher les éléments par calque
             for (let j = 0; j < calquesNoms.length; j++) {
                 // si le nom du calque correspond à celui sur lequel est l'élément
                 if (calquesNoms[j] === eltsToShow[i].calqueNom) {
                     // on ajoute le marqueur au tableau des marqueurs (pour affichage sur le calque)
                     markersTabTab[calquesNoms[j]].push(marker);
+
+                    // on ajoute le marqueur au tableau des clusters
+                    clustersTab[calquesNoms[j]].addLayer(marker);
                     break;
                 }
             }
@@ -108,7 +112,7 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
         for (let key in markersTabTab) {
             let markersGroup = L.layerGroup(markersTabTab[key]);
 
-            markersGroup.addTo(myMap); // ajoute les marqueurs des calques "par défaut"
+            //markersGroup.addTo(myMap); // ajoute les marqueurs des calques "par défaut"
 
             // ajout du couple nom du calque / "groupe de marqueurs à afficher" sur le calque
             calquesWithGroupsObjet[key] = markersGroup;
@@ -155,5 +159,20 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eleme
             let iframePdf = $("#iframePdf")
             iframePdf.css("height", $("#photoOuLien").height() + "%")
         })
+
+        // quand on clique sur un "calque" : le cluster fonctionne
+        // quand on reclique dessus : le cluster est inactif
+        $(document).on("click", ".leaflet-control-layers-selector", function(e) {
+            if(this.checked) {
+                // on doit enlever l'espace en début de string qui a été ajouté automatiquement
+                var calqueNom = e.target.nextElementSibling.textContent.trim();
+
+                // on ajoute le cluster à la carte
+                myMap.addLayer(clustersTab[calqueNom]);
+            } else {
+                myMap.removeLayer(clustersTab[calqueNom]);
+            }
+        });
+
     }
 }
