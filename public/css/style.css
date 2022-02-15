@@ -189,7 +189,8 @@ textarea {
 }
 
 .dd-selected-image, .dd-option-image {
-    transform: translateY(25%);
+    transform: translateY(-14%);
+    height: 45px;
 }
 
 .dd-option.dd-option-selected {

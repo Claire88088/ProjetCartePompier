@@ -66,36 +66,26 @@ class Commune
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLatitude()
+    public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
-    /**
-     * @param mixed $latitude
-     */
-    public function setLatitude($latitude): void
+    public function setLatitude($latitude): self
     {
         $this->latitude = $latitude;
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLongitude()
+    public function getLongitude(): ?float
     {
         return $this->longitude;
     }
 
-    /**
-     * @param mixed $longitude
-     */
-    public function setLongitude($longitude): void
+    public function setLongitude($longitude): self
     {
         $this->longitude = $longitude;
+        return $this;
     }
 
     public function __toString()

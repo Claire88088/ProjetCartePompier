@@ -13,33 +13,12 @@ $(document).ready(function(){
 
     // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
     // récupération des éléments à afficher (transmis via Twig)
-
-    var erEltsToShowElt = $('.erEltsToShow');
-
-    var autoEltsToShowElt = $('.autoEltsToShow');
-    var piEltsToShowElt = $('.piEltsToShow');
     var eltsToShowElt = $('.allEltsToShow');
     var calqueList = $('.calquesNomsList');
 
-    // on créé un cluster pour afficher les marqueurs sous forme de "clusters"
-    let clusterGroup =  L.markerClusterGroup();
+    // ajout du système de gestion de l'affichage (calques et éléments)
+    addGestionAffichage(eltsToShowElt, calqueList, myMap);
 
-    //pour ajouter un calque il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
-    var calquesWithGroupsObjet = {};
-
-
-    // ajout des calques avec leurs groupes de marqueurs à l'objet qui sera passé en paramètre du control de la gestion des calques
-    addCalquesWithGroupsToObjet(calquesWithGroupsObjet, clusterGroup, eltsToShowElt, calqueList);
-
-    // on ajoute le cluster à la carte
-    //myMap.addLayer(clusterGroup);
-
-    // ajout de l'"icône" de gestion des calques à la carte
-    L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
-
-    //----------------------------------------------------------------------
-    // récupération des noms des calques que l'on a passé via twig
-    // var clqsElts = document.querySelectorAll('.calques');
 
     //--------------------------------------------------------------------
     // 3. STYLISATION DE L'"ICONE" de gestion des calques
