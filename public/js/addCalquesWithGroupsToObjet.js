@@ -163,10 +163,10 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt, 
         // quand on clique sur un "calque" : le cluster fonctionne
         // quand on reclique dessus : le cluster est inactif
         $(document).on("click", ".leaflet-control-layers-selector", function(e) {
-            if(this.checked) {
-                // on doit enlever l'espace en début de string qui a été ajouté automatiquement
-                var calqueNom = e.target.nextElementSibling.textContent.trim();
+            // on doit enlever l'espace en début de string qui a été ajouté automatiquement
+            var calqueNom = e.target.nextElementSibling.textContent.trim();
 
+            if(this.checked) {
                 // on ajoute le cluster à la carte
                 myMap.addLayer(clustersTab[calqueNom]);
             } else {
