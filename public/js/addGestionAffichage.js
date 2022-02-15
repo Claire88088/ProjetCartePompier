@@ -1,15 +1,12 @@
 /**
  * Ajoute :
- * 1. des groupes de marqueurs (bilbiothèque Leaflet) par calque
- * créé à partir d'un élément HTML qui a reçu des données de Symfony
- * à un objet (passé en paramètre) qui sera utilisé pour afficher la gestion des calques
- * 2. des clusters de marqueurs par calque
- * @param calquesWithGroupsObjet objet qui contiendra les couples nom du calque / "groupe de marqueurs à afficher" sur le calque
- * @param elementsToShowElt élément HTML qui contient les données en attribut
- * @param calquesList [] tableau des noms des calques
+ * 1. le système de gestion de l'affichage des calques (et des éléments)
+ * 2. la fonctionnalité "cluster" de marqueurs par calque
+ * @param elementsToShowElt élément HTML qui contient les éléments à afficher en attribut
+ * @param calquesList [] élément HTML dequi contient les noms des calques en attribut
  * @param myMap objet Leaflet L.map carte sur laquelle on affiche
  */
-function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt, calquesList, myMap)
+function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 {
     // traitement des données
     let eltsToShow = JSON.parse(elementsToShowElt[0].attributes[1].value);
@@ -108,15 +105,22 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt, 
             }
         }
 
-        // on parcourt le tableau de tableau de marqueurs pour créer les groupes de marqueurs par calques
+        //pour ajouter un calque au système de gestion : il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
+        var calquesWithGroupsObjet = {};
+
+        // on parcourt le tableau de tableau de marqueurs pour créer les "groupes de marqueurs" par calque
         for (let key in markersTabTab) {
             let markersGroup = L.layerGroup(markersTabTab[key]);
 
             //markersGroup.addTo(myMap); // ajoute les marqueurs des calques "par défaut"
+            // todo : si on ajoute les marqueurs par défaut il faut aussi ajouter les clusters liés
 
             // ajout du couple nom du calque / "groupe de marqueurs à afficher" sur le calque
             calquesWithGroupsObjet[key] = markersGroup;
         }
+
+        // créé l'"icône" et le système de gestion de l'affichage des calques à la carte
+        L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
 
         $("#header-content").append('<div class="modal fade" id="modalAffichage" tabIndex="-1" role="dialog" aria-labelledby="modalAffichageLabel" aria-hidden="true">'
             + '<div class="modal-dialog" style="max-width: 50%; height: 95%;" role="document">'
@@ -134,7 +138,7 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt, 
             + '</div>'
             + '</div>');
 
-
+        // affichage de la photo
         $(document).on("click", "#photo", function () {
             let photoNode = document.getElementById("photoOuLien");
             if (photoNode.hasChildNodes()) {
@@ -147,6 +151,7 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt, 
             $("#photoOuLien").append("<img style='width:85%; height: 92%' src=" + photo + ">")
         })
 
+        // affichage du pdf
         $(document).on("click", "#lien", function () {
             let lienNode = document.getElementById("photoOuLien");
             if (lienNode.hasChildNodes()) {
@@ -160,8 +165,7 @@ function addCalquesWithGroupsToObjet(calquesWithGroupsObjet, elementsToShowElt, 
             iframePdf.css("height", $("#photoOuLien").height() + "%")
         })
 
-        // quand on clique sur un "calque" : le cluster fonctionne
-        // quand on reclique dessus : le cluster est inactif
+        // activation / inactivation des "clusters"
         $(document).on("click", ".leaflet-control-layers-selector", function(e) {
             // on doit enlever l'espace en début de string qui a été ajouté automatiquement
             var calqueNom = e.target.nextElementSibling.textContent.trim();
