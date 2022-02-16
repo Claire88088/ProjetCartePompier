@@ -7,6 +7,7 @@ use App\Entity\Element;
 use App\Entity\Icone;
 use App\Entity\Point;
 use App\Entity\TypeCalque;
+use App\Entity\TypeElement;
 use App\Form\AutorouteType;
 use App\Form\CalqueType;
 use App\Form\DefaultElementType;
@@ -20,6 +21,7 @@ use App\Form\ERType;
 use App\Form\PIType;
 use App\Form\PointType;
 use App\Form\TravauxType;
+use App\Form\TypeElementType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -96,7 +98,7 @@ class MapController extends AbstractController
     }
 
     /**
-     * Affichage de la liste des calques et la liste des types d'éléments créés pour la modification/suppression
+     * Affichage de la liste des calques créés pour la modification/suppression
      * @Route("/calques-list", name="calques_list")
      * @IsGranted("ROLE_USER")
      */
@@ -179,13 +181,12 @@ class MapController extends AbstractController
         ]);
     }
 
-    // Ajout d'un nouvel élément
     /**
-     * Choix du calque sur lequel ajouter un élément
-     * @Route("/choice-calque", name="choice_calque")
+     * Choix du calque sur lequel ajouter un élément ou un type d'élément
+     * @Route("/choice-calque-{eltToCreate}", name="choice_calque")
      * @IsGranted("ROLE_USER")
      */
-    public function choiceCalqueAction(EntityManagerInterface $em, Request $request): Response
+    public function choiceCalqueAction(Request $request, String $eltToCreate): Response
     {
         // on choisit sur quel calque on veut mettre l'élément
         $choixCalqueForm = $this->createFormBuilder()
@@ -202,13 +203,79 @@ class MapController extends AbstractController
         if ($choixCalqueForm->isSubmitted() && $choixCalqueForm->isValid()) {
             $idCalqueChoisi = $request->request->get('form')['calque'];
 
-            return $this->redirectToRoute('add_element', ['idCalque'=>$idCalqueChoisi]);
+            if ($eltToCreate == 'typeElt') {
+                return $this->redirectToRoute('add_type_element', ['idCalque'=>$idCalqueChoisi]);
+            }
+            if ($eltToCreate == 'element') {
+                return $this->redirectToRoute('add_element', ['idCalque' => $idCalqueChoisi]);
+            }
         }
 
         return $this->render('/map/choix-calque.html.twig', [
-            'choixCalqueForm' => $choixCalqueForm->createView()
+            'choixCalqueForm' => $choixCalqueForm->createView(),
+            'typeACreer' => $eltToCreate
         ]);
     }
+
+
+    /**
+     * Ajout d'un nouveau type forcément du type "AUTRE"
+     * @Route("/map/add-type-element-{idCalque}", name="add_type_element")
+     * @IsGranted("ROLE_USER")
+     */
+    public function addTypeEltAction(EntityManagerInterface $em, Request $request, int $idCalque): Response
+    {
+        $calqueChoisi = $em->getRepository('App:TypeCalque')->find($idCalque);
+
+        $typeElt = new TypeElement();
+        $typeElt->setTypeCalque($calqueChoisi)->setType('AUTRE');
+        $form = $this->createForm(TypeElementType::class, $typeElt);
+        $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter un nouveau type d\'élément']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($typeElt);
+            $em->flush();
+            $this->addFlash('success', 'Le type d\'élément a bien été ajouté !');
+            return $this->redirectToRoute('map');
+        }
+
+        return $this->render('map/add-type-element.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+
+//    // Ajout d'un nouvel élément
+//    /**
+//     * Choix du calque sur lequel ajouter un élément
+//     * @Route("/choice-calque", name="choice_calque")
+//     * @IsGranted("ROLE_USER")
+//     */
+//    public function choiceCalqueAction(EntityManagerInterface $em, Request $request): Response
+//    {
+//        // on choisit sur quel calque on veut mettre l'élément
+//        $choixCalqueForm = $this->createFormBuilder()
+//            ->add('calque', EntityType::class, [
+//                'class' => TypeCalque::class,
+//                'mapped' => false,
+//            ])
+//            ->add('Selectionner', SubmitType::class, [
+//                'label' => 'Sélectionner ce calque'])
+//            ->getForm();
+//
+//        $choixCalqueForm->handleRequest($request);
+//
+//        if ($choixCalqueForm->isSubmitted() && $choixCalqueForm->isValid()) {
+//            $idCalqueChoisi = $request->request->get('form')['calque'];
+//
+//            return $this->redirectToRoute('add_element', ['idCalque'=>$idCalqueChoisi]);
+//        }
+//
+//        return $this->render('/map/choix-calque.html.twig', [
+//            'choixCalqueForm' => $choixCalqueForm->createView()
+//        ]);
+//    }
 
     /**
      * Ajout d'un nouvel élément
@@ -460,19 +527,6 @@ class MapController extends AbstractController
         ]);
     }
 
-
-    // Affichage de la liste des calques et des types d'éléments
-    public function listAction(EntityManagerInterface $em): Response
-    {
-        $calques = $em->getRepository('App:TypeCalque')->findAll();
-        $typesEltWithCalque = $em->getRepository('App:TypeElement')->findAllWithCalque();
-
-        return $this->render('/map/list.html.twig', [
-            'calques' => $calques,
-            'typesEltWithCalque' => $typesEltWithCalque
-        ]);
-    }
-
     /**
      * Suppression d'un élément
      * @Route("/map/delete-element-{idElement}", name="delete_element")
@@ -485,6 +539,18 @@ class MapController extends AbstractController
         $em->flush();
         $this->addFlash('success', "L'élement a bien été supprimé");
         return $this->redirectToRoute('map');
+    }
+
+    // Affichage de la liste des calques et des types d'éléments
+    public function listAction(EntityManagerInterface $em): Response
+    {
+        $calques = $em->getRepository('App:TypeCalque')->findAll();
+        $typesEltWithCalque = $em->getRepository('App:TypeElement')->findAllWithCalque();
+
+        return $this->render('/map/list.html.twig', [
+            'calques' => $calques,
+            'typesEltWithCalque' => $typesEltWithCalque
+        ]);
     }
 
 }

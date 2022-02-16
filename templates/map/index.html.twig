@@ -70,7 +70,9 @@
                         <hr>
                             <button class="btn btn-primary" onclick="location.href='{{ path('add_calque') }}'">Créer un nouveau calque</button>
                         <hr>
-                            <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque') }}'">Ajouter un élément sur un calque existant</button>
+                            <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">Créer un nouveau type d'éléments</button>
+                        <hr>
+                            <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'element'}) }}'">Ajouter un élément sur un calque existant</button>
                         <hr>
                     {% endblock %}
 

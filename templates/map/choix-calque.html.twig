@@ -1,9 +1,19 @@
 {% extends 'map/index.html.twig' %}
 
-{% block title %}Ajout élément - Choix calque{% endblock %}
+{% block title %}Ajout {% if typeACreer == 'element' %}
+        élément
+    {% elseif typeACreer == 'typeElt' %}
+        type d'élément
+    {% endif %} - Choix calque{% endblock %}
 
 {% block global %}
-    <h4>Choix du calque sur lequel ajouter un élément</h4>
+    <h4>Choix du calque sur lequel ajouter un
+        {% if typeACreer == 'element' %}
+            élément
+        {% elseif typeACreer == 'typeElt' %}
+            type d'élément
+        {% endif %}
+    </h4>
     <div>
         {{ form(choixCalqueForm) }}
     </div>
