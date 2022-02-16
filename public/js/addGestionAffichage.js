@@ -24,6 +24,10 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
         clustersTab[calquesNoms[i]] = L.markerClusterGroup();
     }
 
+    // Si 1, un utilisateur est connecté, si 0, non.
+    let divIsConnected = $('.isConnected');
+    let isConnected = divIsConnected[0].attributes[1].value
+
     // on vérifie qu'il y a des éléments à afficher
     if (eltsToShow.length > 0) {
 
@@ -45,35 +49,53 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             let photo = eltsToShow[i].photo
             let lien = eltsToShow[i].lien
 
-
             if (photo === null && lien === null) {
-                popupContenu +=
-                    '</br>'
-                    + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn-primary btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
-                    + '</div>'
+                if (isConnected) {
+                    popupContenu +=
+                        '</br>'
+                        + '<div style="display: flex;">'
+                        + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
+                        + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
+                        + '</div>'
+                }
             } else if (photo !== null && lien === null) {
-                popupContenu +=
-                    '</br>'
-                    + '<div>'
-                    + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
-                    + '</div>'
-                    + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class=" btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
-                    + '</div>'
+                if (isConnected) {
+                    popupContenu +=
+                        '</br>'
+                        + '<div>'
+                        + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
+                        + '</div>'
+                        + '<div style="display: flex;">'
+                        + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
+                        + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class=" btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
+                        + '</div>'
+                } else {
+                    popupContenu +=
+                        '</br>'
+                        + '<div>'
+                        + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
+                        + '</div>'
+                }
             } else if (lien !== null && photo === null) {
-                popupContenu +=
-                    '</br>'
-                    + '<div>'
-                    + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
-                    + '</div>'
-                    + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
-                    + '</div>'
+                if (isConnected) {
+                    popupContenu +=
+                        '</br>'
+                        + '<div>'
+                        + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
+                        + '</div>'
+                        + '<div style="display: flex;">'
+                        + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
+                        + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
+                        + '</div>'
+                } else {
+                    popupContenu +=
+                        '</br>'
+                        + '<div>'
+                        + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
+                        + '</div>'
+                }
             } else {
+                if (isConnected) {
                 popupContenu +=
                     '</br>'
                     + '<div style="display: flex;">'
@@ -82,8 +104,16 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                     + '</div>'
                     + '<div style="display: flex;">'
                     + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px; background-color: " onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
                     + '</div>'
+                } else {
+                    popupContenu +=
+                        '</br>'
+                        + '<div style="display: flex;">'
+                        + '<div style="flex:auto; margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
+                        + '<div style="flex:auto; margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
+                        + '</div>'
+                }
             }
 
             let popupPoints = new L.popup();
@@ -193,5 +223,17 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             }
         });
 
+    }
+    $(document).on("click", ".suppression", function () {
+        ConfirmDelete()
+    })
+
+    function ConfirmDelete()
+    {
+        var x = confirm("Etes-vous sur de vouloir supprimer ?");
+        if (x)
+            return true;
+        else
+            return false;
     }
 }

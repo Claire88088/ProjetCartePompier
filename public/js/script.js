@@ -95,8 +95,6 @@ $(document).ready(function(){
 
                 // enlève l'alerte si il y en avait une
                 $('#position').removeClass('alert-danger');
-                //hideWaitingBtn(formName);
-                //hideWaitingBtn(formName); -------TODO------------
 
                 var tab = [];
                 tab = e;
@@ -137,12 +135,6 @@ $(document).ready(function(){
                 // Requête XHTML pour retourner l'adresse selon des coordonnées GPS (lat et long)
                 const req = new XMLHttpRequest();
                 req.open("GET", "https://api-adresse.data.gouv.fr/reverse/?lon=" + long + "&lat=" + lat + "");
-
-                // on ajoute des loaders pour l'utilisateur
-                $('#loader').show();
-                $('#' + formName + '_ajouter').click(function (e) {
-                    switchToWaitingBtn(formName);
-                });
 
                 req.addEventListener("load", function () {
                     var jp = JSON.parse(req.responseText);
