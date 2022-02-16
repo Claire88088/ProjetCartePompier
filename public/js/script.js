@@ -25,9 +25,15 @@ $(document).ready(function(){
         divTypesElementCalque[i].style.display = "none"
         divCalquesList[i].addEventListener("mouseover", function (event) {
             divTypesElementCalque[i].style.display = "block"
+            divTypesElementCalque[i].addEventListener("mouseover", function (event) {
+                divTypesElementCalque[i].style.display = "block"
+            })
         })
         divCalquesList[i].addEventListener("mouseout", function (event) {
             divTypesElementCalque[i].style.display = "none"
+            divTypesElementCalque[i].addEventListener("mouseout", function (event) {
+                divTypesElementCalque[i].style.display = "none"
+            })
         })
     }
 
