@@ -1,0 +1,40 @@
+/* liste des calques et types éléments */
+.listElt {
+    text-align: start;
+    list-style-type: none;
+}
+
+.listElt-calque, .listElt-typeElt {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calque {
+    color: #6D6D6D;
+    line-height: 1.5;
+    background-color: #F0F0F0;
+    flex: auto;
+    padding: 5px;
+    padding-left: 10px;
+}
+
+.listElt-types {
+    padding: 0px;
+}
+
+.typeElt {
+    border: 1px solid rgba(0,0,0,.15);
+    padding: 5px;
+    padding-left: 40px;
+    flex: auto;
+}
+
+.listElt-icon {
+    width: unset;
+    padding: 5px;
+}
+
+.listElt-icon.edit {
+    margin-right: -4px;
+}

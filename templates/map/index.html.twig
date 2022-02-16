@@ -65,6 +65,7 @@
                         <div class="alert alert-success" role="alert">{{ msg }}</div>
                     {% endfor %}
                     {% block global %}
+                        {{ render(controller('App\\Controller\\MapController::listAction')) }}
                             <button class="btn btn-primary" onclick="location.href='{{ path('calques_list') }}'">Lister les calques</button>
                         <hr>
                             <button class="btn btn-primary" onclick="location.href='{{ path('add_calque') }}'">Créer un nouveau calque</button>
