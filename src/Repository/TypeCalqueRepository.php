@@ -41,8 +41,19 @@ class TypeCalqueRepository extends ServiceEntityRepository
             ->andWhere('e.id = p.element')
             ->getQuery()->getArrayResult();
     }
+/*
+    public function findAllWithTypesElt()
+    {
+        $query = $this->_em->createQueryBuilder('tc');
+        return $query->select('tc.nom as calque, te')
+            ->from(TypeCalque::class, 'tc')
+            ->join('App\Entity\TypeElement', 'te')
+            ->where('tc.id = te.typeCalque')
+            ->orderBy('te.typeCalque')
+            ->getQuery()->getArrayResult();
+    }
 
-
+/*
     public function findAllElementsToShowOnER()
     {
         $query = $this->_em->createQueryBuilder('tc');
