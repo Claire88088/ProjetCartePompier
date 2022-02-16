@@ -14,7 +14,7 @@ $(document).ready(function(){
     }).addTo(myMap);
 
 
-        // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
+    // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
     // récupération des éléments à afficher (transmis via Twig)
     var eltsToShowElt = $('.allEltsToShow');
     var calqueList = $('.calquesNomsList');
@@ -65,18 +65,15 @@ $(document).ready(function(){
     let communeLat = 46.8156700185;
     let communeLong = 0.552598976936;
 
-    formCommune.addEventListener("change", function() {
-        let selectedCommune = formCommune.options[formCommune.selectedIndex];
-        communeLat = selectedCommune.getAttribute('latitude');
-        communeLong = selectedCommune.getAttribute('longitude');
-    });
+    // on créé le form de l'API et on recherche l'adresse
+    searchAddress(myMap, communeLat, communeLong);
 
     // Au changement de commune dans la liste
     formCommune.addEventListener('change', event => {
         let geocoderControl = document.getElementsByClassName('geocoder-control leaflet-control')[0];
         geocoderControl.parentNode.removeChild(geocoderControl);
 
-        selectedCommune = formCommune.options[formCommune.selectedIndex];
+        let selectedCommune = formCommune.options[formCommune.selectedIndex];
         communeLat = selectedCommune.getAttribute('latitude')
         communeLong = selectedCommune.getAttribute('longitude')
         searchAddress(myMap, communeLat, communeLong);
