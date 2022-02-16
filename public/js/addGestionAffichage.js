@@ -149,6 +149,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                 }
             }
         }
+    }
 
         //pour ajouter un calque au système de gestion : il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
         var calquesWithGroupsObjet = {};
@@ -223,7 +224,6 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             }
         });
 
-    }
     $(document).on("click", ".suppression", function () {
         ConfirmDelete()
     })
