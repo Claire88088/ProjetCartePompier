@@ -25,7 +25,56 @@ class AppFixtures extends Fixture
         $user->setNom('user')->setRoles(["ROLE_USER"])->setPassword('$2y$13$eD2Ou25gPvOIh4W203mOwe1IyEkN0ttPM309ZD4FfSxD0dMKwmqFW');
         $manager->persist($user);
 
-        // communes
+        // 12 communes
+        $commune1 = new Commune();
+        $commune1->setNom('Antran')->setCodePostal('86100')->setLatitude(46.849998 )->setLongitude(0.53333);
+        $manager->persist($commune1);
+
+        $commune2 = new Commune();
+        $commune2->setNom('Availles-en-Châtellerault')->setCodePostal('86530')->setLatitude(46.7561922634)->setLongitude(0.569776256918);
+        $manager->persist($commune2);
+
+        $commune3 = new Commune();
+        $commune3->setNom('Cenon-sur-Vienne')->setCodePostal('86530')->setLatitude(46.76667  )->setLongitude(0.53333);
+        $manager->persist($commune3);
+
+        $commune4 = new Commune();
+        $commune4->setNom('Châtellerault')->setCodePostal('86100')->setLatitude(46.8156700185)->setLongitude(0.552598976936);
+        $manager->persist($commune4);
+
+        $commune5 = new Commune();
+        $commune5->setNom('Colombiers')->setCodePostal('86490')->setLatitude(46.7799541393 )->setLongitude(0.437112922808);
+        $manager->persist($commune5);
+
+        $commune6 = new Commune();
+        $commune6->setNom('Naintré')->setCodePostal('86530')->setLatitude(46.7725487578 )->setLongitude(0.494183225778);
+        $manager->persist($commune6);
+
+        $commune7 = new Commune();
+        $commune7->setNom('Oyré')->setCodePostal('86220')->setLatitude(46.8626653271)->setLongitude(0.646321039276);
+        $manager->persist($commune7);
+
+        $commune8 = new Commune();
+        $commune8->setNom('Scorbé-Clairvaux')->setCodePostal('86140')->setLatitude(46.8070996218 )->setLongitude(0.410520780394);
+        $manager->persist($commune8);
+
+        $commune9 = new Commune();
+        $commune9->setNom('Sénillé St-Sauveur')->setCodePostal('86100')->setLatitude(46.8023769572)->setLongitude(0.645222775662);
+        $manager->persist($commune9);
+
+        $commune10 = new Commune();
+        $commune10->setNom('Targé')->setCodePostal('86100')->setLatitude(46.800000)->setLongitude(0.583333);
+        $manager->persist($commune10);
+
+        $commune11 = new Commune();
+        $commune11->setNom('Thuré')->setCodePostal('86540')->setLatitude(46.8408988705 )->setLongitude(0.455456315657);
+        $manager->persist($commune11);
+
+        $commune12 = new Commune();
+        $commune12->setNom('Usseau')->setCodePostal('86230')->setLatitude(46.8867943192 )->setLongitude(0.494483523463);
+        $manager->persist($commune12);
+
+        /*
         $commune1 = new Commune();
         $commune1->setNom('Buxerolles')->setCodePostal('86180')->setLatitude(46.5985617)->setLongitude(0.352332);
         $manager->persist($commune1);
@@ -33,10 +82,8 @@ class AppFixtures extends Fixture
         $commune2 = new Commune();
         $commune2->setNom('Poitiers')->setCodePostal('86000')->setLatitude(46.580224)->setLongitude(0.340375);
         $manager->persist($commune2);
+*/
 
-        $commune3 = new Commune();
-        $commune3->setNom('Châtellerault')->setCodePostal('86100')->setLatitude(46.816487)->setLongitude(0.548146);
-        $manager->persist($commune3);
 
         // 4 types de calque + 1 "Autre"
         $typeCalqueER = new TypeCalque();
