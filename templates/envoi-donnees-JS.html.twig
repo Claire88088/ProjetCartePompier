@@ -1,12 +1,6 @@
 {# Pour passer des variables de Twig à JS #}
-{#    {% for calque in calques %}#}
-{#    <div class="calques" calques="{{ calque.nom }}"></div>#}
-{#    {% endfor %}#}
 
-    <div class="erEltsToShow" erEltsToShow="{{ erElements|json_encode() }}"></div>
-    <div class="autoEltsToShow" autoEltsToShow="{{ autoElements|json_encode() }}"></div>
-    <div class="piEltsToShow" piEltsToShow="{{ piElements|json_encode() }}"></div>
-    <div class="allEltsToShow" allEltsToShow="{{ allElements|json_encode() }}"></div>
-    <div class="calquesNomsList" calquesNomsList="{{ calquesNomsList|json_encode() }}"></div>
+<div class="allEltsToShow" allEltsToShow="{{ allElements|json_encode() }}"></div>
+<div class="calquesNomsList" calquesNomsList="{{ calquesNomsList|json_encode() }}"></div>
 
 
