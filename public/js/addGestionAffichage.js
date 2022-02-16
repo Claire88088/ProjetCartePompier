@@ -8,6 +8,10 @@
  */
 function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 {
+    // taille des icones :
+    let iconeHauteur = 50;
+    let iconeLargeur = 50;
+
     // traitement des données
     let eltsToShow = JSON.parse(elementsToShowElt[0].attributes[1].value);
     let calquesNoms = JSON.parse(calquesList[0].attributes[1].value);
@@ -29,7 +33,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             // on créé l'icone de l'élément
             var eltIcone = L.icon({
                 iconUrl: `../MarkersIcons/${eltsToShow[i].lienIcone}`,
-                iconSize: [30, 30]
+                iconSize: [iconeLargeur, iconeHauteur]
             });
 
             // Mise en forme de la popup
@@ -41,34 +45,24 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             let photo = eltsToShow[i].photo
             let lien = eltsToShow[i].lien
 
-
             if (photo === null && lien === null) {
                 popupContenu +=
                     '</br>'
-                    + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn-primary btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
-                    + '</div>'
+                    + '<div style="text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier cet élement</button></div>'
             } else if (photo !== null && lien === null) {
                 popupContenu +=
                     '</br>'
                     + '<div>'
                     + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
-                    + '</div>'
-                    + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class=" btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
-                    + '</div>'
+                    + '<div style="text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier cet élement</button></div>'
+                    + '</div>';
             } else if (lien !== null && photo === null) {
                 popupContenu +=
                     '</br>'
                     + '<div>'
                     + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
-                    + '</div>'
-                    + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
-                    + '</div>'
+                    + '<div id="modification" style="text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier cet élement</button></div>'
+                    + '</div>';
             } else {
                 popupContenu +=
                     '</br>'
@@ -76,10 +70,8 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                     + '<div style="flex:auto; margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
                     + '<div style="flex:auto; margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
                     + '</div>'
-                    + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px; background-color: " onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
-                    + '</div>'
+                    + '<div style="text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier cet élement</button></div>';
+
             }
 
             let popupPoints = new L.popup();
@@ -94,12 +86,13 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 
             $(document).on("click", "#modification"+eltsToShow[i].idElement+"", function () {
                 let idElement = marker.options.idElement
-                document.location.replace("http://127.0.0.1:8000/map/edit-element-"+idElement+"");
-            })
-
-            $(document).on("click", "#suppression"+eltsToShow[i].idElement+"", function () {
-                let idElement = marker.options.idElement
-                document.location.replace("http://127.0.0.1:8000/map/delete-element-"+idElement+"");
+                $.ajax({
+                    url: '/map/edit-element-'+idElement+'',
+                    type: 'GET',
+                    success: function(){
+                        document.location.replace("http://127.0.0.1:8000/map/edit-element-"+idElement+"");
+                    }
+                });
             })
 
             // on veut afficher les éléments par calque

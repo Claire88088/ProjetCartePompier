@@ -1,4 +1,7 @@
 $(document).ready(function(){
+    // taille des icones :
+    let iconeHauteur = 50;
+    let iconeLargeur = 50;
 
     // 1. CREATION DE LA CARTE avec un fond de carte OSM centrée sur chatellerault---------------------------------
     // 13 : c'est le zoom entre minZoom et maxZoom (cf après)
@@ -86,7 +89,7 @@ $(document).ready(function(){
                 var iconeLien = $('.dd-selected-image').attr('src');
                 var newIcon = L.icon({
                     iconUrl: `..${iconeLien}`,
-                    iconSize: [30, 30]
+                    iconSize: [iconeLargeur, iconeHauteur]
                 });
 
                 // Création et ajout à la carte d'un marqueur avec l'icône choisie
@@ -98,7 +101,7 @@ $(document).ready(function(){
                     var iconeLien = $('.dd-selected-image').attr('src');
                     var newIcon = L.icon({
                         iconUrl: `..${iconeLien}`,
-                        iconSize: [30, 30]
+                        iconSize: [iconeLargeur, iconeHauteur]
                     });
 
                     if (myMap.hasLayer(newMarker)) {
