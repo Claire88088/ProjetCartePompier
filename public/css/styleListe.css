@@ -38,3 +38,7 @@
 .listElt-icon.edit {
     margin-right: -4px;
 }
+
+.typeElementCalque {
+    display: none;
+}

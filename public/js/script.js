@@ -19,6 +19,18 @@ $(document).ready(function(){
     var eltsToShowElt = $('.allEltsToShow');
     var calqueList = $('.calquesNomsList');
 
+    var divCalquesList = document.getElementsByClassName('listElt-calque')
+    var divTypesElementCalque = document.getElementsByClassName('typeElementCalque')
+    for (let i=0; i < divCalquesList.length; i++) {
+        divTypesElementCalque[i].style.display = "none"
+        divCalquesList[i].addEventListener("mouseover", function (event) {
+            divTypesElementCalque[i].style.display = "block"
+        })
+        divCalquesList[i].addEventListener("mouseout", function (event) {
+            divTypesElementCalque[i].style.display = "none"
+        })
+    }
+
     // ajout du système de gestion de l'affichage (calques et éléments)
     addGestionAffichage(eltsToShowElt, calqueList, myMap);
 

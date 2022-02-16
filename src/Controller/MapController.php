@@ -91,7 +91,7 @@ class MapController extends AbstractController
 
         return $this->render('envoi-donnees-JS.html.twig', [
             'calquesNomsList' => $calquesNomTab,
-            'allElements' => $allElements
+            'allElements' => $allElements,
         ]);
     }
 
