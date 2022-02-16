@@ -27,7 +27,7 @@ class AppFixtures extends Fixture
 
         // 12 communes
         $commune1 = new Commune();
-        $commune1->setNom('Antran')->setCodePostal('86100')->setLatitude(46.877083076)->setLongitude(0.530703043552);
+        $commune1->setNom('Antran')->setCodePostal('86100')->setLatitude(46.849998 )->setLongitude(0.53333);
         $manager->persist($commune1);
 
         $commune2 = new Commune();
@@ -35,7 +35,7 @@ class AppFixtures extends Fixture
         $manager->persist($commune2);
 
         $commune3 = new Commune();
-        $commune3->setNom('Cenon-sur-Vienne')->setCodePostal('86530')->setLatitude(46.7589403896 )->setLongitude(0.529064773205);
+        $commune3->setNom('Cenon-sur-Vienne')->setCodePostal('86530')->setLatitude(46.76667  )->setLongitude(0.53333);
         $manager->persist($commune3);
 
         $commune4 = new Commune();
