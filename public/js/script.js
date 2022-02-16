@@ -14,7 +14,7 @@ $(document).ready(function(){
     }).addTo(myMap);
 
 
-    // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
+        // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
     // récupération des éléments à afficher (transmis via Twig)
     var eltsToShowElt = $('.allEltsToShow');
     var calqueList = $('.calquesNomsList');

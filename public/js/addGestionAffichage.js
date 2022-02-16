@@ -8,7 +8,7 @@
  */
 function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 {
-    // taille des icones :
+        // taille des icones :
     let iconeHauteur = 50;
     let iconeLargeur = 50;
 
