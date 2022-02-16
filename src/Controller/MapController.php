@@ -255,7 +255,7 @@ class MapController extends AbstractController
      */
     public function editTypeEltAction(EntityManagerInterface $em, Request $request, int $id): Response
     {
-        $typeElt = $em->getRepository('App:TypeCalque')->find($id);
+        $typeElt = $em->getRepository('App:TypeElement')->find($id);
         $form = $this->createForm(TypeElementType::class, $typeElt);
         $form->add('Modifier', SubmitType::class, ['label' => 'Modifier le type d\'élément']);
         $form->handleRequest($request);
