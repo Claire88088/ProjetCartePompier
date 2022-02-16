@@ -460,6 +460,7 @@ class MapController extends AbstractController
         ]);
     }
 
+
     // Affichage de la liste des calques et des types d'éléments
     public function listAction(EntityManagerInterface $em): Response
     {
@@ -470,6 +471,20 @@ class MapController extends AbstractController
             'calques' => $calques,
             'typesEltWithCalque' => $typesEltWithCalque
         ]);
+    }
+
+    /**
+     * Suppression d'un élément
+     * @Route("/map/delete-element-{idElement}", name="delete_element")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function deleteElementAction(EntityManagerInterface $em, int $idElement): Response
+    {
+        $elementClique = $em->getRepository('App:Element')->find($idElement);
+        $em->remove($elementClique);
+        $em->flush();
+        $this->addFlash('success', "L'élement a bien été supprimé");
+        return $this->redirectToRoute('map');
     }
 
 }
