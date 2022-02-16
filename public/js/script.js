@@ -61,11 +61,15 @@ $(document).ready(function(){
     // Pour la première commune selectionnée
     let formCommune = document.getElementById("form_commune");
 
-    let selectedCommune = formCommune.options[formCommune.selectedIndex];
-    let communeLat = selectedCommune.getAttribute('latitude');
-    let communeLong = selectedCommune.getAttribute('longitude');
-    // on créé le form de l'API et on recherche l'adresse
-    searchAddress(myMap, communeLat, communeLong);
+    // Par défaut : la commune sélectionnée est Châtellerault
+    let communeLat = 46.8156700185;
+    let communeLong = 0.552598976936;
+
+    formCommune.addEventListener("change", function() {
+        let selectedCommune = formCommune.options[formCommune.selectedIndex];
+        communeLat = selectedCommune.getAttribute('latitude');
+        communeLong = selectedCommune.getAttribute('longitude');
+    });
 
     // Au changement de commune dans la liste
     formCommune.addEventListener('change', event => {
