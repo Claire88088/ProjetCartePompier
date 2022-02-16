@@ -87,12 +87,18 @@ class MapController extends AbstractController
         foreach ($calques as $calque) {
             array_push($calquesNomTab, $calque->getNom());
         }
-
         $allElements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
+
+        $sessionAttr = $_SESSION['_sf2_attributes'];
+        $c = false;
+        if(array_key_exists('_security.last_username', $sessionAttr)) {
+            $c = true;
+        }
 
         return $this->render('envoi-donnees-JS.html.twig', [
             'calquesNomsList' => $calquesNomTab,
             'allElements' => $allElements,
+            'isConnected' => $c
         ]);
     }
 
