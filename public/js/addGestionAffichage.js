@@ -8,7 +8,7 @@
  */
 function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 {
-        // taille des icones :
+    // taille des icones :
     let iconeHauteur = 50;
     let iconeLargeur = 50;
 
@@ -50,8 +50,8 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                 popupContenu +=
                     '</br>'
                     + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn-primary btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class="btn-primary btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
                     + '</div>'
             } else if (photo !== null && lien === null) {
                 popupContenu +=
@@ -60,8 +60,8 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                     + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
                     + '</div>'
                     + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class=" btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class=" btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
                     + '</div>'
             } else if (lien !== null && photo === null) {
                 popupContenu +=
@@ -70,8 +70,8 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                     + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
                     + '</div>'
                     + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class="btn suppression" style="font-size: 12px; padding:5px;" onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
                     + '</div>'
             } else {
                 popupContenu +=
@@ -81,8 +81,8 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                     + '<div style="flex:auto; margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
                     + '</div>'
                     + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px; background-color: " onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class="btn suppression" style="font-size: 12px; padding:5px; background-color: " onclick="return confirm(\'êtes vous sur de vouloir supprimer ?\');">Supprimer</button></div>'
                     + '</div>'
             }
 
@@ -94,16 +94,19 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             let longitude = eltsToShow[i].longitude
 
             // création des marqueurs pour chaque élément
-            let marker = L.marker([latitude, longitude], {idElement: eltsToShow[i].idElement, icon: eltIcone}).bindPopup(popupPoints);
+            let marker = L.marker([latitude, longitude], {
+                idElement: eltsToShow[i].idElement,
+                icon: eltIcone
+            }).bindPopup(popupPoints);
 
-            $(document).on("click", "#modification"+eltsToShow[i].idElement+"", function () {
+            $(document).on("click", "#modification" + eltsToShow[i].idElement + "", function () {
                 let idElement = marker.options.idElement
-                document.location.replace("http://127.0.0.1:8000/map/edit-element-"+idElement+"");
+                document.location.replace("http://127.0.0.1:8000/map/edit-element-" + idElement + "");
             })
 
-            $(document).on("click", "#suppression"+eltsToShow[i].idElement+"", function () {
+            $(document).on("click", "#suppression" + eltsToShow[i].idElement + "", function () {
                 let idElement = marker.options.idElement
-                document.location.replace("http://127.0.0.1:8000/map/delete-element-"+idElement+"");
+                document.location.replace("http://127.0.0.1:8000/map/delete-element-" + idElement + "");
             })
 
             // on veut afficher les éléments par calque
@@ -119,79 +122,78 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                 }
             }
         }
-
-        //pour ajouter un calque au système de gestion : il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
-        var calquesWithGroupsObjet = {};
-
-        // on parcourt le tableau de tableau de marqueurs pour créer les "groupes de marqueurs" par calque
-        for (let key in markersTabTab) {
-            let markersGroup = L.layerGroup(markersTabTab[key]);
-
-            //markersGroup.addTo(myMap); // ajoute les marqueurs des calques "par défaut"
-            // todo : si on ajoute les marqueurs par défaut il faut aussi ajouter les clusters liés
-
-            // ajout du couple nom du calque / "groupe de marqueurs à afficher" sur le calque
-            calquesWithGroupsObjet[key] = markersGroup;
-        }
-
-        // créé l'"icône" et le système de gestion de l'affichage des calques à la carte
-        L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
-
-        $("#header-content").append('<div class="modal fade" id="modalAffichage" tabIndex="-1" role="dialog" aria-labelledby="modalAffichageLabel" aria-hidden="true">'
-            + '<div class="modal-dialog" style="max-width: 50%; height: 95%;" role="document">'
-            + '<div class="modal-content" style="height: 100%;">'
-            + '<div class="modal-header">'
-            + '<h5 class="modal-title" id="modalAffichageLabel">Affichage du fichier</h5>'
-            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
-            + '<span aria-hidden="true">&times;</span>'
-            + '</button>'
-            + '</div>'
-            + '<div id="photoOuLien" style="height: 100%;">'
-
-            + '</div>'
-            + '</div>'
-            + '</div>'
-            + '</div>');
-
-        // affichage de la photo
-        $(document).on("click", "#photo", function () {
-            let photoNode = document.getElementById("photoOuLien");
-            if (photoNode.hasChildNodes()) {
-                while (photoNode.firstChild) {
-                    photoNode.removeChild(photoNode.lastChild);
-                }
-            }
-            let photo = $("#photo").attr("photo")
-
-            $("#photoOuLien").append("<img style='width:85%; height: 92%' src=" + photo + ">")
-        })
-
-        // affichage du pdf
-        $(document).on("click", "#lien", function () {
-            let lienNode = document.getElementById("photoOuLien");
-            if (lienNode.hasChildNodes()) {
-                while (lienNode.firstChild) {
-                    lienNode.removeChild(lienNode.lastChild);
-                }
-            }
-            let lien = $("#lien").attr("lien")
-            $("#photoOuLien").append("<iframe id='iframePdf' style='width:95%;' src=" + lien + "></iframe>")
-            let iframePdf = $("#iframePdf")
-            iframePdf.css("height", $("#photoOuLien").height() + "%")
-        })
-
-        // activation / inactivation des "clusters"
-        $(document).on("click", ".leaflet-control-layers-selector", function(e) {
-            // on doit enlever l'espace en début de string qui a été ajouté automatiquement
-            var calqueNom = e.target.nextElementSibling.textContent.trim();
-
-            if(this.checked) {
-                // on ajoute le cluster à la carte
-                myMap.addLayer(clustersTab[calqueNom]);
-            } else {
-                myMap.removeLayer(clustersTab[calqueNom]);
-            }
-        });
-
     }
+
+    //pour ajouter un calque au système de gestion : il faut un objet contenant des couples nom du calque / "groupe de marqueurs pour un calque"
+    var calquesWithGroupsObjet = {};
+
+    // on parcourt le tableau de tableau de marqueurs pour créer les "groupes de marqueurs" par calque
+    for (let key in markersTabTab) {
+        let markersGroup = L.layerGroup(markersTabTab[key]);
+
+        //markersGroup.addTo(myMap); // ajoute les marqueurs des calques "par défaut"
+        // todo : si on ajoute les marqueurs par défaut il faut aussi ajouter les clusters liés
+
+        // ajout du couple nom du calque / "groupe de marqueurs à afficher" sur le calque
+        calquesWithGroupsObjet[key] = markersGroup;
+    }
+
+    // créé l'"icône" et le système de gestion de l'affichage des calques à la carte
+    L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
+
+    $("#header-content").append('<div class="modal fade" id="modalAffichage" tabIndex="-1" role="dialog" aria-labelledby="modalAffichageLabel" aria-hidden="true">'
+        + '<div class="modal-dialog" style="max-width: 50%; height: 95%;" role="document">'
+        + '<div class="modal-content" style="height: 100%;">'
+        + '<div class="modal-header">'
+        + '<h5 class="modal-title" id="modalAffichageLabel">Affichage du fichier</h5>'
+        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
+        + '<span aria-hidden="true">&times;</span>'
+        + '</button>'
+        + '</div>'
+        + '<div id="photoOuLien" style="height: 100%;">'
+
+        + '</div>'
+        + '</div>'
+        + '</div>'
+        + '</div>');
+
+    // affichage de la photo
+    $(document).on("click", "#photo", function () {
+        let photoNode = document.getElementById("photoOuLien");
+        if (photoNode.hasChildNodes()) {
+            while (photoNode.firstChild) {
+                photoNode.removeChild(photoNode.lastChild);
+            }
+        }
+        let photo = $("#photo").attr("photo")
+
+        $("#photoOuLien").append("<img style='width:85%; height: 92%' src=" + photo + ">")
+    })
+
+    // affichage du pdf
+    $(document).on("click", "#lien", function () {
+        let lienNode = document.getElementById("photoOuLien");
+        if (lienNode.hasChildNodes()) {
+            while (lienNode.firstChild) {
+                lienNode.removeChild(lienNode.lastChild);
+            }
+        }
+        let lien = $("#lien").attr("lien")
+        $("#photoOuLien").append("<iframe id='iframePdf' style='width:95%;' src=" + lien + "></iframe>")
+        let iframePdf = $("#iframePdf")
+        iframePdf.css("height", $("#photoOuLien").height() + "%")
+    })
+
+    // activation / inactivation des "clusters"
+    $(document).on("click", ".leaflet-control-layers-selector", function(e) {
+        // on doit enlever l'espace en début de string qui a été ajouté automatiquement
+        var calqueNom = e.target.nextElementSibling.textContent.trim();
+
+        if(this.checked) {
+            // on ajoute le cluster à la carte
+            myMap.addLayer(clustersTab[calqueNom]);
+        } else {
+            myMap.removeLayer(clustersTab[calqueNom]);
+        }
+    });
 }
