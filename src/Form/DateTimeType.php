@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Component\Form\Extension\Core\Type;
+namespace App\Form;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
