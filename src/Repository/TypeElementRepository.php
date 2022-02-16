@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\TypeCalque;
 use App\Entity\TypeElement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,17 @@ class TypeElementRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TypeElement::class);
+    }
+
+    public function findAllWithCalque()
+    {
+        $query = $this->_em->createQueryBuilder('te');
+        return $query->select('te, tc.id as calqueId')
+            ->from(TypeElement::class, 'te')
+            ->join('App\Entity\TypeCalque', 'tc')
+            ->where('tc.id = te.typeCalque')
+            ->orderBy('te.typeCalque')
+            ->getQuery()->getArrayResult();
     }
 
     // /**
