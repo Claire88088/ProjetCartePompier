@@ -80,9 +80,6 @@ class MapController extends AbstractController
     // Envoi des données nécessaires à JS
     public function envoiDonneesJSAction(EntityManagerInterface $em): Response
     {
-        // TODO changer le nom des variables (mais a priori on changement la façon de passer les valeurs)
-        // TODO : ne passer que la liste des noms des calques
-
         $calques = $em->getRepository('App:TypeCalque')->findAll();
 
         $calquesNomTab = [];
@@ -90,45 +87,27 @@ class MapController extends AbstractController
             array_push($calquesNomTab, $calque->getNom());
         }
 
-
-        $erElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnER();
-        $autoElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnAutoroute();
-        $piElements = $em->getRepository('App:TypeCalque')->findAllElementsToShowOnPI();
-
         $allElements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
 
         return $this->render('envoi-donnees-JS.html.twig', [
             'calquesNomsList' => $calquesNomTab,
-            'erElements' => $erElements,
-            'autoElements' => $autoElements,
-            'piElements' => $piElements,
             'allElements' => $allElements
         ]);
     }
 
-//    /**
-//     * @param EntityManagerInterface $em
-//     * @Route("/envoi-calques", name="envoi_calques")
-//     * @return JsonResponse
-//     */
-//    public function envoiCalques(EntityManagerInterface $em): JsonResponse
-//    {
-//        $elements = $em->getRepository('App:TypeCalque')->findAllElementsToShow();
-//        return new JsonResponse($elements);
-//    }
-
-
     /**
-     * Affichage de la liste des calques créés pour la modification/suppression
+     * Affichage de la liste des calques et la liste des types d'éléments créés pour la modification/suppression
      * @Route("/calques-list", name="calques_list")
      * @IsGranted("ROLE_USER")
      */
     public function calquesListAction(EntityManagerInterface $em): Response
     {
         $calques = $em->getRepository('App:TypeCalque')->findAll();
+        $typesEltWithCalque = $em->getRepository('App:TypeElement')->findAllWithCalque();
 
         return $this->render('/map/calques-list.html.twig', [
             'calques' => $calques,
+            'typesEltWithCalque' => $typesEltWithCalque
         ]);
     }
 
@@ -257,11 +236,11 @@ class MapController extends AbstractController
         foreach($icones as $icone)  {
             $liensIcones[$icone->getLien()] = $icone;
         }
-    /*
-        $data = [];
-        $data['typeEltChoices'] = $options;
-        $data['iconeChoices'] = $liensIcones; 
-      */
+        /*
+            $data = [];
+            $data['typeEltChoices'] = $options;
+            $data['iconeChoices'] = $liensIcones;
+          */
         // on créé le formulaire en fonction du type de calque
         switch ($typeCalqueChoisi) {
             case 'ER':
@@ -313,8 +292,8 @@ class MapController extends AbstractController
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-        // ici name correspond au nom du formulaire
-        /*foreach ($_POST as $name => $value) {*/
+            // ici name correspond au nom du formulaire
+            /*foreach ($_POST as $name => $value) {*/
             foreach ($_POST as $name => $value) /*if ($elementForm->isSubmitted() && $elementForm->isValid()) */{
 
                 $Photo = "";
@@ -368,18 +347,18 @@ class MapController extends AbstractController
                 }
                 // Move the file to the directory where photos/pdf are stored
                 try {
-                if ($photoFile) {
-                    $photoFile->move(
-                        $this->getParameter('uploads_photos'),
-                        $newPhotoName
-                    );
-                }
-                if ($pdfFile) {
-                    $pdfFile->move(
-                        $this->getParameter('uploads_pdf'),
-                        $newPdfName
-                    );
-                }
+                    if ($photoFile) {
+                        $photoFile->move(
+                            $this->getParameter('uploads_photos'),
+                            $newPhotoName
+                        );
+                    }
+                    if ($pdfFile) {
+                        $pdfFile->move(
+                            $this->getParameter('uploads_pdf'),
+                            $newPdfName
+                        );
+                    }
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                 }
@@ -414,14 +393,16 @@ class MapController extends AbstractController
     /**
      * Modification d'un élément
      * @Route("/map/edit-element-{idElement}", name="edit_element")
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function editElementAction(EntityManagerInterface $em, Request $request, int $idElement): Response
     {
         $elementClique = $em->getRepository('App:Element')->find($idElement);
-        $typeTypeCalqueC = $elementClique->getTypeElement()->getTypeCalque()->getType();
-        $elementCliquePointLat = $elementClique->getPoints()[0]->getLatitude();
-        $elementCliquePointLong = $elementClique->getPoints()[0]->getLongitude();
+        $idtypeElementC = $elementClique->getTypeElement();
+        $typeElement = $em->getRepository('App:TypeElement')->find($idtypeElementC);
+        $idTypeCalqueC = $typeElement->getTypeCalque();
+        $typeCalque = $em->getRepository('App:TypeCalque')->find($idTypeCalqueC);
+        $typeTypeCalqueC = $typeCalque->getType();
 
         $icones = $em->getRepository('App:Icone')->findAll();
         $liensIcones = [];
@@ -475,24 +456,20 @@ class MapController extends AbstractController
 
         return $this->render('map/edit-element.html.twig', [
             'idElement' => $idElement,
-            'form' => $elementForm->createView(),
-            'latitude' => $elementCliquePointLat,
-            'longitude' => $elementCliquePointLong
+            'form' => $elementForm->createView()
         ]);
     }
 
-    /**
-     * Suppression d'un élément
-     * @Route("/map/delete-element-{idElement}", name="delete_element")
-     * @IsGranted("ROLE_ADMIN")
-     */
-    public function deleteTransaction(EntityManagerInterface $em, int $idElement): Response
+    // Affichage de la liste des calques et des types d'éléments
+    public function listAction(EntityManagerInterface $em): Response
     {
-        $elementClique = $em->getRepository('App:Element')->find($idElement);
-        sleep(2);
-        $em->remove($elementClique);
-        $em->flush();
-        $this->addFlash('success', "L'élement a bien été supprimé");
-        return $this->redirectToRoute('map');
+        $calques = $em->getRepository('App:TypeCalque')->findAll();
+        $typesEltWithCalque = $em->getRepository('App:TypeElement')->findAllWithCalque();
+
+        return $this->render('/map/list.html.twig', [
+            'calques' => $calques,
+            'typesEltWithCalque' => $typesEltWithCalque
+        ]);
     }
+
 }
