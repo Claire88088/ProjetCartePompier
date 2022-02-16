@@ -118,23 +118,23 @@ class AppFixtures extends Fixture
         $manager->persist($iconeEchelle);*/
 
         $iconeBatiment = new Icone();
-        $iconeBatiment->setLien('icons8-map-pin-immeuble-64.png');
+        $iconeBatiment->setLien('icons8-immeuble-64.png');
         $manager->persist($iconeBatiment);
 
         $iconeEssence = new Icone();
-        $iconeEssence->setLien('icons8-map-pin-essence-64.png');
+        $iconeEssence->setLien('icons8-essence-64.png');
         $manager->persist($iconeEssence);
 
         $iconeGaz = new Icone();
-        $iconeGaz->setLien('icons8-map-pin-gaz-64.png');
+        $iconeGaz->setLien('icons8-gaz-64.png');
         $manager->persist($iconeGaz);
 
         $iconeUsine = new Icone();
-        $iconeUsine->setLien('icons8-map-pin-usine-64.png');
+        $iconeUsine->setLien('icons8-usine-64.png');
         $manager->persist($iconeUsine);
 
         $iconeEchelle = new Icone();
-        $iconeEchelle->setLien('icons8-map-pin-échelle-64.png');
+        $iconeEchelle->setLien('icons8-échelle-64.png');
         $manager->persist($iconeEchelle);
 
         $iconeFlag = new Icone();

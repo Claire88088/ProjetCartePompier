@@ -486,10 +486,9 @@ class MapController extends AbstractController
      * @Route("/map/delete-element-{idElement}", name="delete_element")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function deleteTransaction(EntityManagerInterface $em, int $idElement): Response
+    public function deleteElementAction(EntityManagerInterface $em, int $idElement): Response
     {
         $elementClique = $em->getRepository('App:Element')->find($idElement);
-        sleep(2);
         $em->remove($elementClique);
         $em->flush();
         $this->addFlash('success', "L'élement a bien été supprimé");

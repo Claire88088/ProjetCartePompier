@@ -61,7 +61,7 @@ class Element
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Point", mappedBy="element")
+     * @ORM\OneToMany(targetEntity="App\Entity\Point", mappedBy="element", cascade={"persist","remove"})
      */
     private $points;
 
