@@ -58,7 +58,6 @@ class MapController extends AbstractController
     public function rechercheFormAction(EntityManagerInterface $em): Response
     {
 
-        // TODO : créer une entité pour le formulaire
         $rechercheForm = $this->createFormBuilder(null, ['attr' => ['id' => 'rechercheForm']])
             ->add('commune', EntityType::class, array(
                 'class' => Commune::class,
@@ -115,7 +114,8 @@ class MapController extends AbstractController
 
 
     /**
-     * Ajout d'un nouveau calque forcément du type "AUTRE"
+     * Ajout d'un nouveau calque
+     * forcément du type "AUTRE"
      * @Route("/map/add-calque", name="add_calque")
      * @IsGranted("ROLE_USER")
      */
@@ -140,26 +140,8 @@ class MapController extends AbstractController
     }
 
     /**
-     * Supprimer un calque
-     * @Route("/map/del-calque-{id}", name="del_calque")
-     * @IsGranted("ROLE_ADMIN")
-     */
-    public function deleteCalqueAction(EntityManagerInterface $em, int $id): Response
-    {
-        $calque = $em->getRepository('App:TypeCalque')->find($id);
-
-        if (!$calque) {
-            throw $this->createNotFoundException('Aucun calque à supprimer');
-        } else {
-            $em->remove($calque);
-            $em->flush();
-            $this->addFlash('success', 'Le calque a bien été supprimé !');
-        }
-        return $this->redirectToRoute('calques_list');;
-    }
-
-    /**
-     * Modifier uniquement le nom du calque et pas le type
+     * Modifier un calque
+     * uniquement le nom et pas le type
      * @Route("/map/edit-calque-{id}", name="edit_calque")
      * @IsGranted("ROLE_ADMIN")
      */
@@ -179,6 +161,25 @@ class MapController extends AbstractController
         return $this->render('map/add-calque.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * Supprimer un calque
+     * @Route("/map/del-calque-{id}", name="del_calque")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function deleteCalqueAction(EntityManagerInterface $em, int $id): Response
+    {
+        $calque = $em->getRepository('App:TypeCalque')->find($id);
+
+        if (!$calque) {
+            throw $this->createNotFoundException('Aucun calque à supprimer');
+        } else {
+            $em->remove($calque);
+            $em->flush();
+            $this->addFlash('success', 'Le calque a bien été supprimé !');
+        }
+        return $this->redirectToRoute('calques_list');;
     }
 
     /**
@@ -219,7 +220,8 @@ class MapController extends AbstractController
 
 
     /**
-     * Ajout d'un nouveau type forcément du type "AUTRE"
+     * Ajout d'un nouveau type d'éléments
+     * forcément du type "AUTRE"
      * @Route("/map/add-type-element-{idCalque}", name="add_type_element")
      * @IsGranted("ROLE_USER")
      */
@@ -245,37 +247,48 @@ class MapController extends AbstractController
         ]);
     }
 
+    /**
+     * Modifier un type d'élément
+     * uniquement le nom et pas le type
+     * @Route("/map/edit-type-element-{id}", name="edit_type_element")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function editTypeEltAction(EntityManagerInterface $em, Request $request, int $id): Response
+    {
+        $typeElt = $em->getRepository('App:TypeCalque')->find($id);
+        $form = $this->createForm(TypeElementType::class, $typeElt);
+        $form->add('Modifier', SubmitType::class, ['label' => 'Modifier le type d\'élément']);
+        $form->handleRequest($request);
 
-//    // Ajout d'un nouvel élément
-//    /**
-//     * Choix du calque sur lequel ajouter un élément
-//     * @Route("/choice-calque", name="choice_calque")
-//     * @IsGranted("ROLE_USER")
-//     */
-//    public function choiceCalqueAction(EntityManagerInterface $em, Request $request): Response
-//    {
-//        // on choisit sur quel calque on veut mettre l'élément
-//        $choixCalqueForm = $this->createFormBuilder()
-//            ->add('calque', EntityType::class, [
-//                'class' => TypeCalque::class,
-//                'mapped' => false,
-//            ])
-//            ->add('Selectionner', SubmitType::class, [
-//                'label' => 'Sélectionner ce calque'])
-//            ->getForm();
-//
-//        $choixCalqueForm->handleRequest($request);
-//
-//        if ($choixCalqueForm->isSubmitted() && $choixCalqueForm->isValid()) {
-//            $idCalqueChoisi = $request->request->get('form')['calque'];
-//
-//            return $this->redirectToRoute('add_element', ['idCalque'=>$idCalqueChoisi]);
-//        }
-//
-//        return $this->render('/map/choix-calque.html.twig', [
-//            'choixCalqueForm' => $choixCalqueForm->createView()
-//        ]);
-//    }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($typeElt);
+            $em->flush();
+            return $this->redirectToRoute('map');
+        }
+
+        return $this->render('map/add-type-element.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Supprimer un type d'élément
+     * @Route("/map/del-type-element-{id}", name="del_type_element")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function deleteTypeEltAction(EntityManagerInterface $em, int $id): Response
+    {
+        $typeElt = $em->getRepository('App:TypeElement')->find($id);
+
+        if (!$typeElt) {
+            throw $this->createNotFoundException('Aucun type d\'élément à supprimer');
+        } else {
+            $em->remove($typeElt);
+            $em->flush();
+            $this->addFlash('success', 'Le type d\'élément a bien été supprimé !');
+        }
+        return $this->redirectToRoute('map');;
+    }
 
     /**
      * Ajout d'un nouvel élément
