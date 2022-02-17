@@ -37,7 +37,8 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             // on créé l'icone de l'élément
             var eltIcone = L.icon({
                 iconUrl: `../MarkersIcons/${eltsToShow[i].lienIcone}`,
-                iconSize: [iconeHauteur, iconeLargeur]
+                iconSize: [iconeLargeur, iconeHauteur],
+                iconAnchor: [iconeLargeur/2,iconeHauteur]
             });
 
             // Mise en forme de la popup
