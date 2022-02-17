@@ -65,15 +65,18 @@
                         <div class="alert alert-success" role="alert">{{ msg }}</div>
                     {% endfor %}
                     {% block global %}
+                        <h4 class="mb-5">Gestion des calques, types d'éléments et éléments</h4>
+                        <div class="createCalqueAndType mb-5">
+                            <button class="btn btn-primary m-10" onclick="location.href='{{ path('add_calque') }}'">
+                                <div class="material-icons material-icons-outlined">add</div><div>Créer un nouveau calque</div>
+                            </button>
+                            <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">
+                                <div class="material-icons material-icons-outlined">add</div>
+                                <div>Créer un nouveau type d'éléments</div>
+                            </button>
+                        </div>
+                        <hr>
                         {{ render(controller('App\\Controller\\MapController::listAction')) }}
-                        <hr>
-                            <div class="createCalqueAndType">
-                                <button class="btn btn-primary m-10" onclick="location.href='{{ path('add_calque') }}'">Créer un nouveau calque</button>
-                                <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">Créer un nouveau type d'éléments</button>
-                            </div>
-                        <hr>
-{#                            <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'element'}) }}'">Ajouter un élément sur un calque existant</button>#}
-{#                        <hr>#}
                     {% endblock %}
 
                     {%  if app.request.get('_route') != "map" %}

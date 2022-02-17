@@ -1,13 +1,12 @@
 
-<div>
-    <div class="list-group">
-        <h4>Liste des calques et des types d'éléments existants</h4>
-        <div class="listClq">
-            <p>Pour ajouter un nouvel élément :</p>
-            <p>cliquez sur le nom du calque ou le nom du type d'éléments à ajouter</p>
-        </div>
-
+<div class="mt-5">
+    <div class="list-group list">
+        <h5>Liste des calques et des types d'éléments existants</h5>
         <ul class="listElt listClq">
+            <div class="add-element">
+                <p>Pour créer un nouvel élément :</p>
+                <p>cliquez sur le nom du type d'éléments à ajouter</p>
+            </div>
                 {% for calque in calques %}
                     <li>
                         <div class="listCalqueElem {{ calque.id }}">

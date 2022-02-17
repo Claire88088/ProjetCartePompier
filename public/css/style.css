@@ -145,14 +145,22 @@ input#calque_nom{
     width: 100%;
 }
 
-.material-icons {
-    width: 50%;
-    border: 1px solid rgba(0,0,0,.15);
-    text-align: center;
-}
-
 .am {
     margin-right: -5px;
+}
+
+.add-element {
+    text-align: center;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 0.25rem;
+    padding: 0.70rem 1.5rem;
+    margin-bottom: 10px;
+}
+
+.add-element > p {
+    margin-bottom: 0px;
 }
 
 #calque{
@@ -225,7 +233,12 @@ textarea, input {
 .createCalqueAndType {
     display: flex;
     justify-content: center;
+    /*margin-bottom: 50px;*/
 }
+
+/*.list {*/
+/*    margin-top: 50px;*/
+/*}*/
 
 .createCalqueAndType > * {
     flex: 0 0 44%
@@ -238,4 +251,26 @@ textarea, input {
 /* Pop-up */
 #lien:hover, #photo:hover {
     cursor: pointer;
+}
+
+/* titres */
+.title {
+    background-color: #F0F0F0;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.25rem;
+    padding: 0.70rem 1.5rem;
+    margin-bottom: 20px;
+}
+
+.add-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.add-subtitle {
+    color: #6D6D6D;
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1.2;
 }

@@ -3,7 +3,10 @@
 {% block title %}Ajout élément{% endblock %}
 
 {% block global %}
-    <h4>Ajout d'un élément de type "{{ nomTypeElt }}" sur le calque "{{ nomCalque }}"</h4>
+    <div class="title">
+        <h1 class="add-title">Ajout d'un élément de type "{{ nomTypeElt }}"</h1>
+        <h2 class="add-subtitle">sur le calque "{{ nomCalque }}"</h2>
+    </div>
     <label>Emplacement de l'élément</label>
     <img id="loader" src="{{ asset('images/loader.gif') }}" alt="icone chargement" />
     <p id="position" class="form-control">Cliquez sur la carte </br>pour sélectionner l'endroit où ajouter le nouvel élément</p>
