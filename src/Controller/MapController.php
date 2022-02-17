@@ -297,74 +297,50 @@ class MapController extends AbstractController
     }
 
     /**
-     * Ajout d'un nouvel élément
-     * @Route("/map/add-element-{idCalque}", name="add_element")
+     * Ajout d'un nouvel élément à partir du type choisi
+     * @Route("/map/add-element-{idCalque}-{idTypeElt}", name="add_element_from_type")
      * @IsGranted("ROLE_USER")
      */
-    public function addElementAction(EntityManagerInterface $em, Request $request, int $idCalque, SluggerInterface $slugger): Response
+    public function addElementFromTypeAction(EntityManagerInterface $em, Request $request, int $idCalque, int $idTypeElt, SluggerInterface $slugger): Response
     {
         $calqueChoisi = $em->getRepository('App:TypeCalque')->find($idCalque);
-        $icones = $em->getRepository('App:Icone')->findAll();
         $typeCalqueChoisi = $calqueChoisi->getType();
+
+        $typeEltChoisi = $em->getRepository('App:TypeElement')->find($idTypeElt);
+
+        $icones = $em->getRepository('App:Icone')->findAll();
 
         $point = new Point();
         $element = new Element();
-
-        // on récupère les types d'éléments possibles pour le type de calque choisi
-        $typesElt = $em->getRepository('App:TypeElement')->findByTypeCalque($calqueChoisi);
-        $options = [];
-        foreach($typesElt as $type)  {
-            $options[$type->getNom()] = $type;
-        }
+        $element->setTypeElement($typeEltChoisi);
 
         // on récupère les liens des icones
         $liensIcones = [];
         foreach($icones as $icone)  {
             $liensIcones[$icone->getLien()] = $icone;
         }
-        /*
-            $data = [];
-            $data['typeEltChoices'] = $options;
-            $data['iconeChoices'] = $liensIcones;
-          */
-        // on créé le formulaire en fonction du type de calque
+
+        // on créé le formulaire en fonction du type d'élément
         switch ($typeCalqueChoisi) {
             case 'ER':
                 $elementForm = $this->createForm(ERType::class, $element);
                 $elementForm->add('icone', ChoiceType::class, array(
                     'choices' => $liensIcones));
-                $elementForm->add('typeElement', ChoiceType::class, [
-                    'choices'  => $options,
-                ]);
-
-                /*
-                $elementForm = $this->createForm(ERType::class, $element, [
-                    'data_class' => null,
-                    'data' => $data,
-                ]);*/
-
                 break;
             case 'AUTOROUTE':
                 $elementForm = $this->createForm(AutorouteType::class, $element);
                 $elementForm->add('icone', ChoiceType::class, array(
                     'choices' => $liensIcones));
-                $elementForm->add('typeElement', ChoiceType::class, [
-                    'choices'  => $options,
-                ]);
                 break;
             case 'TRAVAUX':
                 $elementForm = $this->createForm(TravauxType::class, $element);
                 $elementForm->add('icone', ChoiceType::class, array(
                     'choices' => $liensIcones));
-                $typeTravaux = $em->getRepository('App:TypeElement')->findByTypeCalque($calqueChoisi)[0];
-                $element->setTypeElement($typeTravaux);
                 break;
             case 'PI':
                 $elementForm = $this->createForm(PIType::class, $element);
                 $elementForm->add('icone', ChoiceType::class, array(
                     'choices' => $liensIcones));
-                $typePI = $em->getRepository('App:TypeElement')->findByTypeCalque($calqueChoisi)[0];
-                $element->setTypeElement($typePI);
                 break;
             case 'AUTRE':
                 $elementForm = $this->createForm(ElementType::class, $element);
@@ -379,8 +355,7 @@ class MapController extends AbstractController
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
             // ici name correspond au nom du formulaire
-            /*foreach ($_POST as $name => $value) {*/
-            foreach ($_POST as $name => $value) /*if ($elementForm->isSubmitted() && $elementForm->isValid()) */{
+            foreach ($_POST as $name => $value) {
 
                 $Photo = "";
                 $Lien = "";
@@ -472,9 +447,11 @@ class MapController extends AbstractController
 
         return $this->render('map/add-element.html.twig', [
             'form' => $elementForm->createView(),
+            'nomTypeElt' => $typeEltChoisi->getNom(),
             'nomCalque' => $calqueChoisi->getNom(),
         ]);
     }
+
 
     /**
      * Modification d'un élément

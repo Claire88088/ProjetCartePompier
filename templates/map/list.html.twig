@@ -2,14 +2,17 @@
 <div>
     <div class="list-group">
         <h4>Liste des calques et des types d'éléments existants</h4>
+        <div class="listClq">
+            <p>Pour ajouter un nouvel élément :</p>
+            <p>cliquez sur le nom du calque ou le nom du type d'éléments à ajouter</p>
+        </div>
+
         <ul class="listElt listClq">
                 {% for calque in calques %}
                     <li>
                         <div class="listCalqueElem {{ calque.id }}">
                             <div class="listElt-calque">
-                                <a href="{{ path('add_calque', { 'idCalque':calque.id }) }}" class="calque">
-                                    {{ calque.nom }}
-                                </a>
+                                <span class="calque">{{ calque.nom }}</span>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <span class="listElt-icons">
                                         <a href="{{ path('edit_calque', { 'id':calque.id }) }}" >
@@ -26,7 +29,9 @@
                             {% if type.calqueId == calque.id %}
                                 <ul class="listElt-types">
                                     <li class="listElt-typeElt">
-                                        <span class="typeElt">{{ type.0.nom }}</span>
+                                        <a href="{{ path('add_element_from_type', { 'idCalque':calque.id, 'idTypeElt':type.0.id }) }}" class="typeElt">
+                                            {{ type.0.nom }}
+                                        </a>
 
                                         {% if is_granted('ROLE_ADMIN') %}
                                         <span class="listElt-icons">
