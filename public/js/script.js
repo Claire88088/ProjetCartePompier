@@ -109,7 +109,8 @@ $(document).ready(function(){
                 var iconeLien = $('.dd-selected-image').attr('src');
                 var newIcon = L.icon({
                     iconUrl: `..${iconeLien}`,
-                    iconSize: [iconeLargeur, iconeHauteur]
+                    iconSize: [iconeLargeur, iconeHauteur],
+                    iconAnchor: [iconeLargeur/2,iconeHauteur]
                 });
 
                 // Création et ajout à la carte d'un marqueur avec l'icône choisie
@@ -121,7 +122,8 @@ $(document).ready(function(){
                     var iconeLien = $('.dd-selected-image').attr('src');
                     var newIcon = L.icon({
                         iconUrl: `..${iconeLien}`,
-                        iconSize: [iconeLargeur, iconeHauteur]
+                        iconSize: [iconeLargeur, iconeHauteur],
+                        iconAnchor: [iconeLargeur/2,iconeHauteur]
                     });
 
                     if (myMap.hasLayer(newMarker)) {

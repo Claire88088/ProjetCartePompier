@@ -2,13 +2,12 @@ security:
     enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: auto
-        App\Entity\Users:
-            algorithm: auto
-            cost: 13
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'plaintext'
+#        App\Entity\Users:
+#            algorithm: auto
+#            cost: 13
 
-            # mdp hash: $2y$13$42J55tM7N4R0jdqRc2/4DOrc9o0nt/7huhPRHBalH8bnO0bJ1T3D6
-            # $2y$13$eD2Ou25gPvOIh4W203mOwe1IyEkN0ttPM309ZD4FfSxD0dMKwmqFW
+
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
