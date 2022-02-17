@@ -4,8 +4,10 @@ $(document).ready(function(){
     let iconeLargeur = 50;
 
     // 1. CREATION DE LA CARTE avec un fond de carte OSM centrée sur chatellerault---------------------------------
-    // 13 : c'est le zoom entre minZoom et maxZoom (cf après)
-    let myMap = L.map('mapid').setView([46.816487, 0.548146], 13);
+    let myMap = L.map('mapid', {
+        center: [46.816487, 0.548146],
+        zoom: 13
+    });
 
     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
         attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
@@ -18,7 +20,6 @@ $(document).ready(function(){
     // récupération des éléments à afficher (transmis via Twig)
     var eltsToShowElt = $('.allEltsToShow');
     var calqueList = $('.calquesNomsList');
-
 
 
     // Animation du display des calques avec leurs éléments
@@ -89,6 +90,9 @@ $(document).ready(function(){
     var urlAddElement = window.location.pathname.substr(0,16) == "/map/add-element";
     var urlEditElement = window.location.pathname.substr(0,17) == "/map/edit-element";
     if (urlAddElement || urlEditElement) {
+        // on adapte le zoom
+        myMap.setZoom(18);
+
         if (urlAddElement) {
             function addMarker(e) {
                 // Enlève le dernier marqueur si il y'en a eu un

@@ -6,7 +6,8 @@
  */
  function searchAddress(myMap, communeLat, communeLong) {
     // centre la carte sur la commune choisie
-    myMap.setView([communeLat, communeLong], 13)
+    //myMap.setView([communeLat, communeLong], 13);
+    myMap.panTo([communeLat, communeLong]);
     const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
 
     // on créé le formulaire de recherche
