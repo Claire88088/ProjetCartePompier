@@ -18,11 +18,11 @@ class AppFixtures extends Fixture
     {
         // 2 users
         $admin = new Users();
-        $admin->setNom('admin')->setRoles(["ROLE_ADMIN"])->setPassword('$2y$13$42J55tM7N4R0jdqRc2/4DOrc9o0nt/7huhPRHBalH8bnO0bJ1T3D6');
+        $admin->setNom('admin')->setRoles(["ROLE_ADMIN"])->setPassword('admin');
         $manager->persist($admin);
 
         $user = new Users();
-        $user->setNom('user')->setRoles(["ROLE_USER"])->setPassword('$2y$13$eD2Ou25gPvOIh4W203mOwe1IyEkN0ttPM309ZD4FfSxD0dMKwmqFW');
+        $user->setNom('user')->setRoles(["ROLE_USER"])->setPassword('user');
         $manager->persist($user);
 
         // 12 communes
