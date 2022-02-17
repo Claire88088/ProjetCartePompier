@@ -19,21 +19,24 @@ $(document).ready(function(){
     var eltsToShowElt = $('.allEltsToShow');
     var calqueList = $('.calquesNomsList');
 
-    var divCalquesList = document.getElementsByClassName('listElt-calque')
-    var divTypesElementCalque = document.getElementsByClassName('typeElementCalque')
+
+
+    // Animation du display des calques avec leurs éléments
+    var divCalquesList = $('.listCalqueElem')
+    var divTypesElementCalque = $('.typeElementCalque')
     for (let i=0; i < divCalquesList.length; i++) {
-        divTypesElementCalque[i].style.display = "none"
+
         divCalquesList[i].addEventListener("mouseover", function (event) {
-            divTypesElementCalque[i].style.display = "block"
-            divTypesElementCalque[i].addEventListener("mouseover", function (event) {
-                divTypesElementCalque[i].style.display = "block"
-            })
+            divTypesElementCalque[i].style.display = 'block'
+        })
+        divTypesElementCalque[i].addEventListener("mouseover", function (event) {
+            divTypesElementCalque[i].style.display = 'block'
         })
         divCalquesList[i].addEventListener("mouseout", function (event) {
-            divTypesElementCalque[i].style.display = "none"
-            divTypesElementCalque[i].addEventListener("mouseout", function (event) {
-                divTypesElementCalque[i].style.display = "none"
-            })
+            divTypesElementCalque[i].style.display = 'none'
+        })
+        divTypesElementCalque[i].addEventListener("mouseout", function (event) {
+            divTypesElementCalque[i].style.display = 'none'
         })
     }
 

@@ -3,45 +3,46 @@
     <div class="list-group">
         <h4>Liste des calques et des types d'éléments existants</h4>
         <ul class="listElt listClq">
-        {% for calque in calques %}
-            <li>
-                <div class="listElt-calque {{ calque.id }}">
-                    <a href="{{ path('add_calque', { 'idCalque':calque.id }) }}" class="calque">
-                        {{ calque.nom }}
-                    </a>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <span class="listElt-icons">
-                            <a href="{{ path('edit_calque', { 'id':calque.id }) }}" >
-                                <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
-                            </a>
-                            <a href="{{ path('del_calque', { 'id':calque.id }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce calque ?')">
-                                <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
-                            </a>
-                        </span>
-                    {% endif %}
-                </div>
-
-                <div class="typeElementCalque {{ calque.id }}">
-            {% for type in typesEltWithCalque %}
-                {% if type.calqueId == calque.id %}
-                    <ul class="listElt-types">
-                        <li class="listElt-typeElt">
-                            <span class="typeElt">{{ type.0.nom }}</span>
-
-                            {% if is_granted('ROLE_ADMIN') %}
-                            <span class="listElt-icons">
-                                <a href="{{ path('edit_type_element', { 'id':type.0.id }) }}">
-                                    <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
+                {% for calque in calques %}
+                    <li>
+                        <div class="listCalqueElem {{ calque.id }}">
+                            <div class="listElt-calque">
+                                <a href="{{ path('add_calque', { 'idCalque':calque.id }) }}" class="calque">
+                                    {{ calque.nom }}
                                 </a>
-                                <a href="{{ path('del_type_element', { 'id':type.0.id  }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce type d\'élément ?')">
-                                    <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
-                                </a>
-                            </span>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <span class="listElt-icons">
+                                        <a href="{{ path('edit_calque', { 'id':calque.id }) }}" >
+                                            <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
+                                        </a>
+                                        <a href="{{ path('del_calque', { 'id':calque.id }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce calque ?')">
+                                            <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
+                                        </a>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div class="typeElementCalque {{ calque.id }}">
+                        {% for type in typesEltWithCalque %}
+                            {% if type.calqueId == calque.id %}
+                                <ul class="listElt-types">
+                                    <li class="listElt-typeElt">
+                                        <span class="typeElt">{{ type.0.nom }}</span>
+
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                        <span class="listElt-icons">
+                                            <a href="{{ path('edit_type_element', { 'id':type.0.id }) }}">
+                                                <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
+                                            </a>
+                                            <a href="{{ path('del_type_element', { 'id':type.0.id  }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce type d\'élément ?')">
+                                                <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
+                                            </a>
+                                        </span>
+                                        {% endif %}
+                                    </li>
+                                </ul>
                             {% endif %}
-                        </li>
-                    </ul>
-                {% endif %}
-            {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </li>
         {% endfor %}

@@ -214,8 +214,23 @@ textarea {
     display: none;
 }
 
+/* Popup bouton suppression */
 .suppression, .suppression:hover, .suppression:active, .suppression:not(:disabled):not(.disabled):active   {
     background-color: #cc0202;
     border-color: #cc0202;
     color: white;
+}
+
+/* Div créer un calque et type d'élément dedans */
+.createCalqueAndType {
+    display: flex;
+    justify-content: center;
+}
+
+.createCalqueAndType > * {
+    flex: 0 0 44%
+}
+
+.m-10{
+    margin-right: 10px;
 }

@@ -69,9 +69,10 @@
 {#                        <hr>#}
 {#                            <button class="btn btn-primary" onclick="location.href='{{ path('calques_list') }}'">Lister les calques</button>#}
                         <hr>
-                            <button class="btn btn-primary" onclick="location.href='{{ path('add_calque') }}'">Créer un nouveau calque</button>
-                        <hr>
-                            <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">Créer un nouveau type d'éléments</button>
+                            <div class="createCalqueAndType">
+                                <button class="btn btn-primary m-10" onclick="location.href='{{ path('add_calque') }}'">Créer un nouveau calque</button>
+                                <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">Créer un nouveau type d'éléments</button>
+                            </div>
                         <hr>
                             <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'element'}) }}'">Ajouter un élément sur un calque existant</button>
                         <hr>
