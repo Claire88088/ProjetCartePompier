@@ -489,6 +489,8 @@ class MapController extends AbstractController
         $idTypeCalqueC = $typeElement->getTypeCalque();
         $typeCalque = $em->getRepository('App:TypeCalque')->find($idTypeCalqueC);
         $typeTypeCalqueC = $typeCalque->getType();
+        $elementCliquePointLat = $elementClique->getPoints()[0]->getLatitude();
+        $elementCliquePointLong = $elementClique->getPoints()[0]->getLongitude();
 
         $icones = $em->getRepository('App:Icone')->findAll();
         $liensIcones = [];
@@ -542,7 +544,9 @@ class MapController extends AbstractController
 
         return $this->render('map/edit-element.html.twig', [
             'idElement' => $idElement,
-            'form' => $elementForm->createView()
+            'form' => $elementForm->createView(),
+            'latitude' => $elementCliquePointLat,
+            'longitude' => $elementCliquePointLong
         ]);
     }
 

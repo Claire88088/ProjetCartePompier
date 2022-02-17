@@ -133,6 +133,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 
             $(document).on("click", "#suppression"+eltsToShow[i].idElement+"", function () {
                 let idElement = marker.options.idElement
+                ConfirmDelete()
                 document.location.replace("http://127.0.0.1:8000/map/delete-element-"+idElement+"");
             })
 
@@ -223,10 +224,6 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             myMap.removeLayer(clustersTab[calqueNom]);
         }
     });
-
-    $(document).on("click", ".suppression", function () {
-        ConfirmDelete()
-    })
 
     function ConfirmDelete()
     {
