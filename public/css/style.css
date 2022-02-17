@@ -234,3 +234,8 @@ textarea {
 .m-10{
     margin-right: 10px;
 }
+
+/* Pop-up */
+#lien:hover, #photo:hover {
+    cursor: pointer;
+}
