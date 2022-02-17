@@ -31,6 +31,11 @@ class ERType extends AbstractType
                 'label' => "Type d'élément",
                 'choices'  => $options['data']['typeEltChoices'],
             ])*/
+            ->add('nom', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Entrez le nom de l\'élément'
+                ]
+            ])
             ->add('texte', TextareaType::class, array(
                 'label' => 'Description',
                 'required' => false,

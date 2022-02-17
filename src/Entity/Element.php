@@ -22,6 +22,11 @@ class Element
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $photo;
 
     /**
@@ -54,21 +59,35 @@ class Element
      */
     private $icone;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Point", mappedBy="element", cascade={"persist","remove"})
      */
     private $points;
 
+
     public function __construct()
     {
         $this->points = new ArrayCollection();
     }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(?string $nom): self
+    {
+        $this->nom = $nom;
+        return $this;
+    }
+
+
 
     /**
      * @return TypeElement

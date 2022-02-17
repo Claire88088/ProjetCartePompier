@@ -159,7 +159,7 @@ input#calque_nom{
     margin: 30px;
 }
 
-textarea {
+textarea, input {
     text-align: center;
 }
 

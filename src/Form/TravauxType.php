@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,6 +23,11 @@ class TravauxType extends AbstractType
                 'label' => 'Icône',
                 'choices' => $options['data']
             ])*/
+            ->add('nom', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Entrez le nom de l\'élément'
+                ]
+            ])
             ->add('dateDeb', DateTimeType::class, [
                 'label' => 'Date de début des travaux',
                 'widget' => 'single_text',
