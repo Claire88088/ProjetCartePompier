@@ -10,6 +10,10 @@
     align-items: center;
 }
 
+.listElt-typeElt {
+    margin-left: 20px;
+}
+
 .calque {
     color: #6D6D6D;
     line-height: 1.5;
@@ -19,15 +23,12 @@
     padding-left: 10px;
 }
 
-.listElt-types {
-    padding: 0px;
+.type {
+    padding-left: 10px;
 }
 
-.typeElt {
-    border: 1px solid rgba(0,0,0,.15);
-    padding: 5px;
-    padding-left: 40px;
-    flex: auto;
+.listElt-types {
+    padding: 0px;
 }
 
 .listElt-icon {

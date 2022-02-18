@@ -7,45 +7,48 @@
                 <p>Pour créer un nouvel élément :</p>
                 <p>cliquez sur le nom du type d'éléments à ajouter</p>
             </div>
-                {% for calque in calques %}
-                    <li>
-                        <div class="listCalqueElem {{ calque.id }}">
-                            <div class="listElt-calque">
-                                <span class="calque">{{ calque.nom }}</span>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <span class="listElt-icons">
-                                        <a href="{{ path('edit_calque', { 'id':calque.id }) }}" >
-                                            <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
-                                        </a>
-                                        <a href="{{ path('del_calque', { 'id':calque.id }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce calque ?')">
-                                            <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
-                                        </a>
-                                    </span>
-                                {% endif %}
-                            </div>
-                            <div class="typeElementCalque {{ calque.id }}">
+            {% for calque in calques %}
+                <li>
+                    <div class="listCalqueElem {{ calque.id }}">
+                        <div class="listElt-calque">
+                            <span class="calque">{{ calque.nom }}</span>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <span class="listElt-icons">
+                                    <a href="{{ path('edit_calque', { 'id':calque.id }) }}" >
+                                        <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
+                                    </a>
+                                    <a href="{{ path('del_calque', { 'id':calque.id }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce calque ?')">
+                                        <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
+                                    </a>
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="typeElementCalque {{ calque.id }}">
+
+                        <ul class="listElt-types">
                         {% for type in typesEltWithCalque %}
                             {% if type.calqueId == calque.id %}
-                                <ul class="listElt-types">
-                                    <li class="listElt-typeElt">
-                                        <a href="{{ path('add_element_from_type', { 'idCalque':calque.id, 'idTypeElt':type.0.id }) }}" class="typeElt">
-                                            {{ type.0.nom }}
-                                        </a>
 
-                                        {% if is_granted('ROLE_ADMIN') %}
-                                        <span class="listElt-icons">
-                                            <a href="{{ path('edit_type_element', { 'id':type.0.id }) }}">
-                                                <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
-                                            </a>
-                                            <a href="{{ path('del_type_element', { 'id':type.0.id  }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce type d\'élément ?')">
-                                                <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
-                                            </a>
-                                        </span>
-                                        {% endif %}
-                                    </li>
-                                </ul>
+                            <li class="listElt-typeElt">
+                                <button class="create-elt create-btn btn btn-primary m-10" onclick="location.href='{{ path('add_element_from_type', { 'idCalque':calque.id, 'idTypeElt':type.0.id }) }}'">
+                                    <div class="material-icons material-icons-outlined">add</div>
+                                    <div class="type">{{ type.0.nom }}</div>
+                                </button>
+
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <div class="listElt-icons">
+                                    <a href="{{ path('edit_type_element', { 'id':type.0.id }) }}">
+                                        <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
+                                    </a>
+                                    <a href="{{ path('del_type_element', { 'id':type.0.id  }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce type d\'élément ?')">
+                                        <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </li>
                             {% endif %}
                         {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </li>

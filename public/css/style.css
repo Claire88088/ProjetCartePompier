@@ -148,6 +148,7 @@ input#calque_nom{
     margin-right: -5px;
 }
 
+/* ajout de calque, type, élément */
 .add-element {
     text-align: center;
     border: 1px solid rgba(0,0,0,.15);
@@ -159,6 +160,16 @@ input#calque_nom{
 
 .add-element > p {
     margin-bottom: 0px;
+}
+
+.create-btn {
+    display: flex;
+    align-items: center;
+}
+
+.create-elt {
+    margin-bottom: 2px;
+    flex: max-content;
 }
 
 #calque{

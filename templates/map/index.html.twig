@@ -70,10 +70,11 @@
                         </div>
 
                         <div class="createCalqueAndType mb-5">
-                            <button class="btn btn-primary m-10" onclick="location.href='{{ path('add_calque') }}'">
-                                <div class="material-icons material-icons-outlined">add</div><div>Créer un nouveau calque</div>
+                            <button class="create-btn btn btn-primary m-10" onclick="location.href='{{ path('add_calque') }}'">
+                                <div class="material-icons material-icons-outlined">add</div>
+                                <div>Créer un nouveau calque</div>
                             </button>
-                            <button class="btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">
+                            <button class="create-btn btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">
                                 <div class="material-icons material-icons-outlined">add</div>
                                 <div>Créer un nouveau type d'éléments</div>
                             </button>
