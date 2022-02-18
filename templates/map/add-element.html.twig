@@ -11,5 +11,6 @@
     <img id="loader" src="{{ asset('images/loader.gif') }}" alt="icone chargement" />
     <p id="position" class="form-control">Cliquez sur la carte </br>pour sélectionner l'endroit où ajouter le nouvel élément</p>
     {{ form(form) }}
-
+    {# passage de données via Twig #}
+    <div class="calqueNom" calqueNom="{{ nomCalque }}"></div>
 {% endblock %}

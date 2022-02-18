@@ -5,9 +5,13 @@
  * @param elementsToShowElt élément HTML qui contient les éléments à afficher en attribut
  * @param calquesList [] élément HTML dequi contient les noms des calques en attribut
  * @param myMap objet Leaflet L.map carte sur laquelle on affiche
+ * @return affichageCalquesTab [] tableau qui contient le tableau des groupes de marqueurs (markersGroup) et le tableau des clusters (clustersTab)
  */
 function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 {
+    let affichageCalquesTab = [];
+    let markersGroupTab = [];
+
     // taille des icones :
     let iconeHauteur = 50;
     let iconeLargeur = 50;
@@ -160,9 +164,15 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
     for (let key in markersTabTab) {
         let markersGroup = L.layerGroup(markersTabTab[key]);
 
+        // ajout du groupe au tableau de groupes de marqueurs pour retour
+        markersGroupTab[key] = markersGroup;
+
         // ajout du couple nom du calque / "groupe de marqueurs à afficher" sur le calque
         calquesWithGroupsObjet[key] = markersGroup;
     }
+
+    // on ajoute les données au tableau de retour
+    affichageCalquesTab.push(markersGroupTab, clustersTab);
 
     // créé l'"icône" et le système de gestion de l'affichage des calques à la carte
     L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
@@ -231,4 +241,6 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
         else
             return false;
     }
+
+    return affichageCalquesTab;
 }

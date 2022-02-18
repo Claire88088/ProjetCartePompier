@@ -41,8 +41,8 @@ $(document).ready(function(){
         })
     }
 
-    // ajout du système de gestion de l'affichage (calques et éléments)
-    addGestionAffichage(eltsToShowElt, calqueList, myMap);
+    // ajout du système de gestion de l'affichage (calques et éléments) (permet aussi de récupérer les données d'affichage des calques : groupes de marqueurs et clusters)
+    let affichageCalquesTab = addGestionAffichage(eltsToShowElt, calqueList, myMap);
 
 
     //--------------------------------------------------------------------
@@ -92,6 +92,17 @@ $(document).ready(function(){
     if (urlAddElement || urlEditElement) {
         // on adapte le zoom
         myMap.setZoom(18);
+
+        // on affiche le calque (groupes de marqueurs et cluster) sur lequel on veut créer un point
+        let calqueNomElt = $('.calqueNom');
+        let calqueNom = calqueNomElt[0].attributes[1].value;
+
+        let markersGroupTab = affichageCalquesTab[0];
+        let clustersTab = affichageCalquesTab[1];
+
+        markersGroupTab[calqueNom].addTo(myMap);
+        myMap.addLayer(clustersTab[calqueNom]);
+
 
         if (urlAddElement) {
             function addMarker(e) {
