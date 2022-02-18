@@ -456,6 +456,8 @@ class MapController extends AbstractController
     public function editElementAction(EntityManagerInterface $em, Request $request, int $idElement): Response
     {
         $elementClique = $em->getRepository('App:Element')->find($idElement);
+        $nomElement = $elementClique->getNom();
+
         $idtypeElementC = $elementClique->getTypeElement();
         $typeElement = $em->getRepository('App:TypeElement')->find($idtypeElementC);
         $idTypeCalqueC = $typeElement->getTypeCalque();
@@ -516,7 +518,7 @@ class MapController extends AbstractController
         }
 
         return $this->render('map/edit-element.html.twig', [
-            'idElement' => $idElement,
+            'nomElement' => $nomElement,
             'form' => $elementForm->createView(),
             'latitude' => $elementCliquePointLat,
             'longitude' => $elementCliquePointLong,
