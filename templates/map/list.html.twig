@@ -30,7 +30,7 @@
                             {% if type.calqueId == calque.id %}
 
                             <li class="listElt-typeElt">
-                                <button class="create-elt create-btn btn btn-primary m-10" onclick="location.href='{{ path('add_element_from_type', { 'idCalque':calque.id, 'idTypeElt':type.0.id }) }}'">
+                                <button class="create-elt create-btn btn btn-primary" onclick="location.href='{{ path('add_element_from_type', { 'idCalque':calque.id, 'idTypeElt':type.0.id }) }}'">
                                     <div class="material-icons material-icons-outlined">add</div>
                                     <div class="type">{{ type.0.nom }}</div>
                                 </button>
