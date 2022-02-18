@@ -102,22 +102,17 @@ class MapController extends AbstractController
         ]);
     }
 
-    /**
-     * Affichage de la liste des calques créés pour la modification/suppression
-     * @Route("/calques-list", name="calques_list")
-     * @IsGranted("ROLE_USER")
-     */
-    public function calquesListAction(EntityManagerInterface $em): Response
+    // Affichage de la liste des calques et des types d'éléments
+    public function listAction(EntityManagerInterface $em): Response
     {
         $calques = $em->getRepository('App:TypeCalque')->findAll();
         $typesEltWithCalque = $em->getRepository('App:TypeElement')->findAllWithCalque();
 
-        return $this->render('/map/calques-list.html.twig', [
+        return $this->render('/map/list.html.twig', [
             'calques' => $calques,
             'typesEltWithCalque' => $typesEltWithCalque
         ]);
     }
-
 
     /**
      * Ajout d'un nouveau calque
@@ -161,7 +156,7 @@ class MapController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($calque);
             $em->flush();
-            return $this->redirectToRoute('calques_list');
+            return $this->redirectToRoute('map');
         }
 
         return $this->render('map/add-calque.html.twig', [
@@ -185,7 +180,7 @@ class MapController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Le calque a bien été supprimé !');
         }
-        return $this->redirectToRoute('calques_list');;
+        return $this->redirectToRoute('map');;
     }
 
     /**
@@ -541,16 +536,6 @@ class MapController extends AbstractController
         return $this->redirectToRoute('map');
     }
 
-    // Affichage de la liste des calques et des types d'éléments
-    public function listAction(EntityManagerInterface $em): Response
-    {
-        $calques = $em->getRepository('App:TypeCalque')->findAll();
-        $typesEltWithCalque = $em->getRepository('App:TypeElement')->findAllWithCalque();
 
-        return $this->render('/map/list.html.twig', [
-            'calques' => $calques,
-            'typesEltWithCalque' => $typesEltWithCalque
-        ]);
-    }
 
 }
