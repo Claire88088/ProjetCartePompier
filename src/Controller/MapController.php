@@ -461,6 +461,7 @@ class MapController extends AbstractController
         $idTypeCalqueC = $typeElement->getTypeCalque();
         $typeCalque = $em->getRepository('App:TypeCalque')->find($idTypeCalqueC);
         $typeTypeCalqueC = $typeCalque->getType();
+        $calqueNom = $typeCalque->getNom();
         $elementCliquePointLat = $elementClique->getPoints()[0]->getLatitude();
         $elementCliquePointLong = $elementClique->getPoints()[0]->getLongitude();
 
@@ -518,7 +519,8 @@ class MapController extends AbstractController
             'idElement' => $idElement,
             'form' => $elementForm->createView(),
             'latitude' => $elementCliquePointLat,
-            'longitude' => $elementCliquePointLong
+            'longitude' => $elementCliquePointLong,
+            'nomCalque' => $calqueNom,
         ]);
     }
 

@@ -2,6 +2,10 @@
 
 {% block global %}
 <div class="sub-nav">
+{#    <div class="title">#}
+{#        <h1 class="add-title">Ajout d'un élément de type "{{ nomTypeElt }}"</h1>#}
+{#        <h2 class="add-subtitle">sur le calque "{{ nomCalque }}"</h2>#}
+{#    </div>#}
     <h4>Modification de l'élément {{ idElement }}</h4>
     {{ form_start(form) }}
 
@@ -14,4 +18,7 @@
     {{ form_rest(form) }}
     {{ form_end(form) }}
 </div>
+
+{# passage de données via Twig #}
+<div class="calqueNom" calqueNom="{{ nomCalque }}"></div>
 {% endblock %}
