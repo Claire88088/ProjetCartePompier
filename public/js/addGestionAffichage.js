@@ -160,12 +160,6 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
     for (let key in markersTabTab) {
         let markersGroup = L.layerGroup(markersTabTab[key]);
 
-        // on ajoute le calque "Etablissements répertoriés" par défaut
-        if (key == 'Etablissements Répertoriés') {
-            markersGroup.addTo(myMap);
-            myMap.addLayer(clustersTab[key]);
-        }
-
         // ajout du couple nom du calque / "groupe de marqueurs à afficher" sur le calque
         calquesWithGroupsObjet[key] = markersGroup;
     }
