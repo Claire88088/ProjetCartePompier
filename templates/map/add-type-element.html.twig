@@ -4,9 +4,13 @@
 
 {% block global %}
         {% if 'add-type-element' in app.request.uri %}
-                <h4>Ajout d'un nouveau type d'élément</h4>
+                <div class="title">
+                        <h1 class="add-title">Ajout d'un nouveau type d'éléments</h1>
+                </div>
         {% else %}
-                <h4>Modification d'un type d'élément</h4>
+                <div class="title">
+                        <h1 class="add-title">Modification d'un type d'éléments</h1>
+                </div>
         {% endif %}
         {{ form(form) }}
 {% endblock %}

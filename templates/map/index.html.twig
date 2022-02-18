@@ -65,7 +65,10 @@
                         <div class="alert alert-success" role="alert">{{ msg }}</div>
                     {% endfor %}
                     {% block global %}
-                        <h4 class="mb-5">Gestion des calques, types d'éléments et éléments</h4>
+                        <div class="title mb-5">
+                            <h1 class="add-title">Gestion des calques, types d'éléments et éléments</h1>
+                        </div>
+
                         <div class="createCalqueAndType mb-5">
                             <button class="btn btn-primary m-10" onclick="location.href='{{ path('add_calque') }}'">
                                 <div class="material-icons material-icons-outlined">add</div><div>Créer un nouveau calque</div>

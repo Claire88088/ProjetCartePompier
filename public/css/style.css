@@ -9,7 +9,6 @@
 }
 
 h4, .titre_4 {
-    /*margin-top: 20px;*/
     margin-bottom: 20px;
 }
 
@@ -151,9 +150,8 @@ input#calque_nom{
 
 .add-element {
     text-align: center;
-    color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    border: 1px solid rgba(0,0,0,.15);
+    background-color: #F0F0F0;
     border-radius: 0.25rem;
     padding: 0.70rem 1.5rem;
     margin-bottom: 10px;

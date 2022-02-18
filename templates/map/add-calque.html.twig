@@ -5,9 +5,13 @@
 {% block global %}
         {# Test si la chaine dans l'url est add-calque et display le bon titre en conséquence #}
         {% if 'add-calque' in app.request.uri %}
-                <h4>Ajout d'un nouveau calque</h4>
+                <div class="title">
+                        <h1 class="add-title">Ajout d'un nouveau calque</h1>
+                </div>
         {% else %}
-                <h4>Modification d'un calque</h4>
+                <div class="title">
+                        <h1 class="add-title">Modification d'un calque</h1>
+                </div>
         {% endif %}
         {{ form(form) }}
 {% endblock %}
