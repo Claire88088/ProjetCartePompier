@@ -28,9 +28,12 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
         clustersTab[calquesNoms[i]] = L.markerClusterGroup();
     }
 
-    // Si 1, un utilisateur est connecté, si 0, non.
+    // Si true, un utilisateur est connecté, si false, non.
     let divIsConnected = $('.isConnected');
-    let isConnected = divIsConnected[0].attributes[1].value
+    let isConnected = divIsConnected[0].attributes[1].value;
+
+    let divRole = $('.role');
+    let role = divRole[0].attributes[1].value;
 
     // on vérifie qu'il y a des éléments à afficher
     if (eltsToShow.length > 0) {
@@ -38,12 +41,33 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
         // on parcourt les éléments
         for (let i = 0; i < eltsToShow.length; i++) {
 
-            // on créé l'icone de l'élément
-            var eltIcone = L.icon({
-                iconUrl: `../MarkersIcons/${eltsToShow[i].lienIcone}`,
-                iconSize: [iconeLargeur, iconeHauteur],
-                iconAnchor: [iconeLargeur/2,iconeHauteur]
+            let couleur = eltsToShow[i].couleur
+            let unicode = eltsToShow[i].unicode
+            let latitude = eltsToShow[i].latitude
+            let longitude = eltsToShow[i].longitude
+
+            urlISplit = eltsToShow[i].lienIcone.split('-');
+            urlISplit2 = urlISplit[2].split('.')[0]
+            urlFontFace = "/MarkersIcons/"+urlISplit[1]+"-"+urlISplit2
+
+            font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
+
+            font.load().then(function(loadedFont)
+            {
+                document.fonts.add(loadedFont);
+            }).catch(function(error) {
+                console.log(error)
             });
+
+            let eltAndIcone = L.marker([latitude, longitude], {
+                idElement: eltsToShow[i].idElement,
+                icon: L.divIcon({
+                    html: "<i class='demo-icon' style='color:"+couleur+";'>"+unicode+"</i>",
+                    iconSize: [iconeLargeur, iconeHauteur],
+                    iconAnchor: [iconeLargeur/2,iconeHauteur],
+                    popupAnchor: [0, -32]
+                })
+            }).addTo(myMap);
 
             // Mise en forme de la popup
             let texte = eltsToShow[i].texte
@@ -55,7 +79,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             let lien = eltsToShow[i].lien
 
             if (photo === null && lien === null) {
-                if (isConnected) {
+                if (isConnected && role === "ROLE_ADMIN") {
                     popupContenu +=
                         '</br>'
                         + '<div style="display: flex;">'
@@ -64,7 +88,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                         + '</div>'
                 }
             } else if (photo !== null && lien === null) {
-                if (isConnected) {
+                if (isConnected && role === "ROLE_ADMIN") {
                     popupContenu +=
                         '</br>'
                         + '<div>'
@@ -82,7 +106,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                         + '</div>'
                 }
             } else if (lien !== null && photo === null) {
-                if (isConnected) {
+                if (isConnected && role === "ROLE_ADMIN") {
                     popupContenu +=
                         '</br>'
                         + '<div>'
@@ -100,17 +124,17 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                         + '</div>'
                 }
             } else {
-                if (isConnected) {
-                popupContenu +=
-                    '</br>'
-                    + '<div style="display: flex;">'
-                    + '<div style="flex:auto; margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
-                    + '<div style="flex:auto; margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
-                    + '</div>'
-                    + '<div style="display: flex;">'
-                    + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                    + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
-                    + '</div>'
+                if (isConnected && role === "ROLE_ADMIN") {
+                    popupContenu +=
+                        '</br>'
+                        + '<div style="display: flex;">'
+                        + '<div style="flex:auto; margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
+                        + '<div style="flex:auto; margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
+                        + '</div>'
+                        + '<div style="display: flex;">'
+                        + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
+                        + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
+                        + '</div>'
                 } else {
                     popupContenu +=
                         '</br>'
@@ -124,20 +148,16 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             let popupPoints = new L.popup();
             popupPoints.setContent(popupContenu);
 
-            // Coordonnnées
-            let latitude = eltsToShow[i].latitude
-            let longitude = eltsToShow[i].longitude
-
-            // création des marqueurs pour chaque élément
-            let marker = L.marker([latitude, longitude], {idElement: eltsToShow[i].idElement, icon: eltIcone}).bindPopup(popupPoints);
+            // ajout de la popup aux Elements/Icones
+            eltAndIcone.bindPopup(popupPoints);
 
             $(document).on("click", "#modification"+eltsToShow[i].idElement+"", function () {
-                let idElement = marker.options.idElement
+                let idElement = parseInt(eltAndIcone.options.idElement)
                 document.location.replace("http://127.0.0.1:8000/map/edit-element-"+idElement+"");
             })
 
             $(document).on("click", "#suppression"+eltsToShow[i].idElement+"", function () {
-                let idElement = marker.options.idElement
+                let idElement = parseInt(eltAndIcone.options.idElement)
                 ConfirmDelete()
                 document.location.replace("http://127.0.0.1:8000/map/delete-element-"+idElement+"");
             })
@@ -147,10 +167,10 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                 // si le nom du calque correspond à celui sur lequel est l'élément
                 if (calquesNoms[j] === eltsToShow[i].calqueNom) {
                     // on ajoute le marqueur au tableau des marqueurs (pour affichage sur le calque)
-                    markersTabTab[calquesNoms[j]].push(marker);
+                    markersTabTab[calquesNoms[j]].push(eltAndIcone);
 
                     // on ajoute le marqueur au tableau des clusters
-                    clustersTab[calquesNoms[j]].addLayer(marker);
+                    clustersTab[calquesNoms[j]].addLayer(eltAndIcone);
                     break;
                 }
             }

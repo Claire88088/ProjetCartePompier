@@ -91,14 +91,18 @@ class MapController extends AbstractController
 
         $sessionAttr = $_SESSION['_sf2_attributes'];
         $c = false;
+        $role = "";
         if(array_key_exists('_security.last_username', $sessionAttr)) {
             $c = true;
+            $nomUtilisateur = $_SESSION['_sf2_attributes']['_security.last_username'];
+            $role = $em->getRepository('App:Users')->findRoleByName($nomUtilisateur)[0]['roles'][0];
         }
 
         return $this->render('envoi-donnees-JS.html.twig', [
             'calquesNomsList' => $calquesNomTab,
             'allElements' => $allElements,
-            'isConnected' => $c
+            'isConnected' => $c,
+            'role' => $role
         ]);
     }
 
@@ -320,27 +324,47 @@ class MapController extends AbstractController
             case 'ER':
                 $elementForm = $this->createForm(ERType::class, $element);
                 $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones));
+                    'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    }
+                ));
                 break;
             case 'AUTOROUTE':
                 $elementForm = $this->createForm(AutorouteType::class, $element);
                 $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones));
+                    'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    }
+                ));
                 break;
             case 'TRAVAUX':
                 $elementForm = $this->createForm(TravauxType::class, $element);
                 $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones));
+                    'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    }
+                ));
                 break;
             case 'PI':
                 $elementForm = $this->createForm(PIType::class, $element);
                 $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones));
+                    'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    }
+                ));
                 break;
             case 'AUTRE':
                 $elementForm = $this->createForm(ElementType::class, $element);
                 $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones));
+                    'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    }
+                ));
                 break;
 
         }
@@ -468,6 +492,7 @@ class MapController extends AbstractController
         $elementCliquePointLong = $elementClique->getPoints()[0]->getLongitude();
 
         $icones = $em->getRepository('App:Icone')->findAll();
+
         $liensIcones = [];
         foreach($icones as $icone)  {
             $liensIcones[$icone->getLien()] = $icone;
@@ -478,30 +503,45 @@ class MapController extends AbstractController
                 $elementForm = $this->createForm(ERType::class, $elementClique);
                 $elementForm->add('icone', ChoiceType::class, array(
                     'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    },
                     'mapped' => true));
                 break;
             case 'TRAVAUX':
                 $elementForm = $this->createForm(TravauxType::class, $elementClique);
                 $elementForm->add('icone', ChoiceType::class, array(
                     'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    },
                     'mapped' => true));
                 break;
             case 'AUTOROUTE':
                 $elementForm = $this->createForm(AutorouteType::class, $elementClique);
                 $elementForm->add('icone', ChoiceType::class, array(
                     'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    },
                     'mapped' => true));
                 break;
             case 'PI':
                 $elementForm = $this->createForm(PIType::class, $elementClique);
                 $elementForm->add('icone', ChoiceType::class, array(
                     'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    },
                     'mapped' => true));
                 break;
             case 'AUTRE':
                 $elementForm = $this->createForm(DefaultElementType::class, $elementClique);
                 $elementForm->add('icone', ChoiceType::class, array(
                     'choices' => $liensIcones,
+                    'choice_attr' => function ($icone, $key, $index) {
+                        return ['icone' =>  $icone->getUnicode()];
+                    },
                     'mapped' => true));
                 break;
         }

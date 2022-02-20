@@ -14,14 +14,6 @@ class AutorouteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            /*->add('icone', ChoiceType::class, [
-                'label' => 'Icône',
-                'choices' => $options['data']['iconeChoices']
-            ])
-            ->add('typeElement', ChoiceType::class, [
-                'label' => "Type d'élément",
-                'choices'  => $options['data']['typeEltChoices'],
-            ])*/
             ->add('nom', TextType::class, [
                 'attr' => [
                     'placeholder' => 'Entrez le nom de l\'élément'
@@ -30,7 +22,12 @@ class AutorouteType extends AbstractType
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])
-        ;
+            ->add('couleur', TextType::class, [
+            'attr' => [
+                'value' => "#000000",
+                'data-jscolor' => "{}"
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

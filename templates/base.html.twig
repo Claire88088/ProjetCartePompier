@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Aide Cartographique{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Aide Cartographique{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
+    {% block stylesheets %}
         <!-- icones -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- bootstrap -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!-- leaflet -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-                integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-                crossorigin=""
+              integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+              crossorigin=""
         />
         <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.0.0/dist/esri-leaflet-geocoder.css">
 
@@ -25,10 +25,10 @@
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('css/styleFormRecherche.css') }}">
         <link rel="stylesheet" href="{{ asset('css/styleListe.css') }}">
-        {% endblock %}
-    </head>
+    {% endblock %}
+</head>
 
-    <body>
+<body>
         {% block body %}
         {% endblock %}
 
@@ -61,7 +61,8 @@
         <script src="{{ asset('js/coordFromAddressWithFetch.js') }}"></script>
         <script src="{{ asset('js/addGestionAffichage.js') }}"></script>
         <script src="{{ asset('js/escapeHtml.js') }}"></script>
+        <script src="{{ asset('js/jscolor.js') }}"></script>
         <script src="{{ asset('js/script.js') }}"></script>
         {% endblock %}
-    </body>
+</body>
 </html>

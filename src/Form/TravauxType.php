@@ -46,7 +46,12 @@ class TravauxType extends AbstractType
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])
-        ;
+            ->add('couleur', TextType::class, [
+                'attr' => [
+                    'value' => "#000000",
+                    'data-jscolor' => "{}"
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

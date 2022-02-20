@@ -18,10 +18,6 @@ class ElementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            /*->add('icone', ChoiceType::class, [
-                'label' => 'Icône',
-                'choices' => $options['data'],
-            ])*/
             ->add('nom', TextType::class, [
                 'attr' => [
                     'placeholder' => 'Entrez le nom de l\'élément'
@@ -85,6 +81,12 @@ class ElementType extends AbstractType
             ])
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
+            ])
+            ->add('couleur', TextType::class, [
+                'attr' => [
+                    'value' => "#000000",
+                    'data-jscolor' => "{}"
+                ]
             ])
         ;
     }

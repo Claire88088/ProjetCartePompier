@@ -60,34 +60,25 @@ class Element
     private $icone;
 
     /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Point", mappedBy="element", cascade={"persist","remove"})
+     * @ORM\Column(type="string", length=7, nullable=true)
      */
-    private $points;
-
-
-    public function __construct()
-    {
-        $this->points = new ArrayCollection();
-    }
+    private $couleur;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="App\Entity\Point", mappedBy="element", cascade={"persist","remove"})
+     */
+    private $points;
+
+    public function __construct()
     {
-        return $this->nom;
+        $this->points = new ArrayCollection();
     }
-
-    public function setNom(?string $nom): self
-    {
-        $this->nom = $nom;
-        return $this;
-    }
-
-
 
     /**
      * @return TypeElement
@@ -187,6 +178,30 @@ class Element
     public function setDateFin(?\DateTimeInterface $dateFin): self
     {
         $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    public function getCouleur()
+    {
+        return $this->couleur;
+    }
+
+    public function setCouleur($couleur): self
+    {
+        $this->couleur = $couleur;
+
+        return $this;
+    }
+
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    public function setNom($nom): self
+    {
+        $this->nom = $nom;
 
         return $this;
     }

@@ -9,6 +9,7 @@
 }
 
 h4, .titre_4 {
+    /*margin-top: 20px;*/
     margin-bottom: 20px;
 }
 
@@ -144,40 +145,21 @@ input#calque_nom{
     width: 100%;
 }
 
+.material-icons {
+    width: 50%;
+    border: 1px solid rgba(0,0,0,.15);
+    text-align: center;
+}
+
 .am {
     margin-right: -5px;
-}
-
-/* ajout de calque, type, élément */
-.add-element {
-    text-align: center;
-    border: 1px solid rgba(0,0,0,.15);
-    background-color: #F0F0F0;
-    border-radius: 0.25rem;
-    padding: 0.70rem 1.5rem;
-    margin-bottom: 10px;
-}
-
-.add-element > p {
-    margin-bottom: 0px;
-}
-
-.create-btn {
-    display: flex;
-    align-items: center;
-}
-
-.create-elt {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    flex: max-content;
 }
 
 #calque{
     margin: 30px;
 }
 
-textarea, input {
+textarea {
     text-align: center;
 }
 
@@ -252,46 +234,6 @@ textarea, input {
 .createCalqueAndType {
     display: flex;
     justify-content: center;
-
-}
-
-/*.list {*/
-/*    margin-top: 50px;*/
-/*}*/
-
-.createCalqueAndType > * {
-    flex: 0 0 44%
-}
-
-.m-10{
-    margin-right: 10px;
-}
-
-/* Pop-up */
-#lien:hover, #photo:hover {
-    cursor: pointer;
-}
-
-/* titres */
-.title {
-    background-color: #F0F0F0;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: 0.25rem;
-    padding: 0.70rem 1.5rem;
-    margin-bottom: 20px;
-}
-
-.add-title {
-    font-size: 1.5rem;
-    font-weight: 500;
-    line-height: 1.2;
-}
-
-.add-subtitle {
-    color: #6D6D6D;
-    font-size: 1.3rem;
-    font-weight: 500;
-    line-height: 1.2;
 }
 
 .createCalqueAndType > * {

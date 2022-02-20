@@ -22,15 +22,6 @@ class PIType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            /*->add('icone', ChoiceType::class, [
-                'label' => 'Icône',
-                'choices' => $options['data']
-            ])*/
-            ->add('nom', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Entrez le nom de l\'élément'
-                ]
-            ])
             ->add('texte', TextareaType::class, array(
                 'label' => 'Description',
                 'required' => false,
@@ -53,12 +44,23 @@ class PIType extends AbstractType
                 'data_class' => null,
                 'attr' => array(
                     'placeholder' => 'Sélectionnez une photo'
-                    ),
-                ])
+                ),
+            ])
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])
-        ;
+            ->add('couleur', TextType::class, [
+                'attr' => [
+                    'value' => "#000000",
+                    'data-jscolor' => "{}"
+                ]
+            ])
+            ->add('couleur', TextType::class, [
+                'attr' => [
+                    'value' => "#000000",
+                    'data-jscolor' => "{}"
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

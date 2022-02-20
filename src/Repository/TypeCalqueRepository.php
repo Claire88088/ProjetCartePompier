@@ -25,11 +25,11 @@ class TypeCalqueRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('tc')->getQuery()->getArrayResult();
     }
 
-    // TODO : factoriser les reque^tes
+    // TODO : factoriser les requêtes
     public function findAllElementsToShow()
     {
         $query = $this->_em->createQueryBuilder('tc');
-        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.id as idElement, e.nom as eltNom, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien as lienIcone')
+        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.id as idElement, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, e.couleur, i.unicode, i.lien as lienIcone')
             ->from(TypeCalque::class, 'tc')
             ->innerJoin('App\Entity\TypeElement', 'te')
             ->where('tc.id = te.typeCalque')
@@ -39,72 +39,6 @@ class TypeCalqueRepository extends ServiceEntityRepository
             ->andWhere('e.icone = i.id')
             ->innerJoin('App\Entity\Point', 'p')
             ->andWhere('e.id = p.element')
-            ->getQuery()->getArrayResult();
-    }
-/*
-    public function findAllWithTypesElt()
-    {
-        $query = $this->_em->createQueryBuilder('tc');
-        return $query->select('tc.nom as calque, te')
-            ->from(TypeCalque::class, 'tc')
-            ->join('App\Entity\TypeElement', 'te')
-            ->where('tc.id = te.typeCalque')
-            ->orderBy('te.typeCalque')
-            ->getQuery()->getArrayResult();
-    }
-
-/*
-    public function findAllElementsToShowOnER()
-    {
-        $query = $this->_em->createQueryBuilder('tc');
-        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.id as idElement, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien as lienIcone')
-            ->from(TypeCalque::class, 'tc')
-            ->innerJoin('App\Entity\TypeElement', 'te')
-            ->where('tc.id = te.typeCalque')
-            ->innerJoin('App\Entity\Element', 'e')
-            ->andWhere('te.id = e.typeElement')
-            ->innerJoin('App\Entity\Icone', 'i')
-            ->andWhere('e.icone = i.id')
-            ->innerJoin('App\Entity\Point', 'p')
-            ->andWhere('e.id = p.element')
-            ->andWhere('tc.type = :type')
-            ->setParameter('type', 'ER')
-            ->getQuery()->getArrayResult();
-    }
-
-    public function findAllElementsToShowOnAutoroute()
-    {
-        $query = $this->_em->createQueryBuilder('tc');
-        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.id as idElement, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien as lienIcone')
-            ->from(TypeCalque::class, 'tc')
-            ->innerJoin('App\Entity\TypeElement', 'te')
-            ->where('tc.id = te.typeCalque')
-            ->innerJoin('App\Entity\Element', 'e')
-            ->andWhere('te.id = e.typeElement')
-            ->innerJoin('App\Entity\Icone', 'i')
-            ->andWhere('e.icone = i.id')
-            ->innerJoin('App\Entity\Point', 'p')
-            ->andWhere('e.id = p.element')
-            ->andWhere('tc.type = :type')
-            ->setParameter('type', 'AUTOROUTE')
-            ->getQuery()->getArrayResult();
-    }
-
-    public function findAllElementsToShowOnPI()
-    {
-        $query = $this->_em->createQueryBuilder('tc');
-        return $query->select('tc.id as calqueId, tc.nom as calqueNom, te.nom as typeElementNom, e.id as idElement, e.texte, e.photo, e.lien, e.dateDeb, e.dateFin, p.latitude, p.longitude, i.couleur, i.lien as lienIcone')
-            ->from(TypeCalque::class, 'tc')
-            ->innerJoin('App\Entity\TypeElement', 'te')
-            ->where('tc.id = te.typeCalque')
-            ->innerJoin('App\Entity\Element', 'e')
-            ->andWhere('te.id = e.typeElement')
-            ->innerJoin('App\Entity\Icone', 'i')
-            ->andWhere('e.icone = i.id')
-            ->innerJoin('App\Entity\Point', 'p')
-            ->andWhere('e.id = p.element')
-            ->andWhere('tc.type = :type')
-            ->setParameter('type', 'PI')
             ->getQuery()->getArrayResult();
     }
 

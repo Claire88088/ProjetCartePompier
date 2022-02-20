@@ -84,6 +84,20 @@ $(document).ready(function(){
     });
 
     //----------------------------------------------------
+    // Permet au champs d'upload d'afficher le nom du ficher donné.
+    $('.custom-file-input').on('change', function (event) {
+        var inputFile = event.currentTarget;
+        $(inputFile).parent()
+            .find('.custom-file-label')
+            .html(inputFile.files[0].name);
+    });
+
+    //----------------------------------------------------
+    // Cache dans les formulaires la latitude et la longitude
+    $("fieldset.form-group").css("display", "none");
+
+
+    //----------------------------------------------------
     // 5. AJOUT D'UN NOUVEAU MARQUEUR
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
     var newMarker;
@@ -103,8 +117,43 @@ $(document).ready(function(){
         markersGroupTab[calqueNom].addTo(myMap);
         myMap.addLayer(clustersTab[calqueNom]);
 
+        //----------------------------------------------------
+        // Récupère le nom du formulaire [1] de la page
+        let formName = document.querySelectorAll("form")[1].name;
+        // Récupère le select des icones comprenant les options
+        let selectIcone = document.getElementById(formName + "_icone");
+
+        // boucle sur le select pour avoir chaque option
+        for (let i = 0; i < selectIcone.length; i++) {
+            let option = selectIcone[i];
+            let valOption = selectIcone[i].label;
+
+            let unicode = option.attributes[1].value
+            // construction du chemin vers les icones
+            let cheminIcone = "/MarkersIcons/" + valOption;
+
+            // set l'attribut nécessaire pour afficher les images par la suite
+            option.setAttribute('data-imagesrc', cheminIcone)
+            option.setAttribute('data-description', unicode)
+
+            // set le nom de l'icone a partir du lien
+            let iconeName = option.childNodes[0].textContent
+            let splitIconeName = iconeName.split("-")[2].split('.')[0]
+            option.innerHTML = splitIconeName
+        }
+
+        // Fonction jQuery UI pour reconstruire un select option en div et y inclure des images
+        $('#' + formName + '_icone').ddslick({
+            onSelected: function (selectedData) {
+                // remet le nom sur le input icone pour qu'il repasse dans le formulaire avec l'id de l'icone selectionnée
+                $("input.dd-selected-value").attr("name", formName + "[icone]")
+                $(".dd-selected-image").attr("unicode", selectedData.selectedData.description)
+            }
+        });
+
 
         if (urlAddElement) {
+            // Ajout marqueur
             function addMarker(e) {
                 // Enlève le dernier marqueur si il y'en a eu un
                 if (myMap.hasLayer(newMarker)) {
@@ -120,31 +169,91 @@ $(document).ready(function(){
                 var lat = tab.latlng.lat;
                 var long = tab.latlng.lng;
 
-                // récupération de l'icône choisie
-                var iconeLien = $('.dd-selected-image').attr('src');
-                var newIcon = L.icon({
-                    iconUrl: `..${iconeLien}`,
-                    iconSize: [iconeLargeur, iconeHauteur],
-                    iconAnchor: [iconeLargeur/2,iconeHauteur]
+                // Récupération de l'icône choisie et notamment de son lien
+                let iconeLien = $('.dd-selected-image').attr('src');
+                let iconeUnicode = $('.dd-selected-image').attr('unicode');
+
+                // Création des url pour les icones et pour les fontfaces
+                let urlISplit = iconeLien.split('/')[2].split('-');
+                let urlISplit2 = urlISplit[2].split('.')
+
+                let urlFontFace = "/MarkersIcons/" + urlISplit[1] + "-" + urlISplit2[0]
+
+                // Création d'un objet font-face correspondant à l'icone choisie dans la liste
+                let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
+                font.load().then(function (loadedFont) {
+                    if (document.fonts.has(loadedFont)) {
+                        document.fonts.delete(loadedFont);
+                    }
+                    document.fonts.add(loadedFont);
+                }).catch(function (error) {
+                    console.log(error)
                 });
 
+                let inputCouleur = document.getElementById(""+formName+"_couleur")
+                let inputCouleurVal = inputCouleur.value
+
                 // Création et ajout à la carte d'un marqueur avec l'icône choisie
-                newMarker = new L.marker(e.latlng, {icon: newIcon}).addTo(myMap);
+                newMarker = L.marker([lat, long], {
+                    icon: L.divIcon({
+                        html: "<i class='demo-icon' style='color:"+inputCouleurVal+";'>" + iconeUnicode + "</i>",
+                        iconSize: [iconeLargeur, iconeHauteur],
+                        iconAnchor: [iconeLargeur / 2, iconeHauteur],
+                        popupAnchor: [0, -32]
+                    })
+                }).addTo(myMap);
+
+                // Changement en temps réel de la couleur de l'icone
+                $("#" + formName + "_couleur").on('input', function () {
+                    if (myMap.hasLayer(newMarker)) {
+                        myMap.removeLayer(newMarker)
+                    }
+                    inputCouleurVal = this.value
+                    newMarker = L.marker([lat, long], {
+                        icon: L.divIcon({
+                            html: "<i class='demo-icon' style='color:"+inputCouleurVal+";'>" + iconeUnicode + "</i>",
+                            iconSize: [iconeLargeur, iconeHauteur],
+                            iconAnchor: [iconeLargeur / 2, iconeHauteur],
+                            popupAnchor: [0, -32]
+                        })
+                    }).addTo(myMap);
+                });
 
                 // si l'utilisateur choisit une autre icône
                 $('.dd-option').on('click', function () {
-                    // récupération de l'icône choisie
-                    var iconeLien = $('.dd-selected-image').attr('src');
-                    var newIcon = L.icon({
-                        iconUrl: `..${iconeLien}`,
-                        iconSize: [iconeLargeur, iconeHauteur],
-                        iconAnchor: [iconeLargeur/2,iconeHauteur]
+                    // On recrée une icone avec son lien
+                    iconeLien = $('.dd-selected-image').attr('src');
+                    iconeUnicode = $('.dd-selected-image').attr('unicode')
+
+                    urlISplit = iconeLien.split('/')[2].split('-');
+                    urlISplit2 = urlISplit[2].split('.')
+
+                    urlFontFace = "/MarkersIcons/" + urlISplit[1] + "-" + urlISplit2[0]
+
+                    let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
+                    font.load().then(function (loadedFont) {
+                        if (document.fonts.has(loadedFont)) {
+                            document.fonts.delete(loadedFont);
+                        }
+                        document.fonts.add(loadedFont);
+                    }).catch(function (error) {
+                        console.log(error)
                     });
+
+                    let currentCouleur = inputCouleur.attributes[11].value
+                    console.log(currentCouleur)
 
                     if (myMap.hasLayer(newMarker)) {
                         myMap.removeLayer(newMarker)
                         // Création d'un nouveau marqueur avec les anciennes coordonnées mais la nouvelle icone
-                        newMarker = new L.marker(e.latlng, {icon: newIcon}).addTo(myMap);
+                        newMarker = L.marker([lat, long], {
+                            icon: L.divIcon({
+                                html: "<i class='demo-icon' style='color:"+currentCouleur+";'>" + iconeUnicode + "</i>",
+                                iconSize: [iconeLargeur, iconeHauteur],
+                                iconAnchor: [iconeLargeur / 2, iconeHauteur],
+                                popupAnchor: [0, -32]
+                            })
+                        }).addTo(myMap);
                     }
                 })
 
@@ -182,47 +291,6 @@ $(document).ready(function(){
 
             myMap.on("click", addMarker);
         }
-        //----------------------------------------------------
-        // Permet au champs d'upload d'afficher le nom du ficher donné.
-        $('.custom-file-input').on('change', function (event) {
-            var inputFile = event.currentTarget;
-            $(inputFile).parent()
-                .find('.custom-file-label')
-                .html(inputFile.files[0].name);
-        });
-
-        //----------------------------------------------------
-        // Cache dans les formulaires la latitude et la longitude
-        $("fieldset.form-group").css("display", "none");
-
-        //----------------------------------------------------
-        // Récupère le nom du formulaire [1] de la page
-        let formName = document.querySelectorAll("form")[1].name;
-        // Récupère le select des icones comprenant les options
-        let selectIcone = document.getElementById(formName + "_icone");
-
-        // boucle sur le select pour avoir chaque option
-        for (let i = 0; i < selectIcone.length; i++) {
-            let option = selectIcone[i];
-            let valOption = selectIcone[i].label;
-            // construction du chemin vers les icones
-            cheminIcone = "/MarkersIcons/" + valOption;
-            // set l'attribut nécessaire pour afficher les images par la suite
-            option.setAttribute('data-imagesrc', cheminIcone)
-
-            // set le nom de l'icone a partir du lien
-            let iconeName = option.childNodes[0].textContent
-            let splitIconeName = iconeName.split("-")[1]
-            option.innerHTML = splitIconeName
-        }
-
-        // Fonction jQuery UI pour reconstruire un select option en div et y inclure des images
-        $('#' + formName + '_icone').ddslick({
-            onSelected: function (selectedData) {
-                // remet le nom sur le input icone pour qu'il repasse dans le formulaire avec l'id de l'icone selectionnée
-                $("input.dd-selected-value").attr("name", formName + "[icone]")
-            }
-        });
 
         //---------------------------------------------------------------------------------------------
         // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément

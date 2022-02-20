@@ -22,7 +22,7 @@ class Icone
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $couleur;
+    private $unicode;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -45,14 +45,14 @@ class Icone
         return $this->id;
     }
 
-    public function getCouleur(): ?string
+    public function getUnicode(): ?string
     {
-        return $this->couleur;
+        return $this->unicode;
     }
 
-    public function setCouleur(?string $couleur): self
+    public function setUnicode(?string $unicode): self
     {
-        $this->couleur = $couleur;
+        $this->unicode = $unicode;
 
         return $this;
     }

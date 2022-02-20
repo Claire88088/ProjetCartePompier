@@ -6,6 +6,7 @@ use App\Entity\Element;
 use App\Form\Type\LocalDateTimeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -23,19 +24,6 @@ class ERType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            /*->add('icone', ChoiceType::class, [
-                'label' => 'Icône',
-                'choices' => $options['data']['iconeChoices']
-            ])
-            ->add('typeElement', ChoiceType::class, [
-                'label' => "Type d'élément",
-                'choices'  => $options['data']['typeEltChoices'],
-            ])*/
-            ->add('nom', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Entrez le nom de l\'élément'
-                ]
-            ])
             ->add('texte', TextareaType::class, array(
                 'label' => 'Description',
                 'required' => false,
@@ -58,8 +46,8 @@ class ERType extends AbstractType
                 'data_class' => null,
                 'attr' => array(
                     'placeholder' => 'Sélectionnez une photo'
-                    ),
-                ])
+                ),
+            ])
             ->add('lien', FileType::class, [
                 'label' => 'Lien (PDF)',
                 'mapped' => false,
@@ -79,7 +67,18 @@ class ERType extends AbstractType
             ->add('coordonnees', PointType::class, [
                 'mapped' => false
             ])
-        ;
+            ->add('couleur', TextType::class, [
+                'attr' => [
+                    'value' => "#000000",
+                    'data-jscolor' => "{}"
+                ]
+            ])
+            ->add('couleur', TextType::class, [
+                'attr' => [
+                    'value' => "#000000",
+                    'data-jscolor' => "{}"
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
