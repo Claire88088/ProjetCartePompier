@@ -82,6 +82,9 @@ class MapController extends AbstractController
     // Envoi des données nécessaires à JS
     public function envoiDonneesJSAction(EntityManagerInterface $em): Response
     {
+        $defaultCommune = $em->getRepository('App:Commune')->findMinId();
+        $defaultLatAndLong = [$defaultCommune->getLatitude(), $defaultCommune->getLongitude()];
+
         $calques = $em->getRepository('App:TypeCalque')->findAll();
 
         $calquesNomTab = [];
@@ -100,6 +103,7 @@ class MapController extends AbstractController
         }
 
         return $this->render('envoi-donnees-JS.html.twig', [
+            'defaultLatAndLong' => $defaultLatAndLong,
             'calquesNomsList' => $calquesNomTab,
             'allElements' => $allElements,
             'isConnected' => $c,

@@ -3,9 +3,14 @@ $(document).ready(function(){
     let iconeHauteur = 50;
     let iconeLargeur = 50;
 
-    // 1. CREATION DE LA CARTE avec un fond de carte OSM centrée sur chatellerault---------------------------------
+    // 1. CREATION DE LA CARTE avec un fond de carte OSM centrée sur la commune par défaut---------------------------------
+    let defaultLatAndLongElt = $('.defaultLatAndLong');
+    let defaultLatAndLong = JSON.parse(defaultLatAndLongElt[0].attributes[1].value);
+    let defaultLat = defaultLatAndLong[0];
+    let defaultLong = defaultLatAndLong[1];
+
     let myMap = L.map('mapid', {
-        center: [46.816487, 0.548146],
+        center: [defaultLat, defaultLong],
         zoom: 13
     });
 
@@ -65,9 +70,9 @@ $(document).ready(function(){
     // Pour la première commune selectionnée
     let formCommune = document.getElementById("form_commune");
 
-    // Par défaut : la commune sélectionnée est Châtellerault
-    let communeLat = 46.8156700185;
-    let communeLong = 0.552598976936;
+    // Par défaut :
+    let communeLat = defaultLat;
+    let communeLong = defaultLong;
 
     // on créé le form de l'API et on recherche l'adresse
     searchAddress(myMap, communeLat, communeLong);
