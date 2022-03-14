@@ -71,9 +71,10 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             }).addTo(myMap);
 
             // Mise en forme de la popup
+            let nom = eltsToShow[i].nom
             let texte = eltsToShow[i].texte
             let typeElement = eltsToShow[i].typeElementNom
-            let popupContenu = "Description: " + texte + "</br>" +
+            let popupContenu = "Nom: " + nom + "</br>" + "Description: " + texte + "</br>" +
                 "Type d'élement: " + typeElement + "</br>";
 
             let photo = eltsToShow[i].photo
