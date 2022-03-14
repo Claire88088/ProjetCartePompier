@@ -74,8 +74,21 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             let nom = eltsToShow[i].nom
             let texte = eltsToShow[i].texte
             let typeElement = eltsToShow[i].typeElementNom
+
             let popupContenu = "Nom: " + nom + "</br>" + "Description: " + texte + "</br>" +
                 "Type d'élement: " + typeElement + "</br>";
+
+            let dateDeb = eltsToShow[i].dateDeb
+            if (dateDeb) {
+                let dateDebInJs = new Date(dateDeb["date"]);
+                popupContenu += "Date de début : " + dateDebInJs.toLocaleDateString() + "</br>";
+            }
+
+            let dateFin = eltsToShow[i].dateFin
+            if (dateFin) {
+                let dateFinInJs = new Date(dateFin["date"]);
+                popupContenu += "Date de fin : " + dateFinInJs.toLocaleDateString() + "</br>";
+            }
 
             let photo = eltsToShow[i].photo
             let lien = eltsToShow[i].lien
