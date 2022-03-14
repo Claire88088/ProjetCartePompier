@@ -483,6 +483,9 @@ class MapController extends AbstractController
         $elementClique = $em->getRepository('App:Element')->find($idElement);
         $nomElement = $elementClique->getNom();
 
+        $lien = $elementClique->getLien();
+        $photo = $elementClique->getPhoto();
+
         $idtypeElementC = $elementClique->getTypeElement();
         $typeElement = $em->getRepository('App:TypeElement')->find($idtypeElementC);
         $idTypeCalqueC = $typeElement->getTypeCalque();
@@ -638,6 +641,8 @@ class MapController extends AbstractController
             'latitude' => $elementCliquePointLat,
             'longitude' => $elementCliquePointLong,
             'nomCalque' => $calqueNom,
+            'photo' => $photo,
+            'lien' => $lien
         ]);
     }
 

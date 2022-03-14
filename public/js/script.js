@@ -321,10 +321,23 @@ $(document).ready(function(){
                     console.log(error)
                 });
 
-                // on l'applique avec le innerHTML (non faisable avec textContent ou innerText car ces propriétés ne parsent pas en contenu HTML et donc l'unicode s'affiche ne texte)
+                // on l'applique avec le innerHTML (non faisable avec textContent ou innerText car ces propriétés ne parsent pas en contenu HTML et donc l'unicode s'affiche en texte)
                 Element.innerHTML = iconeUnicode
             })
         }
+
+        // Affiche les noms des photos et liens dans leur champs correspondant, par défaut symfony les cache.
+        let divPhoto = $('.photo');
+        let divlien =  $('.lien');
+
+        let photoNom = divPhoto[0].attributes[1].value;
+        let lienNom = divlien[0].attributes[1].value;
+
+        let uploadPhoto = document.getElementById(formName + "_photo");
+        let uploadLien = document.getElementById(formName + "_lien");
+
+        uploadPhoto.nextSibling.textContent = photoNom
+        uploadLien.nextSibling.textContent = lienNom
 
         //---------------------------------------------------------------------------------------------
         // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
