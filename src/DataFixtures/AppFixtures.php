@@ -150,11 +150,11 @@ class AppFixtures extends Fixture
         $manager->persist($iconeImmSVG);
 
         $iconeUsineSVG = new Icone();
-        $iconeUsineSVG->setUnicode('&#xe801;')->setLien('preview-icons8-usine.svg');
+        $iconeUsineSVG->setUnicode('&#xe802;')->setLien('preview-icons8-usine.svg');
         $manager->persist($iconeUsineSVG);
 
         $iconeGazSVG = new Icone();
-        $iconeGazSVG->setUnicode('&#xe802;')->setLien('preview-icons8-gaz.svg');
+        $iconeGazSVG->setUnicode('&#xe801;')->setLien('preview-icons8-gaz.svg');
         $manager->persist($iconeGazSVG);
 
 //        $iconeEpingle1 = new Icone();
