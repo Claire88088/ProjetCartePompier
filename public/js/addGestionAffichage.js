@@ -77,7 +77,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 
             // contenu de la pop up au clic :
             let typeElement = eltsToShow[i].typeElementNom
-            let clickPopupContent = "Nom: " + nom + " (type : " + typeElement + ")</br>";
+            let clickPopupContent = "<strong>" + nom + "</strong> (type : " + typeElement + ")</br>";
 
             let texte = eltsToShow[i].texte
             if (texte) {
