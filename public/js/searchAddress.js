@@ -48,6 +48,18 @@
             results.addLayer(marker);
             marker.openPopup();
         }
+
+        // le header s'affiche en petit et la carte en grand
+        $("#header-content").removeClass("bigHeader").addClass("smallHeader");
+        $(".container-fluid").removeClass("smallMap").addClass("bigMap");
+
+        // affichage du header en grand
+        $("#bLog").on("mouseover", function() {
+            if (($("#header-content").hasClass("smallHeader"))) {
+                $("#header-content").removeClass("smallHeader").addClass("bigHeader");
+                $(".container-fluid").removeClass("bigMap").addClass("smallMap");
+            }
+        });
     });
 }
 

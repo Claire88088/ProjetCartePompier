@@ -11,7 +11,7 @@
         </div>
         {% endif %}
 
-        <div id="header-content">
+        <div id="header-content" class="bigHeader">
         {% if not app.user %}
             <div id="Ah3UnLog">
                 {{ render(controller('App\\Controller\\MapController::rechercheFormAction')) }}
@@ -52,8 +52,8 @@
         </div>
     </div>
 
-    <div class="container-fluid">
-      
+    <div class="container-fluid smallMap">
+{#        <button class="newSearch">Nouvelle recherche</button>#}
         <div class="row">
 
             {# Affichage de la carte #}

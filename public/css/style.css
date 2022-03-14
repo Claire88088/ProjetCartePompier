@@ -1,3 +1,4 @@
+/* map */
 .container-fluid {
     width: 100%;
     position: absolute;
@@ -5,9 +6,19 @@
     bottom: 0;
     left: 0;
     right: 0;
-    margin-top: 58px;
 }
 
+.bigMap {
+    margin-top: unset;
+    transition: margin-top 10ms;
+}
+
+.smallMap {
+    margin-top: 58px;
+    transition: margin-top 10ms;
+}
+
+/******/
 h4, .titre_4 {
     margin-bottom: 20px;
 }
@@ -66,10 +77,20 @@ h4, .titre_4 {
     display: flex;
 }
 
+/* header */
 #header-content {
     text-align: center;
+}
+
+.bigHeader {
     display: flex;
 }
+
+.smallHeader {
+    display: none;
+}
+
+/******/
 
 #h3 > h3, #Ah3UnLog {
     flex: 0 0 100%;
