@@ -478,7 +478,7 @@ class MapController extends AbstractController
      * @Route("/map/edit-element-{idElement}", name="edit_element")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function editElementAction(EntityManagerInterface $em, Request $request, int $idElement): Response
+    public function editElementAction(EntityManagerInterface $em, Request $request, int $idElement, SluggerInterface $slugger): Response
     {
         $elementClique = $em->getRepository('App:Element')->find($idElement);
         $nomElement = $elementClique->getNom();
@@ -551,6 +551,80 @@ class MapController extends AbstractController
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
+
+            foreach ($_POST as $name => $value) {
+
+                $Photo = "";
+                $Lien = "";
+
+                $photoFile = null;
+                $pdfFile = null;
+
+                $newPhotoName = null;
+                $newPdfName = null;
+
+                $issetPhoto = isset($_FILES[$name]["name"]['photo']);
+                $issetLien = isset($_FILES[$name]["name"]['lien']);
+
+                if ($issetPhoto && $issetLien) {
+                    $Photo = $_FILES[$name]["name"]["photo"];
+                    $Lien = $_FILES[$name]["name"]["lien"];
+                } else if ($issetPhoto && !$issetLien) {
+                    $Photo = $_FILES[$name]["name"]["photo"];
+                } else if (!$issetPhoto && $issetLien) {
+                    $Lien = $_FILES[$name]["name"]["lien"];
+                }
+
+                // Test si dans le POST, il y'a des envois de fichiers
+                if ($Photo !== "" && $Lien === "") {
+                    $photoFile = $elementForm->get('photo')->getData();
+                    if ($photoFile) {
+                        $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                        $safePhotoFilename = $slugger->slug($originalPhotoFilename);
+                        $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+                    }
+                } else if ($Lien !==  "" && $Photo === "") {
+                    $pdfFile = $elementForm->get('lien')->getData();
+                    if ($pdfFile) {
+                        $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
+                        $safePdfFilename = $slugger->slug($originalPdfFilename);
+                        $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+                    }
+                } else if ($Lien !== "" && $Photo !== "") {
+                    $photoFile = $elementForm->get('photo')->getData();
+                    $pdfFile = $elementForm->get('lien')->getData();
+                    if ($photoFile && $pdfFile) {
+                        $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                        $safePhotoFilename = $slugger->slug($originalPhotoFilename);
+                        $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+                        $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
+                        $safePdfFilename = $slugger->slug($originalPdfFilename);
+                        $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+                    }
+                }
+                // Move the file to the directory where photos/pdf are stored
+                try {
+                    if ($photoFile) {
+                        $photoFile->move(
+                            $this->getParameter('uploads_photos'),
+                            $newPhotoName
+                        );
+                    }
+                    if ($pdfFile) {
+                        $pdfFile->move(
+                            $this->getParameter('uploads_pdf'),
+                            $newPdfName
+                        );
+                    }
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $elementClique->setPhoto($newPhotoName);
+                $elementClique->setLien($newPdfName);
+            }
+
+
             $em->persist($elementClique);
             $em->flush();
 
