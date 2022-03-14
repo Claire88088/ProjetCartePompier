@@ -70,24 +70,30 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                 })
             }); //.addTo(myMap); on affiche aucun élément par défaut sur la carte
 
-            // Mise en forme de la popup
+            // Mise en forme des popups : 2 types de pop up en fonction de l'affichage : au survol ou au clic
+            // contenu de la pop up au survol :
             let nom = eltsToShow[i].nom
-            let texte = eltsToShow[i].texte
-            let typeElement = eltsToShow[i].typeElementNom
+            let hoverPopupContent = "" + nom;
 
-            let popupContenu = "Nom: " + nom + "</br>" + "Description: " + texte + "</br>" +
-                "Type d'élement: " + typeElement + "</br>";
+            // contenu de la pop up au clic :
+            let typeElement = eltsToShow[i].typeElementNom
+            let clickPopupContent = "Nom: " + nom + " (type : " + typeElement + ")</br>";
+
+            let texte = eltsToShow[i].texte
+            if (texte) {
+                clickPopupContent += "Description : " + texte +  "</br>";
+            }
 
             let dateDeb = eltsToShow[i].dateDeb
             if (dateDeb) {
                 let dateDebInJs = new Date(dateDeb["date"]);
-                popupContenu += "Date de début : " + dateDebInJs.toLocaleDateString() + "</br>";
+                clickPopupContent += "Date de début : " + dateDebInJs.toLocaleDateString() + "</br>";
             }
 
             let dateFin = eltsToShow[i].dateFin
             if (dateFin) {
                 let dateFinInJs = new Date(dateFin["date"]);
-                popupContenu += "Date de fin : " + dateFinInJs.toLocaleDateString() + "</br>";
+                clickPopupContent += "Date de fin : " + dateFinInJs.toLocaleDateString() + "</br>";
             }
 
             let photo = eltsToShow[i].photo
@@ -95,7 +101,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 
             if (photo === null && lien === null) {
                 if (isConnected && role === "ROLE_ADMIN") {
-                    popupContenu +=
+                    clickPopupContent +=
                         '</br>'
                         + '<div style="display: flex;">'
                         + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
@@ -104,7 +110,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                 }
             } else if (photo !== null && lien === null) {
                 if (isConnected && role === "ROLE_ADMIN") {
-                    popupContenu +=
+                    clickPopupContent +=
                         '</br>'
                         + '<div>'
                         + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
@@ -114,7 +120,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                         + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class=" btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
                         + '</div>'
                 } else {
-                    popupContenu +=
+                    clickPopupContent +=
                         '</br>'
                         + '<div>'
                         + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
@@ -122,7 +128,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                 }
             } else if (lien !== null && photo === null) {
                 if (isConnected && role === "ROLE_ADMIN") {
-                    popupContenu +=
+                    clickPopupContent +=
                         '</br>'
                         + '<div>'
                         + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
@@ -132,7 +138,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                         + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
                         + '</div>'
                 } else {
-                    popupContenu +=
+                    clickPopupContent +=
                         '</br>'
                         + '<div>'
                         + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
@@ -140,7 +146,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                 }
             } else {
                 if (isConnected && role === "ROLE_ADMIN") {
-                    popupContenu +=
+                    clickPopupContent +=
                         '</br>'
                         + '<div style="display: flex;">'
                         + '<div style="flex:auto; margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
@@ -151,7 +157,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                         + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
                         + '</div>'
                 } else {
-                    popupContenu +=
+                    clickPopupContent +=
                         '</br>'
                         + '<div style="display: flex;">'
                         + '<div style="flex:auto; margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
@@ -160,12 +166,28 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                 }
             }
 
-            let popupPoints = new L.popup();
-            popupPoints.setContent(popupContenu);
+            // création des pop-ups
+            let hoverPopup = new L.popup();
+            hoverPopup.setContent(hoverPopupContent);
+
+            let clickPopup = new L.popup();
+            clickPopup.setContent(clickPopupContent);
 
             // ajout de la popup aux Elements/Icones
-            eltAndIcone.bindPopup(popupPoints);
+            eltAndIcone.bindPopup(clickPopup);
 
+            // gestion de l'affichage des pop up
+            eltAndIcone.on('mouseover', function() {
+                this.unbindPopup();
+                this.bindPopup(hoverPopup).openPopup();
+            })
+
+            eltAndIcone.on('click', function() {
+                this.unbindPopup();
+                this.bindPopup(clickPopup).openPopup();
+            })
+
+            // gestion de la modification / suppression des éléments
             $(document).on("click", "#modification"+eltsToShow[i].idElement+"", function () {
                 let idElement = parseInt(eltAndIcone.options.idElement)
                 document.location.replace("http://127.0.0.1:8000/map/edit-element-"+idElement+"");
