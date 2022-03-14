@@ -64,6 +64,9 @@
                     {% for msg in app.session.flashBag.get('success') %}
                         <div class="alert alert-success" role="alert">{{ msg }}</div>
                     {% endfor %}
+                    {% for msg in app.session.flashBag.get('danger') %}
+                        <div class="alert alert-danger" role="alert">{{ msg }}</div>
+                    {% endfor %}
                     {% block global %}
                         <div class="title mb-5">
                             <h2 class="add-title">Gestion des calques, types d'éléments et éléments</h2>
