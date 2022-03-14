@@ -26,6 +26,7 @@ h4, .titre_4 {
 
 .row{
     height: 100%;
+    margin-bottom: 15px;
 }
 
 .navbar {
@@ -149,7 +150,7 @@ input#calque_nom{
 }
 
 /* ajout de calque, type, élément */
-.add-element {
+.add-element, .list-icones {
     text-align: center;
     border: 1px solid rgba(0,0,0,.15);
     background-color: #F0F0F0;
@@ -329,3 +330,22 @@ textarea, input {
     background: none;
     border: none;
 }
+
+input.form-control.jscolor.jscolor-active {
+    padding-left: 0px!important;
+}
+
+tr.tdIconeAlign > * {
+    vertical-align: middle;
+}
+
+.tableWrap {
+    overflow: auto;
+    height: 500px;
+}
+
+.thead-dark {
+    position: sticky;
+    top: 0;
+}
+

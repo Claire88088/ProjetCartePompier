@@ -41,6 +41,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
         // on parcourt les éléments
         for (let i = 0; i < eltsToShow.length; i++) {
 
+            let idElement = eltsToShow[i].idElement
             let couleur = eltsToShow[i].couleur
             let unicode = eltsToShow[i].unicode
             let latitude = eltsToShow[i].latitude
@@ -60,9 +61,9 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             });
 
             let eltAndIcone = L.marker([latitude, longitude], {
-                idElement: eltsToShow[i].idElement,
+                idElement: idElement,
                 icon: L.divIcon({
-                    html: "<i class='demo-icon' style='color:"+couleur+";'>"+unicode+"</i>",
+                    html: "<i id="+idElement+" class='demo-icon' style='color:"+couleur+";'>"+unicode+"</i>",
                     iconSize: [iconeLargeur, iconeHauteur],
                     iconAnchor: [iconeLargeur/2,iconeHauteur],
                     popupAnchor: [0, -32]

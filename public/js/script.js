@@ -101,8 +101,8 @@ $(document).ready(function(){
     // 5. AJOUT D'UN NOUVEAU MARQUEUR
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
     var newMarker;
-    var urlAddElement = window.location.pathname.substr(0,16) == "/map/add-element";
-    var urlEditElement = window.location.pathname.substr(0,17) == "/map/edit-element";
+    var urlAddElement = window.location.pathname.substr(0,16) === "/map/add-element";
+    var urlEditElement = window.location.pathname.substr(0,17) === "/map/edit-element";
     if (urlAddElement || urlEditElement) {
         // on adapte le zoom
         myMap.setZoom(18);
@@ -151,6 +151,8 @@ $(document).ready(function(){
             }
         });
 
+        let inputCouleur = document.getElementById(""+formName+"_couleur")
+        let inputCouleurVal = inputCouleur.value
 
         if (urlAddElement) {
             // Ajout marqueur
@@ -189,9 +191,6 @@ $(document).ready(function(){
                 }).catch(function (error) {
                     console.log(error)
                 });
-
-                let inputCouleur = document.getElementById(""+formName+"_couleur")
-                let inputCouleurVal = inputCouleur.value
 
                 // Création et ajout à la carte d'un marqueur avec l'icône choisie
                 newMarker = L.marker([lat, long], {
@@ -288,8 +287,43 @@ $(document).ready(function(){
                 newMarker.bindPopup(newPopup);
 
             }
-
             myMap.on("click", addMarker);
+        }
+        if (urlEditElement) {
+            let currentUrl = window.location.href
+            // Obligation de parsé sinon on récupère un string qui n'est donc pas comparable à l'id de l'élément qui lui est un int.
+            let idCurrentElement = currentUrl.split('-')[2]
+
+            let Element = document.getElementById(idCurrentElement)
+            let currentCouleurElement = Element.attributes[2].value.split(":")[1].split(';')[0]
+
+            $("#" + formName + "_couleur")[0].value = currentCouleurElement
+
+            $("#" + formName + "_couleur").on('input', function () {
+                let inputCouleurVal = this.value
+                Element.style.color = inputCouleurVal
+            })
+
+            $('.dd-option').on('click', function () {
+                iconeLien = $('.dd-selected-image').attr('src');
+                // On va rechercher le nouvel unicode
+                iconeUnicode = $('.dd-selected-image').attr('unicode')
+
+                urlISplit = iconeLien.split('/')[2].split('-');
+                urlISplit2 = urlISplit[2].split('.')
+
+                urlFontFace = "/MarkersIcons/" + urlISplit[1] + "-" + urlISplit2[0]
+
+                let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
+                font.load().then(function (loadedFont) {
+                    document.fonts.add(loadedFont);
+                }).catch(function (error) {
+                    console.log(error)
+                });
+
+                // on l'applique avec le innerHTML (non faisable avec textContent ou innerText car ces propriétés ne parsent pas en contenu HTML et donc l'unicode s'affiche ne texte)
+                Element.innerHTML = iconeUnicode
+            })
         }
 
         //---------------------------------------------------------------------------------------------
@@ -301,4 +335,4 @@ $(document).ready(function(){
             }
         });
     }
-});
+})

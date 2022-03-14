@@ -66,18 +66,31 @@
                     {% endfor %}
                     {% block global %}
                         <div class="title mb-5">
-                            <h1 class="add-title">Gestion des calques, types d'éléments et éléments</h1>
+                            <h2 class="add-title">Gestion des calques, types d'éléments et éléments</h2>
                         </div>
 
-                        <div class="createCalqueAndType mb-5">
-                            <button class="create-btn btn btn-primary m-10" onclick="location.href='{{ path('add_calque') }}'">
-                                <div class="material-icons material-icons-outlined">add</div>
-                                <div>Créer un nouveau calque</div>
-                            </button>
-                            <button class="create-btn btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">
-                                <div class="material-icons material-icons-outlined">add</div>
-                                <div>Créer un nouveau type d'éléments</div>
-                            </button>
+                        <div class="container {# createCalqueAndType #}  mb-5">
+                            <div class="row">
+                                <div class="col">
+                                    <button style="width:100%; height:100%;" class="create-btn btn btn-primary" onclick="location.href='{{ path('add_calque') }}'">
+                                        <div class="material-icons material-icons-outlined">add</div>
+                                        <div style="width:100%;">Créer un nouveau calque</div>
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button class="create-btn btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">
+                                        <div class="material-icons material-icons-outlined">add</div>
+                                        <div style="width:100%;">Créer un nouveau type d'éléments</div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button class="create-btn btn btn-primary" style="width:100%;" onclick="location.href='{{ path('list_icones') }}'">
+                                        <div style="width:100%;">Lister les icones</div>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <hr>
                         {{ render(controller('App\\Controller\\MapController::listAction')) }}

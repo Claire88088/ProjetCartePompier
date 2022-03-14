@@ -24,6 +24,11 @@ class ERType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('nom', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Entrez le nom de l\'élément'
+                ]
+            ])
             ->add('texte', TextareaType::class, array(
                 'label' => 'Description',
                 'required' => false,
@@ -75,9 +80,10 @@ class ERType extends AbstractType
             ])
             ->add('couleur', TextType::class, [
                 'attr' => [
+                    'class' => "inputColor",
                     'value' => "#000000",
                     'data-jscolor' => "{}"
-                ]
+                ],
             ]);
     }
 

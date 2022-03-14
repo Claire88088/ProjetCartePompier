@@ -18,6 +18,7 @@ use App\Form\ElementPIType;
 use App\Form\ElementTravauxType;
 use App\Form\ElementType;
 use App\Form\ERType;
+use App\Form\IconeType;
 use App\Form\PIType;
 use App\Form\PointType;
 use App\Form\TravauxType;
@@ -580,6 +581,56 @@ class MapController extends AbstractController
         return $this->redirectToRoute('map');
     }
 
+    /**
+     * Lister les icones
+     * @Route("/map/list_icones", name="list_icones")
+     * @IsGranted("ROLE_USER")
+     */
+    public function listIconesAction(EntityManagerInterface $em): Response
+    {
+        $icones = $em->getRepository('App:Icone')->findAll();
 
+        return $this->render('map/list-icones.html.twig', [
+            'icones' => $icones
+        ]);
+    }
+
+    /**
+     * Ajout d'une icone
+     * @Route("/map/add-icone", name="add_icone")
+     * @IsGranted("ROLE_USER")
+     */
+    public function addIconeAction(EntityManagerInterface $em, Request $request): Response
+    {
+        $icone = new Icone;
+        $form = $this->createForm(IconeType::class, $icone);
+        $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter une nouvelle icone']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($icone);
+            $em->flush();
+            $this->addFlash('success', 'L\'icone a bien été ajoutée !');
+            return $this->redirectToRoute('map');
+        }
+
+        return $this->render('map/add-icone.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Suppression d'une icone
+     * @Route("/map/delete-icone-{idIcone}", name="delete_icone")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function deleteIconeAction(EntityManagerInterface $em, int $idIcone): Response
+    {
+        $icone = $em->getRepository('App:Icone')->find($idIcone);
+        $em->remove($icone);
+        $em->flush();
+        $this->addFlash('success', "L'icone a bien été supprimée");
+        return $this->redirectToRoute('list_icones');
+    }
 
 }
