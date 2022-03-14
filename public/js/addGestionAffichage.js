@@ -68,7 +68,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
                     iconAnchor: [iconeLargeur/2,iconeHauteur],
                     popupAnchor: [0, -32]
                 })
-            }).addTo(myMap);
+            }); //.addTo(myMap); on affiche aucun élément par défaut sur la carte
 
             // Mise en forme de la popup
             let nom = eltsToShow[i].nom
