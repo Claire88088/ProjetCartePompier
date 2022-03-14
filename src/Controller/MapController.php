@@ -628,7 +628,7 @@ class MapController extends AbstractController
             $em->persist($elementClique);
             $em->flush();
 
-            $this->addFlash('success', "L'élement a bien été modifié");
+            $this->addFlash('success', "L'élément a bien été modifié");
             return $this->redirectToRoute('map');
         }
 
@@ -651,7 +651,7 @@ class MapController extends AbstractController
         $elementClique = $em->getRepository('App:Element')->find($idElement);
         $em->remove($elementClique);
         $em->flush();
-        $this->addFlash('success', "L'élement a bien été supprimé");
+        $this->addFlash('success', "L'élément a bien été supprimé");
         return $this->redirectToRoute('map');
     }
 
@@ -678,13 +678,13 @@ class MapController extends AbstractController
     {
         $icone = new Icone;
         $form = $this->createForm(IconeType::class, $icone);
-        $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter une nouvelle icone']);
+        $form->add('Ajouter', SubmitType::class, ['label' => 'Ajouter une nouvelle icône']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($icone);
             $em->flush();
-            $this->addFlash('success', 'L\'icone a bien été ajoutée !');
+            $this->addFlash('success', 'L\'icône a bien été ajoutée !');
             return $this->redirectToRoute('map');
         }
 
@@ -705,11 +705,11 @@ class MapController extends AbstractController
         if (is_null($icone->getElements()[0])) {
             $em->remove($icone);
             $em->flush();
-            $this->addFlash('success', "L'icone a bien été supprimée");
+            $this->addFlash('success', "L'icône a bien été supprimée");
             return $this->redirectToRoute('list_icones');
         }
         else {
-            $this->addFlash('danger', "L'icone ne peut pas être supprimée car elle est utilisée");
+            $this->addFlash('danger', "L'icône ne peut pas être supprimée car elle est utilisée");
             return $this->redirectToRoute('list_icones');
         }
     }
