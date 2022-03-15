@@ -487,6 +487,7 @@ class MapController extends AbstractController
         $elementClique = $em->getRepository('App:Element')->find($idElement);
         $nomElement = $elementClique->getNom();
 
+        dump($elementClique);
         $lien = $elementClique->getLien();
         $photo = $elementClique->getPhoto();
 
@@ -610,6 +611,7 @@ class MapController extends AbstractController
                         $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
                     }
                 }
+
                 // Move the file to the directory where photos/pdf are stored
                 try {
                     if ($photoFile) {
@@ -671,7 +673,7 @@ class MapController extends AbstractController
      */
     public function listIconesAction(EntityManagerInterface $em): Response
     {
-        $icones = $em->getRepository('App:Icone')->findAll();
+        $icones = $em->getRepository('App:Icone')->findAllByUnicodeDesc();
 
         return $this->render('map/list-icones.html.twig', [
             'icones' => $icones

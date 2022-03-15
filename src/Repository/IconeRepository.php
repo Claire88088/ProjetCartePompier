@@ -19,22 +19,16 @@ class IconeRepository extends ServiceEntityRepository
         parent::__construct($registry, Icone::class);
     }
 
-    // /**
-    //  * @return Icone[] Returns an array of Icone objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+
+    public function findAllByUnicodeDesc()
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('i.unicode', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Icone

@@ -341,8 +341,23 @@ $(document).ready(function(){
         let uploadPhoto = document.getElementById(formName + "_photo");
         let uploadLien = document.getElementById(formName + "_lien");
 
-        uploadPhoto.nextSibling.textContent = photoNom
-        uploadLien.nextSibling.textContent = lienNom
+        if (photoNom === "" && lienNom === "") {
+            uploadPhoto.nextSibling.textContent = "Aucune photo"
+            uploadLien.nextSibling.textContent = "Aucun lien"
+        } else if (photoNom === "") {
+            uploadPhoto.nextSibling.textContent = "Aucune photo"
+            uploadLien.nextSibling.textContent = lienNom
+        } else if (lienNom === "") {
+            uploadPhoto.nextSibling.textContent = photoNom
+            uploadLien.nextSibling.textContent = "Aucun lien"
+        } else {
+            uploadPhoto.nextSibling.textContent = photoNom
+            uploadLien.nextSibling.textContent = lienNom
+        }
+
+
+
+
 
         //---------------------------------------------------------------------------------------------
         // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
