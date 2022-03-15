@@ -22,6 +22,11 @@ class PIType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('nom', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Entrez le nom de l\'élément'
+                ]
+            ])
             ->add('texte', TextareaType::class, array(
                 'label' => 'Description',
                 'required' => false,
