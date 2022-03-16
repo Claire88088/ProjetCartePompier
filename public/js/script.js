@@ -185,6 +185,7 @@ $(document).ready(function(){
                 let urlISplit2 = urlISplit[2].split('.')
 
                 let urlFontFace = "/MarkersIcons/" + urlISplit[1] + "-" + urlISplit2[0]
+                console.log(iconeLien, iconeUnicode)
 
                 // Création d'un objet font-face correspondant à l'icone choisie dans la liste
                 let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
@@ -354,10 +355,6 @@ $(document).ready(function(){
             uploadPhoto.nextSibling.textContent = photoNom
             uploadLien.nextSibling.textContent = lienNom
         }
-
-
-
-
 
         //---------------------------------------------------------------------------------------------
         // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
