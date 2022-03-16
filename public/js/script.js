@@ -185,6 +185,7 @@ $(document).ready(function(){
                 let urlISplit2 = urlISplit[2].split('.')
 
                 let urlFontFace = "/MarkersIcons/" + urlISplit[1] + "-" + urlISplit2[0]
+                console.log(iconeLien, iconeUnicode)
 
                 // Création d'un objet font-face correspondant à l'icone choisie dans la liste
                 let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
@@ -365,5 +366,13 @@ $(document).ready(function(){
             uploadLien.nextSibling.textContent = lienNom
         }
 
+        //---------------------------------------------------------------------------------------------
+        // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
+        $('#' + formName + '_ajouter').click(function(e){
+            $('#position').removeClass('alert-danger');
+            if (!$('#' + formName + '_coordonnees_longitude')[0].value) {
+                $('#position').addClass('alert-danger');
+            }
+        });
     }
 })
