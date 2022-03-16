@@ -87,6 +87,7 @@
                                     </button>
                                 </div>
                             </div>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <div class="row">
                                 <div class="col">
                                     <button class="create-btn btn btn-primary" style="width:100%;" onclick="location.href='{{ path('list_icones') }}'">
@@ -94,6 +95,7 @@
                                     </button>
                                 </div>
                             </div>
+                            {% endif %}
                         </div>
                         <hr>
                         {{ render(controller('App\\Controller\\MapController::listAction')) }}
