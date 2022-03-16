@@ -332,6 +332,16 @@ $(document).ready(function(){
             })
         }
 
+        //---------------------------------------------------------------------------------------------
+        // 6. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
+        $('#' + formName + '_ajouter').click(function(e){
+            $('#position').removeClass('alert-danger');
+            if (!$('#' + formName + '_coordonnees_longitude')[0].value) {
+                $('#position').addClass('alert-danger');
+            }
+        });
+
+        //---------------------------------------------------------------------------------------------
         // Affiche les noms des photos et liens dans leur champs correspondant, par défaut symfony les cache.
         let divPhoto = $('.photo');
         let divlien =  $('.lien');

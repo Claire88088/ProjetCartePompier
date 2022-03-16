@@ -11,7 +11,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TypeCalqueRepository::class)
- * @UniqueEntity("nom")
+ * @UniqueEntity(
+ *     fields="nom",
+ *     message="Ce nom est déjà utilisé"
+ *     )
  */
 class TypeCalque
 {

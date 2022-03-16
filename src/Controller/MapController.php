@@ -685,7 +685,7 @@ class MapController extends AbstractController
     /**
      * Lister les icones
      * @Route("/map/list_icones", name="list_icones")
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function listIconesAction(EntityManagerInterface $em): Response
     {
@@ -699,7 +699,7 @@ class MapController extends AbstractController
     /**
      * Ajout d'une icone
      * @Route("/map/add-icone", name="add_icone")
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function addIconeAction(EntityManagerInterface $em, Request $request): Response
     {

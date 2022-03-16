@@ -6,9 +6,15 @@ use App\Repository\ElementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ElementRepository::class)
+ * @UniqueEntity(
+ *     fields="nom",
+ *     message="Ce nom est déjà utilisé"
+ *     )
  */
 class Element
 {
@@ -20,7 +26,10 @@ class Element
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Le nom de l'élément est obligatoire")
+     * @Assert\Type("string")
+     * @Assert\Length(max="50")
      */
     private $nom;
 
