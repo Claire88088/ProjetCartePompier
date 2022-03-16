@@ -6,6 +6,7 @@
 parameters:
     uploads_pdf: '%kernel.project_dir%/public/uploads/pdf'
     uploads_photos: '%kernel.project_dir%/public/uploads/photos'
+    uploads_icones: '%kernel.project_dir%/public/MarkersIcons'
 
 services:
     # default configuration for services in *this* file
