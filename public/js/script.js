@@ -79,6 +79,9 @@ $(document).ready(function(){
 
     // Au changement de commune dans la liste
     formCommune.addEventListener('change', event => {
+        // raz du zoom
+        myMap.setZoom(13);
+
         let geocoderControl = document.getElementsByClassName('geocoder-control leaflet-control')[0];
         geocoderControl.parentNode.removeChild(geocoderControl);
 
@@ -98,6 +101,10 @@ $(document).ready(function(){
     });
 
     //----------------------------------------------------
+    // Cache dans les formulaires la latitude et la longitude
+    $("fieldset.form-group").css("display", "none");
+
+    //----------------------------------------------------
     // 5. AJOUT D'UN NOUVEAU MARQUEUR
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
     var newMarker;
@@ -105,7 +112,7 @@ $(document).ready(function(){
     var urlEditElement = window.location.pathname.substr(0,17) === "/map/edit-element";
     if (urlAddElement || urlEditElement) {
         // on adapte le zoom
-        myMap.setZoom(18);
+        //myMap.setZoom(18);
 
         // on affiche le calque (groupes de marqueurs et cluster) sur lequel on veut créer un point
         let calqueNomElt = $('.calqueNom');
