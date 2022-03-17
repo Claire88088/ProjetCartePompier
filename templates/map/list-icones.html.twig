@@ -22,6 +22,7 @@
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Icone</th>
+                <th scope="col">Nom</th>
                 <th scope="col">Unicode</th>
                 {% if is_granted('ROLE_ADMIN') %}
                 <th scope="col" style="width: 30%; border-left: 1px solid white">Supprimer</th>
@@ -32,6 +33,7 @@
         {% for icone in icones %}
             <tr class="tdIconeAlign">
                 <td><img style="width:65px; height:65px;" src="{{ asset("MarkersIcons/"~icone) }}"></td>
+                <td><span>{{ icone.nom }}</span></td>
                 <td><span>{{ icone.unicode }}</span></td>
                 {% if is_granted('ROLE_ADMIN') %}
                 <td style="border-left: 1px solid #dee2e6"><a href="{{ path('delete_icone', {'idIcone': icone.id}) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette icone?')"><span title="Supprimer cette icone" class="material-icons listElt-icon" style="border:none;">delete</span></a></td>

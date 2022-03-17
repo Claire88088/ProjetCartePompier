@@ -16,6 +16,11 @@ class IconeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('nom', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Entrez son nom'
+                ]
+            ])
             ->add('unicode', TextType::class, [
                 'attr' => [
                     'placeholder' => 'Entrez l\'unicode'
@@ -28,7 +33,16 @@ class IconeType extends AbstractType
                 'required' => true,
                 'data_class' => null,
                 'attr' => array(
-                    'placeholder' => 'Sélectionnez les 6 fichiers nécessaires'
+                    'placeholder' => 'Sélectionnez les 5 fichiers "Font"'
+            ),])
+            ->add('icone', FileType::class, [
+                'label' => 'Fichiers de l\'icone',
+                'mapped' => false,
+                'multiple' => true,
+                'required' => true,
+                'data_class' => null,
+                'attr' => array(
+                    'placeholder' => 'Sélectionnez les 5 fichiers "Font"'
                 ),])
         ;
     }

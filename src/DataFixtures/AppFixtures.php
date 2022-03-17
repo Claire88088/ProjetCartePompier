@@ -146,15 +146,15 @@ class AppFixtures extends Fixture
         // icones custom
         // standard
         $iconeImmSVG = new Icone();
-        $iconeImmSVG->setUnicode('&#xe800;')->setLien('preview-icons8-immeuble.svg');
+        $iconeImmSVG->setUnicode('&#xe800;')->setLien('preview-icons8-immeuble.svg')->setNom("Immeuble");
         $manager->persist($iconeImmSVG);
 
         $iconeUsineSVG = new Icone();
-        $iconeUsineSVG->setUnicode('&#xe802;')->setLien('preview-icons8-usine.svg');
+        $iconeUsineSVG->setUnicode('&#xe802;')->setLien('preview-icons8-usine.svg')->setNom("Usine");
         $manager->persist($iconeUsineSVG);
 
         $iconeGazSVG = new Icone();
-        $iconeGazSVG->setUnicode('&#xe801;')->setLien('preview-icons8-gaz.svg');
+        $iconeGazSVG->setUnicode('&#xe801;')->setLien('preview-icons8-gaz.svg')->setNom("Gaz");
         $manager->persist($iconeGazSVG);
 
 //        $iconeEpingle1 = new Icone();
@@ -392,15 +392,15 @@ class AppFixtures extends Fixture
 
         // 2 nouveaux éléments avec 2 points
         $element1 = new Element();
-        $element1->setTypeElement($typeElementImmeuble)->setIcone($iconeImmSVG)->setTexte('Ehpad Le Village');
+        $element1->setTypeElement($typeElementImmeuble)->setIcone($iconeImmSVG)->setTexte('Ehpad Le Village')->setNom("Ephad");
         $manager->persist($element1);
 
         $element2 = new Element();
-        $element2->setTypeElement($typeElementIndustrie)->setIcone($iconeUsineSVG)->setTexte('Industrie 1');
+        $element2->setTypeElement($typeElementIndustrie)->setIcone($iconeUsineSVG)->setTexte('Industrie 1')->setNom("Industrie");
         $manager->persist($element2);
 
         $element3 = new Element();
-        $element3->setTypeElement($typeElementIndustrie)->setIcone($iconeGazSVG)->setTexte('Gaz');
+        $element3->setTypeElement($typeElementIndustrie)->setIcone($iconeGazSVG)->setTexte('Gaz')->setNom("Gaz");
         $manager->persist($element3);
 
         $point1 = new Point();

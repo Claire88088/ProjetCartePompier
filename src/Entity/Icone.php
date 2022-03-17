@@ -22,6 +22,11 @@ class Icone
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $unicode;
 
     /**
@@ -43,6 +48,22 @@ class Icone
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param mixed $nom
+     */
+    public function setNom($nom): void
+    {
+        $this->nom = $nom;
     }
 
     public function getUnicode(): ?string
