@@ -19,8 +19,6 @@ class TypeElementType extends AbstractType
                     'placeholder' => 'Entrez le nom du type d\'éléments'
                 ))
             )
-//            ->add('type')
-//            ->add('typeCalque')
         ;
     }
 
