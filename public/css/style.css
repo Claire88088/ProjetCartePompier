@@ -277,9 +277,6 @@ textarea, input {
 
 }
 
-/*.list {*/
-/*    margin-top: 50px;*/
-/*}*/
 
 .createCalqueAndType > * {
     flex: 0 0 44%
@@ -368,5 +365,15 @@ tr.tdIconeAlign > * {
 .thead-dark {
     position: sticky;
     top: 0;
+}
+
+/* form avec suppression photo ou pdf */
+.form-photo, .form-lien {
+    display: flex;
+}
+
+/* Cache dans les formulaires la latitude et la longitude */
+fieldset.coordonnees {
+    display: none;
 }
 

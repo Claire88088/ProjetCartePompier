@@ -28,6 +28,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -312,11 +313,147 @@ class MapController extends AbstractController
 
         $typeEltChoisi = $em->getRepository('App:TypeElement')->find($idTypeElt);
 
-        $icones = $em->getRepository('App:Icone')->findAll();
-
         $point = new Point();
         $element = new Element();
         $element->setTypeElement($typeEltChoisi);
+
+        // on créé le formulaire en fonction du type d'élément
+        $elementForm = $this->createFormFromTypeCalque($typeCalqueChoisi, $element, $em);
+
+        $elementForm->add('ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
+        $elementForm->handleRequest($request);
+
+        if ($elementForm->isSubmitted() && $elementForm->isValid()) {
+
+            $photoFile = $elementForm->get('photo')->getData();
+            if ($photoFile) {
+                $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safePhotoFilename = $slugger->slug($originalPhotoFilename);
+                $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+                $photoFile->move($this->getParameter('uploads_photos'), $newPhotoName);
+
+                $element->setPhoto($newPhotoName);
+            }
+
+            $pdfFile = $elementForm->get('lien')->getData();
+            if ($pdfFile) {
+                $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safePdfFilename = $slugger->slug($originalPdfFilename);
+                $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+
+                $pdfFile->move($this->getParameter('uploads_pdf'), $newPdfName);
+
+                $element->setLien($newPdfName);
+            }
+
+            $em->persist($element);
+
+            // on ajoute les données au Point
+            $point->setElement($element);
+            $coordGPS = $request->request->get(key($_POST)/*$name*/)['coordonnees'];
+            $longitude = $coordGPS['longitude'];
+            $latitude = $coordGPS['latitude'];
+            $point->setLongitude($longitude);
+            $point->setLatitude($latitude);
+            $point->setRang(1);
+
+            $em->persist($point);
+
+            $em->flush();
+            $this->addFlash('success', 'L\'élément a bien été ajouté !');
+            return $this->redirectToRoute('map');
+        }
+
+        return $this->render('map/add-element.html.twig', [
+            'form' => $elementForm->createView(),
+            'nomTypeElt' => $typeEltChoisi->getNom(),
+            'nomCalque' => $calqueChoisi->getNom(),
+        ]);
+    }
+
+
+    /**
+     * Modification d'un élément
+     * @Route("/map/edit-element-{idElement}", name="edit_element")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function editElementAction(EntityManagerInterface $em, Request $request, int $idElement, SluggerInterface $slugger): Response
+    {
+        $elementClique = $em->getRepository('App:Element')->find($idElement);
+        $nomElement = $elementClique->getNom();
+
+        $lien = $elementClique->getLien();
+        $photo = $elementClique->getPhoto();
+
+        $idtypeElementC = $elementClique->getTypeElement();
+        $typeElement = $em->getRepository('App:TypeElement')->find($idtypeElementC);
+        $idTypeCalqueC = $typeElement->getTypeCalque();
+        $typeCalque = $em->getRepository('App:TypeCalque')->find($idTypeCalqueC);
+        $typeTypeCalqueC = $typeCalque->getType();
+        $calqueNom = $typeCalque->getNom();
+        $elementCliquePointLat = $elementClique->getPoints()[0]->getLatitude();
+        $elementCliquePointLong = $elementClique->getPoints()[0]->getLongitude();
+
+        // on créé le formulaire en fonction du type d'élément
+        $elementForm = $this->createFormFromTypeCalque($typeTypeCalqueC, $elementClique, $em);
+
+        $elementForm->add('modifier', SubmitType::class, ['label' => 'Modifier']);
+        $elementForm->handleRequest($request);
+
+        if ($elementForm->isSubmitted() && $elementForm->isValid()) {
+
+            $photoFile = $elementForm->get('photo')->getData();
+            if ($photoFile) {
+                $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safePhotoFilename = $slugger->slug($originalPhotoFilename);
+                $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+                $photoFile->move($this->getParameter('uploads_photos'), $newPhotoName);
+
+                $elementClique->setPhoto($newPhotoName);
+            }
+
+            $pdfFile = $elementForm->get('lien')->getData();
+            if ($pdfFile) {
+                $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safePdfFilename = $slugger->slug($originalPdfFilename);
+                $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+
+                $pdfFile->move($this->getParameter('uploads_pdf'), $newPdfName);
+
+                $elementClique->setLien($newPdfName);
+            }
+
+            $em->persist($elementClique);
+            $em->flush();
+
+            $this->addFlash('success', "L'élément a bien été modifié");
+            return $this->redirectToRoute('map');
+        }
+
+        return $this->render('map/edit-element.html.twig', [
+            'nomElement' => $nomElement,
+            'idElement' => $idElement,
+            'form' => $elementForm->createView(),
+            'latitude' => $elementCliquePointLat,
+            'longitude' => $elementCliquePointLong,
+            'nomCalque' => $calqueNom,
+            'photo' => $photo,
+            'lien' => $lien
+        ]);
+    }
+
+    /**
+     * Crée un formulaire en fonction du type de calque choisi
+     * @param String $typeCalqueChoisi
+     * @param Element $element
+     * @param EntityManagerInterface $em
+     * @return Form
+     */
+    private function createFormFromTypeCalque(String $typeCalqueChoisi, Element $element, EntityManagerInterface $em): Form
+    {
+        $icones = $em->getRepository('App:Icone')->findAll();
 
         // on récupère les liens des icones
         $liensIcones = [];
@@ -324,7 +461,6 @@ class MapController extends AbstractController
             $liensIcones[$icone->getLien()] = $icone;
         }
 
-        // on créé le formulaire en fonction du type d'élément
         switch ($typeCalqueChoisi) {
             case 'ER':
                 $elementForm = $this->createForm(ERType::class, $element);
@@ -371,301 +507,9 @@ class MapController extends AbstractController
                     }
                 ));
                 break;
-
         }
 
-        $elementForm->add('ajouter', SubmitType::class, ['label' => 'Ajouter cet élément']);
-        $elementForm->handleRequest($request);
-
-        if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-            // ici name correspond au nom du formulaire
-            foreach ($_POST as $name => $value) {
-
-                // Initialisation
-                $Photo = "";
-                $Lien = "";
-
-                $photoFile = null;
-                $pdfFile = null;
-
-                $newPhotoName = null;
-                $newPdfName = null;
-
-                // Retournes si photo et lien existent
-                $issetPhoto = isset($_FILES[$name]["name"]['photo']);
-                $issetLien = isset($_FILES[$name]["name"]['lien']);
-
-                // Si ils existent cela signifie que des fichiers sont transmis, dans ce cas on les récupères
-                // Si une photo et un pdf
-                if ($issetPhoto && $issetLien) {
-                    $Photo = $_FILES[$name]["name"]["photo"];
-                    $Lien = $_FILES[$name]["name"]["lien"];
-
-                    // Si uniquement une photo
-                } else if ($issetPhoto && !$issetLien) {
-                    $Photo = $_FILES[$name]["name"]["photo"];
-
-                    // Si uniquement un pdf
-                } else if (!$issetPhoto && $issetLien) {
-                    $Lien = $_FILES[$name]["name"]["lien"];
-                }
-
-                // Test si dans le POST, il y'a des envois de fichiers
-                if ($Photo !== "" && $Lien === "") {
-                    $photoFile = $elementForm->get('photo')->getData();
-                    if ($photoFile) {
-                        $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $safePhotoFilename = $slugger->slug($originalPhotoFilename);
-                        $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
-                    }
-                } else if ($Lien !==  "" && $Photo === "") {
-                    $pdfFile = $elementForm->get('lien')->getData();
-                    if ($pdfFile) {
-                        $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $safePdfFilename = $slugger->slug($originalPdfFilename);
-                        $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
-                    }
-                } else if ($Lien !== "" && $Photo !== "") {
-                    $photoFile = $elementForm->get('photo')->getData();
-                    $pdfFile = $elementForm->get('lien')->getData();
-                    if ($photoFile && $pdfFile) {
-                        $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $safePhotoFilename = $slugger->slug($originalPhotoFilename);
-                        $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
-
-                        $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-                        $safePdfFilename = $slugger->slug($originalPdfFilename);
-                        $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
-                    }
-                }
-                // Moove le fichier dans le dossier ou les photos/pdf sont stockées
-                try {
-                    if ($photoFile) {
-                        $photoFile->move(
-                            $this->getParameter('uploads_photos'),
-                            $newPhotoName
-                        );
-                    }
-                    if ($pdfFile) {
-                        $pdfFile->move(
-                            $this->getParameter('uploads_pdf'),
-                            $newPdfName
-                        );
-                    }
-                } catch (FileException $e) {
-                    // catch l'erreur si il y en a eu une lors de l'upload.
-                    // possibilité de l'afficher, la traiter ...
-                }
-                $element->setPhoto($newPhotoName);
-                $element->setLien($newPdfName);
-            }
-
-            $em->persist($element);
-
-            // on ajoute les données au Point
-            $point->setElement($element);
-            $coordGPS = $request->request->get($name)['coordonnees'];
-            $longitude = $coordGPS['longitude'];
-            $latitude = $coordGPS['latitude'];
-            $point->setLongitude($longitude);
-            $point->setLatitude($latitude);
-            $point->setRang(1);
-
-            $em->persist($point);
-
-            $em->flush();
-            $this->addFlash('success', 'L\'élément a bien été ajouté !');
-            return $this->redirectToRoute('map');
-        }
-
-        return $this->render('map/add-element.html.twig', [
-            'form' => $elementForm->createView(),
-            'nomTypeElt' => $typeEltChoisi->getNom(),
-            'nomCalque' => $calqueChoisi->getNom(),
-        ]);
-    }
-
-
-    /**
-     * Modification d'un élément
-     * @Route("/map/edit-element-{idElement}", name="edit_element")
-     * @IsGranted("ROLE_ADMIN")
-     */
-    public function editElementAction(EntityManagerInterface $em, Request $request, int $idElement, SluggerInterface $slugger): Response
-    {
-        $elementClique = $em->getRepository('App:Element')->find($idElement);
-        $nomElement = $elementClique->getNom();
-
-        $lien = $elementClique->getLien();
-        $photo = $elementClique->getPhoto();
-
-        $idtypeElementC = $elementClique->getTypeElement();
-        $typeElement = $em->getRepository('App:TypeElement')->find($idtypeElementC);
-        $idTypeCalqueC = $typeElement->getTypeCalque();
-        $typeCalque = $em->getRepository('App:TypeCalque')->find($idTypeCalqueC);
-        $typeTypeCalqueC = $typeCalque->getType();
-        $calqueNom = $typeCalque->getNom();
-        $elementCliquePointLat = $elementClique->getPoints()[0]->getLatitude();
-        $elementCliquePointLong = $elementClique->getPoints()[0]->getLongitude();
-
-        $icones = $em->getRepository('App:Icone')->findAll();
-
-        $liensIcones = [];
-        foreach($icones as $icone)  {
-            $liensIcones[$icone->getLien()] = $icone;
-        }
-
-        switch ($typeTypeCalqueC) {
-            case 'ER':
-                $elementForm = $this->createForm(ERType::class, $elementClique);
-                $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones,
-                    'choice_attr' => function ($icone, $key, $index) {
-                        return ['icone' =>  $icone->getUnicode()];
-                    },
-                    'mapped' => true));
-                break;
-            case 'TRAVAUX':
-                $elementForm = $this->createForm(TravauxType::class, $elementClique);
-                $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones,
-                    'choice_attr' => function ($icone, $key, $index) {
-                        return ['icone' =>  $icone->getUnicode()];
-                    },
-                    'mapped' => true));
-                break;
-            case 'AUTOROUTE':
-                $elementForm = $this->createForm(AutorouteType::class, $elementClique);
-                $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones,
-                    'choice_attr' => function ($icone, $key, $index) {
-                        return ['icone' =>  $icone->getUnicode()];
-                    },
-                    'mapped' => true));
-                break;
-            case 'PI':
-                $elementForm = $this->createForm(PIType::class, $elementClique);
-                $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones,
-                    'choice_attr' => function ($icone, $key, $index) {
-                        return ['icone' =>  $icone->getUnicode()];
-                    },
-                    'mapped' => true));
-                break;
-            case 'AUTRE':
-                $elementForm = $this->createForm(DefaultElementType::class, $elementClique);
-                $elementForm->add('icone', ChoiceType::class, array(
-                    'choices' => $liensIcones,
-                    'choice_attr' => function ($icone, $key, $index) {
-                        return ['icone' =>  $icone->getUnicode()];
-                    },
-                    'mapped' => true));
-                break;
-        }
-
-        $elementForm->add('modifier', SubmitType::class, ['label' => 'Modifier']);
-        $elementForm->handleRequest($request);
-
-        if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-
-            foreach ($_POST as $name => $value) {
-
-                    $Photo = "";
-                    $Lien = "";
-
-                    $photoFile = null;
-                    $pdfFile = null;
-
-                    $newPhotoName = null;
-                    $newPdfName = null;
-
-                    $issetPhoto = isset($_FILES[$name]["name"]['photo']);
-                    $issetLien = isset($_FILES[$name]["name"]['lien']);
-
-                    if ($issetPhoto && $issetLien) {
-                        $Photo = $_FILES[$name]["name"]["photo"];
-                        $Lien = $_FILES[$name]["name"]["lien"];
-                    } else if ($issetPhoto && !$issetLien) {
-                        $Photo = $_FILES[$name]["name"]["photo"];
-                    } else if (!$issetPhoto && $issetLien) {
-                        $Lien = $_FILES[$name]["name"]["lien"];
-                    }
-
-                    // Test si dans le POST, il y'a des envois de fichiers
-                    if ($Photo !== "" && $Lien === "") {
-                        $photoFile = $elementForm->get('photo')->getData();
-                        if ($photoFile) {
-                            $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                            $safePhotoFilename = $slugger->slug($originalPhotoFilename);
-                            $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
-                        }
-                    } else if ($Lien !== "" && $Photo === "") {
-                        $pdfFile = $elementForm->get('lien')->getData();
-                        if ($pdfFile) {
-                            $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-                            $safePdfFilename = $slugger->slug($originalPdfFilename);
-                            $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
-                        }
-                    } else if ($Lien !== "" && $Photo !== "") {
-                        $photoFile = $elementForm->get('photo')->getData();
-                        $pdfFile = $elementForm->get('lien')->getData();
-                        if ($photoFile && $pdfFile) {
-                            $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                            $safePhotoFilename = $slugger->slug($originalPhotoFilename);
-                            $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
-
-                            $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-                            $safePdfFilename = $slugger->slug($originalPdfFilename);
-                            $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
-                        }
-                    }
-
-                    // Move the file to the directory where photos/pdf are stored
-                    try {
-                        if ($photoFile) {
-                            $photoFile->move(
-                                $this->getParameter('uploads_photos'),
-                                $newPhotoName
-                            );
-                        }
-                        if ($pdfFile) {
-                            $pdfFile->move(
-                                $this->getParameter('uploads_pdf'),
-                                $newPdfName
-                            );
-                        }
-                    } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
-                    }
-
-                    if ($_FILES[$name]["name"]["photo"] == null &&  $_FILES[$name]["name"]["lien"] == null) {
-                        $elementClique->setPhoto($photo);
-                        $elementClique->setLien($lien);
-                    } else if ($_FILES[$name]["name"]["photo"] == null) {
-                        $elementClique->setLien($newPdfName);
-                        $elementClique->setPhoto($photo);
-                    } else if ($_FILES[$name]["name"]["lien"] == null) {
-                        $elementClique->setPhoto($newPhotoName);
-                        $elementClique->setLien($lien);
-                    }
-            }
-
-            $em->persist($elementClique);
-            $em->flush();
-
-            $this->addFlash('success', "L'élément a bien été modifié");
-            return $this->redirectToRoute('map');
-        }
-
-        return $this->render('map/edit-element.html.twig', [
-            'nomElement' => $nomElement,
-            'form' => $elementForm->createView(),
-            'latitude' => $elementCliquePointLat,
-            'longitude' => $elementCliquePointLong,
-            'nomCalque' => $calqueNom,
-            'photo' => $photo,
-            'lien' => $lien
-        ]);
+        return $elementForm;
     }
 
     /**
@@ -680,6 +524,44 @@ class MapController extends AbstractController
         $em->flush();
         $this->addFlash('success', "L'élément a bien été supprimé");
         return $this->redirectToRoute('map');
+    }
+
+    /**
+     * Suppression de la photo d'un élément
+     * @Route("/map/delete-photo-{idElement}", name="delete_photo")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function deletePhotoAction(EntityManagerInterface $em, int $idElement)
+    {
+        $elementClique = $em->getRepository('App:Element')->find($idElement);
+        $photo = $elementClique->getPhoto();
+
+        unlink($this->getParameter('uploads_photos').'/'. $photo); //suppression du fichier
+        $elementClique->setPhoto(null);
+        $em->persist($elementClique);
+        $em->flush();
+
+        $this->addFlash('success', "La photo a bien été supprimée");
+        return $this->redirectToRoute('edit_element', [ 'idElement' => $idElement ]);
+    }
+
+    /**
+     * Suppression du pdf d'un élément
+     * @Route("/map/delete-pdf-{idElement}", name="delete_pdf")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function deletePdfAction(EntityManagerInterface $em, int $idElement)
+    {
+        $elementClique = $em->getRepository('App:Element')->find($idElement);
+        $lien = $elementClique->getLien();
+
+        unlink($this->getParameter('uploads_pdf').'/'. $lien); //suppression du fichier
+        $elementClique->setLien(null);
+        $em->persist($elementClique);
+        $em->flush();
+
+        $this->addFlash('success', "Le pdf a bien été supprimé");
+        return $this->redirectToRoute('edit_element', [ 'idElement' => $idElement ]);
     }
 
     /**
@@ -728,10 +610,10 @@ class MapController extends AbstractController
                 }
 
                 try {
-                        $iconeFiles[$i]->move(
-                            $this->getParameter('uploads_icones'),
-                            $iconeFiles[$i]->getClientOriginalName()
-                        );
+                    $iconeFiles[$i]->move(
+                        $this->getParameter('uploads_icones'),
+                        $iconeFiles[$i]->getClientOriginalName()
+                    );
 
                 } catch (FileException $e) {
                     // Catch des erreurs si il y en a

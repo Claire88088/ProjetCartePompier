@@ -98,11 +98,6 @@ $(document).ready(function(){
     });
 
     //----------------------------------------------------
-    // Cache dans les formulaires la latitude et la longitude
-    $("fieldset.form-group").css("display", "none");
-
-
-    //----------------------------------------------------
     // 5. AJOUT D'UN NOUVEAU MARQUEUR
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
     var newMarker;
@@ -349,20 +344,12 @@ $(document).ready(function(){
         let photoNom = divPhoto[0].attributes[1].value;
         let lienNom = divlien[0].attributes[1].value;
 
-        let uploadPhoto = document.getElementById(formName + "_photo");
-        let uploadLien = document.getElementById(formName + "_lien");
-
-        if (photoNom === "" && lienNom === "") {
-            uploadPhoto.nextSibling.textContent = "Aucune photo"
-            uploadLien.nextSibling.textContent = "Aucun lien"
-        } else if (photoNom === "") {
-            uploadPhoto.nextSibling.textContent = "Aucune photo"
-            uploadLien.nextSibling.textContent = lienNom
-        } else if (lienNom === "") {
+        if (photoNom) {
+            let uploadPhoto = document.getElementById(formName + "_photo");
             uploadPhoto.nextSibling.textContent = photoNom
-            uploadLien.nextSibling.textContent = "Aucun lien"
-        } else {
-            uploadPhoto.nextSibling.textContent = photoNom
+        }
+        if (lienNom) {
+            let uploadLien = document.getElementById(formName + "_lien");
             uploadLien.nextSibling.textContent = lienNom
         }
 

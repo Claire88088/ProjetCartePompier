@@ -8,12 +8,42 @@
 
     {{ form_start(form) }}
 
-    <fieldset class="form-group">
+    <fieldset class="form-group coordonnees">
     {{ form_label(form.coordonnees) }}
     {{ form_errors(form.coordonnees) }}
     {{ form_row(form.coordonnees.latitude , {'value' : latitude }) }}
     {{ form_row(form.coordonnees.longitude, {'value' : longitude }) }}
     </fieldset>
+
+    {{ form_row(form.nom) }}
+    {{ form_row(form.texte) }}
+
+    <fieldset class="form-group">
+        {{ form_label(form.photo) }}
+        <div class="form-photo">
+            {{ form_widget(form.photo) }}
+            {% if photo %}
+            <a href="{{ path('delete_photo', { 'idElement' : idElement }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer cette photo ?')">
+                <span title="Supprimer une photo" class="material-icons listElt-icon">delete</span>
+            </a>
+            {% endif %}
+        </div>
+        {{ form_help(form.photo) }}
+    </fieldset>
+
+    <fieldset class="form-group">
+        {{ form_label(form.lien) }}
+        <div class="form-lien">
+            {{ form_widget(form.lien) }}
+            {% if lien %}
+                <a href="{{ path('delete_pdf', { 'idElement' : idElement }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce pdf ?')">
+                    <span title="Supprimer un pdf" class="material-icons listElt-icon">delete</span>
+                </a>
+            {% endif %}
+        </div>
+        {{ form_help(form.lien) }}
+    </fieldset>
+
     {{ form_rest(form) }}
     {{ form_end(form) }}
 </div>
