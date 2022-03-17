@@ -98,6 +98,10 @@ $(document).ready(function(){
     });
 
     //----------------------------------------------------
+    // Cache dans les formulaires la latitude et la longitude
+    $("fieldset.form-group").css("display", "none");
+
+    //----------------------------------------------------
     // 5. AJOUT D'UN NOUVEAU MARQUEUR
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
     var newMarker;
@@ -138,7 +142,7 @@ $(document).ready(function(){
 
             // set le nom de l'icone a partir du lien
             let iconeName = option.childNodes[0].textContent
-            let splitIconeName = iconeName.split("-")[2].split('.')[0]
+            let splitIconeName = iconeName.split("-")[1].split('.')[0]
             option.innerHTML = splitIconeName
         }
 
@@ -177,10 +181,7 @@ $(document).ready(function(){
 
                 // Création des url pour les icones et pour les fontfaces
                 let urlISplit = iconeLien.split('/')[2].split('-');
-                let urlISplit2 = urlISplit[2].split('.')
-
-                let urlFontFace = "/MarkersIcons/" + urlISplit[1] + "-" + urlISplit2[0]
-                console.log(iconeLien, iconeUnicode)
+                let urlFontFace = "/MarkersIcons/" + urlISplit[1].split('.')[0]
 
                 // Création d'un objet font-face correspondant à l'icone choisie dans la liste
                 let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
@@ -222,13 +223,11 @@ $(document).ready(function(){
                 // si l'utilisateur choisit une autre icône
                 $('.dd-option').on('click', function () {
                     // On recrée une icone avec son lien
-                    iconeLien = $('.dd-selected-image').attr('src');
-                    iconeUnicode = $('.dd-selected-image').attr('unicode')
+                    let iconeLien = $('.dd-selected-image').attr('src');
+                    let iconeUnicode = $('.dd-selected-image').attr('unicode');
 
-                    urlISplit = iconeLien.split('/')[2].split('-');
-                    urlISplit2 = urlISplit[2].split('.')
-
-                    urlFontFace = "/MarkersIcons/" + urlISplit[1] + "-" + urlISplit2[0]
+                    let urlISplit = iconeLien.split('/')[2].split('-');
+                    let urlFontFace = "/MarkersIcons/" + urlISplit[1]
 
                     let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
                     font.load().then(function (loadedFont) {
@@ -306,14 +305,11 @@ $(document).ready(function(){
             })
 
             $('.dd-option').on('click', function () {
-                iconeLien = $('.dd-selected-image').attr('src');
-                // On va rechercher le nouvel unicode
-                iconeUnicode = $('.dd-selected-image').attr('unicode')
+                let iconeLien = $('.dd-selected-image').attr('src');
+                let iconeUnicode = $('.dd-selected-image').attr('unicode');
 
-                urlISplit = iconeLien.split('/')[2].split('-');
-                urlISplit2 = urlISplit[2].split('.')
-
-                urlFontFace = "/MarkersIcons/" + urlISplit[1] + "-" + urlISplit2[0]
+                let urlISplit = iconeLien.split('/')[2].split('-');
+                let urlFontFace = "/MarkersIcons/" + urlISplit[1]
 
                 let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
                 font.load().then(function (loadedFont) {
@@ -325,6 +321,23 @@ $(document).ready(function(){
                 // on l'applique avec le innerHTML (non faisable avec textContent ou innerText car ces propriétés ne parsent pas en contenu HTML et donc l'unicode s'affiche en texte)
                 Element.innerHTML = iconeUnicode
             })
+
+            //---------------------------------------------------------------------------------------------
+            // Affiche les noms des photos et liens dans leur champs correspondant, par défaut symfony les cache.
+            let divPhoto = $('.photo');
+            let divlien =  $('.lien');
+
+            let photoNom = divPhoto[0].attributes[1].value;
+            let lienNom = divlien[0].attributes[1].value;
+
+            if (photoNom) {
+                let uploadPhoto = document.getElementById(formName + "_photo");
+                uploadPhoto.nextSibling.textContent = photoNom
+            }
+            if (lienNom) {
+                let uploadLien = document.getElementById(formName + "_lien");
+                uploadLien.nextSibling.textContent = lienNom
+            }
         }
 
         //---------------------------------------------------------------------------------------------
@@ -335,23 +348,6 @@ $(document).ready(function(){
                 $('#position').addClass('alert-danger');
             }
         });
-
-        //---------------------------------------------------------------------------------------------
-        // Affiche les noms des photos et liens dans leur champs correspondant, par défaut symfony les cache.
-        let divPhoto = $('.photo');
-        let divlien =  $('.lien');
-
-        let photoNom = divPhoto[0].attributes[1].value;
-        let lienNom = divlien[0].attributes[1].value;
-
-        if (photoNom) {
-            let uploadPhoto = document.getElementById(formName + "_photo");
-            uploadPhoto.nextSibling.textContent = photoNom
-        }
-        if (lienNom) {
-            let uploadLien = document.getElementById(formName + "_lien");
-            uploadLien.nextSibling.textContent = lienNom
-        }
 
         //---------------------------------------------------------------------------------------------
         // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément

@@ -26,15 +26,22 @@ class IconeType extends AbstractType
                     'placeholder' => 'Entrez l\'unicode'
                 ]
             ])
-            ->add('icone', FileType::class, [
-                'label' => 'Fichiers de l\'icone',
-                'mapped' => false,
-                'multiple' => true,
+            ->add('lien', FileType::class, [
+                'label' => 'Image SVG',
+                'mapped' => true,
+                'multiple' => false,
                 'required' => true,
                 'data_class' => null,
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => [ // Type mime du fichier qu'il sera possible de joindre
+                            'image/svg+xml',
+                        ],
+                        'mimeTypesMessage' => "L'image n'est pas au bon format", ])
+                ],
                 'attr' => array(
-                    'placeholder' => 'Sélectionnez les 5 fichiers "Font"'
-            ),])
+                    'placeholder' => 'Sélectionnez l\'image svg'
+                ),])
             ->add('icone', FileType::class, [
                 'label' => 'Fichiers de l\'icone',
                 'mapped' => false,

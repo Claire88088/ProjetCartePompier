@@ -591,28 +591,36 @@ class MapController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // On récupère les fichiers de l'icone passés dans l'upload
-            $iconeFiles = $form->get('icone')->getData();
+            // Nom de l'icone qui servira a renommer les fichiers passés dans les upload
+            $nameIcone = $form->get('nom')->getData();
+            // On récupère le fichier svg qui servira de preview
+            $iconeSVG = $form->get('lien')->getData();
+            // On reconstruit son nom
+            $namePreview = "preview-".$nameIcone.".svg";
+            $icone->setLien($namePreview);
+            try {
+                $iconeSVG->move(
+                    $this->getParameter('uploads_icones'),
+                    $namePreview
+                );
 
+            } catch (FileException $e) {
+                // Catch des erreurs si il y en a
+            }
+
+            // On récupère les fichiers font qui serviront de preview
+            $iconeFiles = $form->get('icone')->getData();
             // taille du tableau
             $limite = count($iconeFiles);
-
+            // On parcoure chaque fichiers
             for ($i = 0; $i < $limite; $i++) {
-                // On stocke chaque fichier
-                $temp = $iconeFiles[$i];
 
-                // On récupère son nom
-                $orignalNameIcones = $temp->getClientOriginalName();
-
-                // Si il contient "preview", on stock ce nom en base de donnée
-                if (str_contains($orignalNameIcones, 'preview')) {
-                    $icone->setLien($orignalNameIcones);
-                }
-
+                $extension = explode('.', $iconeFiles[$i]->getClientOriginalName())[1];
+                $nameFont = $nameIcone.".".$extension;
                 try {
                     $iconeFiles[$i]->move(
                         $this->getParameter('uploads_icones'),
-                        $iconeFiles[$i]->getClientOriginalName()
+                        $nameFont
                     );
 
                 } catch (FileException $e) {
