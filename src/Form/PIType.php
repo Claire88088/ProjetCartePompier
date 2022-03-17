@@ -48,6 +48,7 @@ class PIType extends AbstractType
                 ],
                 'data_class' => null,
                 'attr' => array(
+                    'title' => '',
                     'placeholder' => 'Sélectionnez une photo'
                 ),
             ])

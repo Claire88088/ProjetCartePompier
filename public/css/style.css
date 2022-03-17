@@ -372,8 +372,4 @@ tr.tdIconeAlign > * {
     display: flex;
 }
 
-/* Cache dans les formulaires la latitude et la longitude */
-fieldset.coordonnees {
-    display: none;
-}
 

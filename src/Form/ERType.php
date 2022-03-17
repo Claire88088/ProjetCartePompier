@@ -50,6 +50,7 @@ class ERType extends AbstractType
                 ],
                 'data_class' => null,
                 'attr' => array(
+                    'title' => '',
                     'placeholder' => 'Sélectionnez une photo'
                 ),
             ])
@@ -66,6 +67,7 @@ class ERType extends AbstractType
                 ],
                 'data_class' => null,
                 'attr' => array(
+                    'title' => '',
                     'placeholder' => 'Sélectionnez un PDF'
                 ),
                 'row_attr' => ['placeholder' => 'Sélectionnez un fichier'],])
