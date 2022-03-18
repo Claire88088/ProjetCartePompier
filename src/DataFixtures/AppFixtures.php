@@ -145,17 +145,17 @@ class AppFixtures extends Fixture
 
         // icones custom
         // standard
-        $iconeImmSVG = new Icone();
-        $iconeImmSVG->setUnicode('&#xe800;')->setLien('preview-icons8-immeuble.svg')->setNom("Immeuble");
-        $manager->persist($iconeImmSVG);
+        $iconeCaserneSVG = new Icone();
+        $iconeCaserneSVG->setUnicode('&#xe805;')->setLien('preview-caserne.svg')->setNom("caserne");
+        $manager->persist($iconeCaserneSVG);
 
-        $iconeUsineSVG = new Icone();
-        $iconeUsineSVG->setUnicode('&#xe802;')->setLien('preview-icons8-usine.svg')->setNom("Usine");
-        $manager->persist($iconeUsineSVG);
+        $iconeFeuSVG = new Icone();
+        $iconeFeuSVG->setUnicode('&#xe804;')->setLien('preview-feu.svg')->setNom("feu");
+        $manager->persist($iconeFeuSVG);
 
-        $iconeGazSVG = new Icone();
-        $iconeGazSVG->setUnicode('&#xe801;')->setLien('preview-icons8-gaz.svg')->setNom("Gaz");
-        $manager->persist($iconeGazSVG);
+        $iconeAppleSVG = new Icone();
+        $iconeAppleSVG->setUnicode('&#xe803;')->setLien('preview-test.svg')->setNom("test");
+        $manager->persist($iconeAppleSVG);
 
 //        $iconeEpingle1 = new Icone();
 //        $iconeEpingle1->setLien('icons8-epingle-de-carte-32.png');
@@ -392,15 +392,15 @@ class AppFixtures extends Fixture
 
         // 2 nouveaux éléments avec 2 points
         $element1 = new Element();
-        $element1->setTypeElement($typeElementImmeuble)->setIcone($iconeImmSVG)->setTexte('Ehpad Le Village')->setNom("Ephad");
+        $element1->setTypeElement($typeElementImmeuble)->setIcone($iconeCaserneSVG)->setTexte('Ehpad Le Village')->setNom("Ephad");
         $manager->persist($element1);
 
         $element2 = new Element();
-        $element2->setTypeElement($typeElementIndustrie)->setIcone($iconeUsineSVG)->setTexte('Industrie 1')->setNom("Industrie");
+        $element2->setTypeElement($typeElementIndustrie)->setIcone($iconeFeuSVG)->setTexte('Industrie 1')->setNom("Industrie");
         $manager->persist($element2);
 
         $element3 = new Element();
-        $element3->setTypeElement($typeElementIndustrie)->setIcone($iconeGazSVG)->setTexte('Gaz')->setNom("Gaz");
+        $element3->setTypeElement($typeElementIndustrie)->setIcone($iconeAppleSVG)->setTexte('Gaz')->setNom("Gaz");
         $manager->persist($element3);
 
         $point1 = new Point();

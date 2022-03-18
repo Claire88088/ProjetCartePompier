@@ -47,9 +47,8 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             let latitude = eltsToShow[i].latitude
             let longitude = eltsToShow[i].longitude
 
-            urlISplit = eltsToShow[i].lienIcone.split('-');
-            urlISplit2 = urlISplit[2].split('.')[0]
-            urlFontFace = "/MarkersIcons/"+urlISplit[1]+"-"+urlISplit2
+            let urlISplit = eltsToShow[i].lienIcone.split('-');
+            let urlFontFace = "/MarkersIcons/" + urlISplit[1].split('.')[0]
 
             font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
 

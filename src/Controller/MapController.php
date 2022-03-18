@@ -632,7 +632,7 @@ class MapController extends AbstractController
             $em->persist($icone);
             $em->flush();
             $this->addFlash('success', 'L\'icône a bien été ajoutée !');
-            return $this->redirectToRoute('map');
+            return $this->redirectToRoute('list_icones');
         }
 
         return $this->render('map/add-icone.html.twig', [

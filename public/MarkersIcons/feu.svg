@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2022 by original authors @ fontello.com</metadata>
+<defs>
+<font id="example-apple" horiz-adv-x="1000" >
+<font-face font-family="example-apple" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="icons8-élément-feu-30" unicode="&#xe804;" d="M290 523c-70-140-127-290-123-330 0-80 180-276 253-276 60 0 57 33-3 113-64 83-64 167 0 220 40 33 50 30 50-17 0-30 36-100 80-153 43-50 86-113 96-137 24-70 154 67 177 190 20 114-37 384-83 384-17 0-40-27-50-57-17-43-44-17-114 120-50 100-103 187-123 190-17 7-90-107-160-247z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>
