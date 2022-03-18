@@ -77,23 +77,30 @@ $(document).ready(function() {
                 $('#position').addClass('alert-danger');
             }
         });
-    }
 
-    if (urlEditElement) {
-        // Affiche les noms des photos et liens dans leur champs correspondant, par défaut symfony les cache.
-        let divPhoto = $('.photo');
-        let divlien = $('.lien');
 
-        let photoNom = divPhoto[0].attributes[1].value;
-        let lienNom = divlien[0].attributes[1].value;
+        if (urlEditElement) {
+            // Affiche les noms des photos et liens dans leur champs correspondant, par défaut symfony les cache.
+            let divPhoto = $('.photo');
+            let divlien = $('.lien');
 
-        if (photoNom) {
-            let uploadPhoto = document.getElementById(formName + "_photo");
-            uploadPhoto.nextSibling.textContent = photoNom
-        }
-        if (lienNom) {
-            let uploadLien = document.getElementById(formName + "_lien");
-            uploadLien.nextSibling.textContent = lienNom
+            let photoNom = divPhoto[0].attributes[1].value;
+            let lienNom = divlien[0].attributes[1].value;
+
+            if (photoNom) {
+                let uploadPhoto = document.getElementById(formName + "_photo");
+                uploadPhoto.nextSibling.textContent = photoNom
+            }
+            if (lienNom) {
+                let uploadLien = document.getElementById(formName + "_lien");
+                uploadLien.nextSibling.textContent = lienNom
+            }
+
+            $("fieldset").css("margin", "17px 0px 17px 0px")
+            $(".custom-file-label").css("border-radius", "unset")
+            $(".listElt-icon").css("padding", "6px")
+            $(".listElt-icon").css("border-radius", "0px 10px 10px 0px")
+
         }
     }
 });

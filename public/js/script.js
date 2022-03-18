@@ -74,8 +74,9 @@ $(document).ready(function(){
     // 5. AJOUT D'UN NOUVEAU MARQUEUR-----------------------------------------
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
     var newMarker;
-    var urlAddElement = window.location.pathname.substr(0,16) === "/map/add-element";
-    var urlEditElement = window.location.pathname.substr(0,17) === "/map/edit-element";
+
+    var urlAddElement = window.location.pathname.includes("add-element");
+    var urlEditElement = window.location.pathname.includes("edit-element");
 
     if (urlAddElement || urlEditElement) {
         // on adapte le zoom
