@@ -524,8 +524,17 @@ class MapController extends AbstractController
     public function deleteElementAction(EntityManagerInterface $em, int $idElement): Response
     {
         $elementClique = $em->getRepository('App:Element')->find($idElement);
+        if ($elementClique->getPhoto()) {
+            $this->deletePhotoAction($em, $idElement);
+        }git
+
+        if ($elementClique->getLien()) {
+            $this->deletePdfAction($em, $idElement);
+        }
+
         $em->remove($elementClique);
         $em->flush();
+
         $this->addFlash('success', "L'élément a bien été supprimé");
         return $this->redirectToRoute('map');
     }
