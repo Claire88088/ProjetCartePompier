@@ -476,6 +476,13 @@ class MapController extends AbstractController
         return $elementForm;
     }
 
+    /**
+     * Traitement d'une photo : enregistrement dans le dossier upload et ajout à l'élément
+     * @param Form $elementForm
+     * @param SluggerInterface $slugger
+     * @param Element $element
+     * @return void
+     */
     private function photoTreatment(Form $elementForm, SluggerInterface $slugger, Element $element) {
         $photoFile = $elementForm->get('photo')->getData();
         if ($photoFile) {
@@ -489,6 +496,13 @@ class MapController extends AbstractController
         }
     }
 
+    /**
+     * Traitement d'un pdf : enregistrement dans le dossier upload et ajout à l'élément
+     * @param Form $elementForm
+     * @param SluggerInterface $slugger
+     * @param Element $element
+     * @return void
+     */
     private function pdfTreatment(Form $elementForm, SluggerInterface $slugger, Element $element) {
         $pdfFile = $elementForm->get('lien')->getData();
         if ($pdfFile) {
@@ -510,8 +524,17 @@ class MapController extends AbstractController
     public function deleteElementAction(EntityManagerInterface $em, int $idElement): Response
     {
         $elementClique = $em->getRepository('App:Element')->find($idElement);
+        if ($elementClique->getPhoto()) {
+            $this->deletePhotoAction($em, $idElement);
+        }
+
+        if ($elementClique->getLien()) {
+            $this->deletePdfAction($em, $idElement);
+        }
+
         $em->remove($elementClique);
         $em->flush();
+
         $this->addFlash('success', "L'élément a bien été supprimé");
         return $this->redirectToRoute('map');
     }
