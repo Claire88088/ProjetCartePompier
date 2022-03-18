@@ -1,17 +1,23 @@
 $(document).ready(function(){
+   //sessionStorage.clear()
     // récupération des données stockées dans le navigateur
     let latToCenter = sessionStorage.getItem('latToCenter');
     let longToCenter = sessionStorage.getItem('longToCenter');
     let zoomToPut = sessionStorage.getItem('zoomToPut');
     let calqueWithAddOrEdit = sessionStorage.getItem('calqueWithAddOrEdit');
+    console.log("calque "+calqueWithAddOrEdit);
+    console.log("lat "+latToCenter)
+    console.log("zoom "+zoomToPut)
 
     // taille des icones :
     let iconeHauteur = 50;
     let iconeLargeur = 50;
+    let defaultZoom = 13;
 
     // 1. CREATION DE LA CARTE avec un fond de carte OSM---------------------------------
     // gestion du zoom et du centrage en fonction des cas
     if (latToCenter) {
+        console.log('dans latToCenter')
         var centerLat = latToCenter;
         var centerLong = longToCenter;
         var zoom = zoomToPut;
@@ -19,11 +25,12 @@ $(document).ready(function(){
         sessionStorage.removeItem(longToCenter);
         sessionStorage.removeItem(zoomToPut);
     } else {
+        console.log('dans else')
         let defaultLatAndLongElt = $('.defaultLatAndLong');
         let defaultLatAndLong = JSON.parse(defaultLatAndLongElt[0].attributes[1].value);
         var centerLat = defaultLatAndLong[0];
         var centerLong = defaultLatAndLong[1];
-        var zoom = 13;
+        var zoom = defaultZoom;
     }
 
     // création de la carte
@@ -230,12 +237,13 @@ $(document).ready(function(){
                 });
                 req.send(data);
 
-                newMarker.bindPopup(newPopup);
+                newMarker.bindPopup(newPopup).openPopup();
 
                 // on stocke les coordonnées du nouveau marqueur dans le navigateur
+                let currentZoom = myMap.getZoom();
                 sessionStorage.setItem('latToCenter', lat);
                 sessionStorage.setItem('longToCenter', long);
-                sessionStorage.setItem('zoomToPut', 18)
+                sessionStorage.setItem('zoomToPut', currentZoom);
             }
             myMap.on("click", addMarker);
         }
