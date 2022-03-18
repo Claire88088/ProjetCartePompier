@@ -1,17 +1,31 @@
 $(document).ready(function(){
+    // récupération des données stockées dans le navigateur
+    let latToCenter = sessionStorage.getItem('latToCenter');
+    let longToCenter = sessionStorage.getItem('longToCenter');
+    let zoomToPut = sessionStorage.getItem('zoomToPut');
+
     // taille des icones :
     let iconeHauteur = 50;
     let iconeLargeur = 50;
 
-    // 1. CREATION DE LA CARTE avec un fond de carte OSM centrée sur la commune par défaut---------------------------------
-    let defaultLatAndLongElt = $('.defaultLatAndLong');
-    let defaultLatAndLong = JSON.parse(defaultLatAndLongElt[0].attributes[1].value);
-    let defaultLat = defaultLatAndLong[0];
-    let defaultLong = defaultLatAndLong[1];
+    // 1. CREATION DE LA CARTE avec un fond de carte OSM---------------------------------
+    // gestion du zoom et du centrage en fonction des cas
+    if (latToCenter) {
+        var centerLat = latToCenter;
+        var centerLong = longToCenter;
+        var zoom = zoomToPut;
+        sessionStorage.clear();
+    } else {
+        let defaultLatAndLongElt = $('.defaultLatAndLong');
+        let defaultLatAndLong = JSON.parse(defaultLatAndLongElt[0].attributes[1].value);
+        var centerLat = defaultLatAndLong[0];
+        var centerLong = defaultLatAndLong[1];
+        var zoom = 13;
+    }
 
     let myMap = L.map('mapid', {
-        center: [defaultLat, defaultLong],
-        zoom: 13
+        center: [centerLat, centerLong],
+        zoom: zoom
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
@@ -49,12 +63,12 @@ $(document).ready(function(){
     // Pour la première commune selectionnée
     let formCommune = document.getElementById("form_commune");
 
-    // Par défaut :
-    let communeLat = defaultLat;
-    let communeLong = defaultLong;
+    // // Par défaut :
+    // let communeLat = defaultLat;
+    // let communeLong = defaultLong;
 
     // on créé le form de l'API et on recherche l'adresse
-    searchAddress(myMap, communeLat, communeLong);
+    searchAddress(myMap, centerLat, centerLong);
 
     // Au changement de commune dans la liste
     formCommune.addEventListener('change', event => {
@@ -202,6 +216,10 @@ $(document).ready(function(){
 
                 newMarker.bindPopup(newPopup);
 
+                // on stocke les coordonnées du nouveau marqueur dans le navigateur
+                sessionStorage.setItem('latToCenter', lat);
+                sessionStorage.setItem('longToCenter', long);
+                sessionStorage.setItem('zoomToPut', 18)
             }
             myMap.on("click", addMarker);
         }
