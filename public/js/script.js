@@ -182,20 +182,7 @@ $(document).ready(function(){
                 let iconeLien = $('.dd-selected-image').attr('src');
                 let iconeUnicode = $('.dd-selected-image').attr('unicode');
 
-                // Création des url pour les icones et pour les fontfaces
-                let urlISplit = iconeLien.split('/')[2].split('-');
-                let urlFontFace = "/MarkersIcons/" + urlISplit[1].split('.')[0]
-
-                // Création d'un objet font-face correspondant à l'icone choisie dans la liste
-                let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
-                font.load().then(function (loadedFont) {
-                    if (document.fonts.has(loadedFont)) {
-                        document.fonts.delete(loadedFont);
-                    }
-                    document.fonts.add(loadedFont);
-                }).catch(function (error) {
-                    console.log(error)
-                });
+                iconeFontFace(iconeLien)
 
                 // Création et ajout à la carte d'un marqueur avec l'icône choisie
                 newMarker = L.marker([lat, long], {
@@ -229,21 +216,9 @@ $(document).ready(function(){
                     let iconeLien = $('.dd-selected-image').attr('src');
                     let iconeUnicode = $('.dd-selected-image').attr('unicode');
 
-                    let urlISplit = iconeLien.split('/')[2].split('-');
-                    let urlFontFace = "/MarkersIcons/" + urlISplit[1]
-
-                    let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
-                    font.load().then(function (loadedFont) {
-                        if (document.fonts.has(loadedFont)) {
-                            document.fonts.delete(loadedFont);
-                        }
-                        document.fonts.add(loadedFont);
-                    }).catch(function (error) {
-                        console.log(error)
-                    });
+                    iconeFontFace(iconeLien)
 
                     let currentCouleur = inputCouleur.attributes[11].value
-                    console.log(currentCouleur)
 
                     if (myMap.hasLayer(newMarker)) {
                         myMap.removeLayer(newMarker)
@@ -294,7 +269,6 @@ $(document).ready(function(){
         }
         if (urlEditElement) {
             let currentUrl = window.location.href
-            // Obligation de parsé sinon on récupère un string qui n'est donc pas comparable à l'id de l'élément qui lui est un int.
             let idCurrentElement = currentUrl.split('-')[2]
 
             let Element = document.getElementById(idCurrentElement)
@@ -311,15 +285,7 @@ $(document).ready(function(){
                 let iconeLien = $('.dd-selected-image').attr('src');
                 let iconeUnicode = $('.dd-selected-image').attr('unicode');
 
-                let urlISplit = iconeLien.split('/')[2].split('-');
-                let urlFontFace = "/MarkersIcons/" + urlISplit[1]
-
-                let font = new FontFace("fontello", 'url(\'..' + urlFontFace + '.woff\') format(\'woff\')');
-                font.load().then(function (loadedFont) {
-                    document.fonts.add(loadedFont);
-                }).catch(function (error) {
-                    console.log(error)
-                });
+                iconeFontFace(iconeLien)
 
                 // on l'applique avec le innerHTML (non faisable avec textContent ou innerText car ces propriétés ne parsent pas en contenu HTML et donc l'unicode s'affiche en texte)
                 Element.innerHTML = iconeUnicode

@@ -6,9 +6,15 @@ use App\Repository\IconeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=IconeRepository::class)
+ * @UniqueEntity(
+ *     fields="nom",
+ *     message="Ce nom est déjà utilisé"
+ *     )
  */
 class Icone
 {
@@ -20,7 +26,7 @@ class Icone
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      */
     private $nom;
 
