@@ -526,7 +526,7 @@ class MapController extends AbstractController
         $elementClique = $em->getRepository('App:Element')->find($idElement);
         if ($elementClique->getPhoto()) {
             $this->deletePhotoAction($em, $idElement);
-        }git
+        }
 
         if ($elementClique->getLien()) {
             $this->deletePdfAction($em, $idElement);
