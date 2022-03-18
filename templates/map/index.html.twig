@@ -53,60 +53,61 @@
     </div>
 
     <div class="container-fluid smallMap">
-{#        <button class="newSearch">Nouvelle recherche</button>#}
         <div class="row">
 
             {# Affichage de la carte #}
             <div id="mapid" class="col" ></div>
 
-            {% if app.user %}
-                <div id="form" class="mt-2">
-                    {% for msg in app.session.flashBag.get('success') %}
-                        <div class="alert alert-success" role="alert">{{ msg }}</div>
-                    {% endfor %}
-                    {% for msg in app.session.flashBag.get('danger') %}
-                        <div class="alert alert-danger" role="alert">{{ msg }}</div>
-                    {% endfor %}
-                    {% block global %}
-                        <div class="title mb-5">
-                            <h2 class="add-title">Gestion des calques, types d'éléments et éléments</h2>
-                        </div>
+        {% if app.user %}
+            <div id="form" class="mt-2">
+            {% for msg in app.session.flashBag.get('success') %}
+                <div class="alert alert-success" role="alert">{{ msg }}</div>
+            {% endfor %}
+            {% for msg in app.session.flashBag.get('danger') %}
+                <div class="alert alert-danger" role="alert">{{ msg }}</div>
+            {% endfor %}
 
-                        <div class="container {# createCalqueAndType #}  mb-5">
-                            <div class="row">
-                                <div class="col">
-                                    <button style="width:100%; height:100%;" class="create-btn btn btn-primary" onclick="location.href='{{ path('add_calque') }}'">
-                                        <div class="material-icons material-icons-outlined">add</div>
-                                        <div style="width:100%;">Créer un nouveau calque</div>
-                                    </button>
-                                </div>
-                                <div class="col">
-                                    <button class="create-btn btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">
-                                        <div class="material-icons material-icons-outlined">add</div>
-                                        <div style="width:100%;">Créer un nouveau type d'éléments</div>
-                                    </button>
-                                </div>
-                            </div>
-                            {% if is_granted('ROLE_ADMIN') %}
-                            <div class="row">
-                                <div class="col">
-                                    <button class="create-btn btn btn-primary" style="width:100%;" onclick="location.href='{{ path('list_icones') }}'">
-                                        <div style="width:100%;">Lister les icones</div>
-                                    </button>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                        <hr>
-                        {{ render(controller('App\\Controller\\MapController::listAction')) }}
-                    {% endblock %}
+            {%  if app.request.get('_route') != "map" %}
+                <button class="btn btn-primary mb-2" onclick="location.href='{{ path('map') }}'">retour</button>
+            {% endif %}
 
-                    {%  if app.request.get('_route') != "map" %}
-                            <button class="btn btn-primary" onclick="location.href='{{ path('map') }}'">retour</button>
+            {% block global %}
+                <div class="title mb-5">
+                    <h2 class="add-title">Gestion des calques, types d'éléments et éléments</h2>
+                </div>
+
+                <div class="container mb-5">
+                    <div class="row">
+                        <div class="col">
+                            <button style="width:100%; height:100%;" class="create-btn btn btn-primary" onclick="location.href='{{ path('add_calque') }}'">
+                                <div class="material-icons material-icons-outlined">add</div>
+                                <div style="width:100%;">Créer un nouveau calque</div>
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="create-btn btn btn-primary" onclick="location.href='{{ path('choice_calque', {'eltToCreate': 'typeElt'}) }}'">
+                                <div class="material-icons material-icons-outlined">add</div>
+                                <div style="width:100%;">Créer un nouveau type d'éléments</div>
+                            </button>
+                        </div>
+                    </div>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <div class="row">
+                        <div class="col">
+                            <button class="create-btn btn btn-primary" style="width:100%;" onclick="location.href='{{ path('list_icones') }}'">
+                                <div style="width:100%;">Lister les icones</div>
+                            </button>
+                        </div>
+                    </div>
                     {% endif %}
                 </div>
+                <hr>
+                {{ render(controller('App\\Controller\\MapController::listAction')) }}
+            {% endblock %}
+
+            </div>
         </div>
-            {% endif %}
+        {% endif %}
     </div>
 
     {{ render(controller('App\\Controller\\MapController::envoiDonneesJSAction')) }}
