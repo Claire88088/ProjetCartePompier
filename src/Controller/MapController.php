@@ -476,6 +476,13 @@ class MapController extends AbstractController
         return $elementForm;
     }
 
+    /**
+     * Traitement d'une photo : enregistrement dans le dossier upload et ajout à l'élément
+     * @param Form $elementForm
+     * @param SluggerInterface $slugger
+     * @param Element $element
+     * @return void
+     */
     private function photoTreatment(Form $elementForm, SluggerInterface $slugger, Element $element) {
         $photoFile = $elementForm->get('photo')->getData();
         if ($photoFile) {
@@ -489,6 +496,13 @@ class MapController extends AbstractController
         }
     }
 
+    /**
+     * Traitement d'un pdf : enregistrement dans le dossier upload et ajout à l'élément
+     * @param Form $elementForm
+     * @param SluggerInterface $slugger
+     * @param Element $element
+     * @return void
+     */
     private function pdfTreatment(Form $elementForm, SluggerInterface $slugger, Element $element) {
         $pdfFile = $elementForm->get('lien')->getData();
         if ($pdfFile) {
