@@ -324,34 +324,16 @@ class MapController extends AbstractController
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-
-            $photoFile = $elementForm->get('photo')->getData();
-            if ($photoFile) {
-                $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safePhotoFilename = $slugger->slug($originalPhotoFilename);
-                $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
-
-                $photoFile->move($this->getParameter('uploads_photos'), $newPhotoName);
-
-                $element->setPhoto($newPhotoName);
-            }
-
-            $pdfFile = $elementForm->get('lien')->getData();
-            if ($pdfFile) {
-                $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safePdfFilename = $slugger->slug($originalPdfFilename);
-                $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
-
-                $pdfFile->move($this->getParameter('uploads_pdf'), $newPdfName);
-
-                $element->setLien($newPdfName);
+            if ($_FILES) { // si on a des fichiers téléchargés (photo ou pdf)
+                $this->photoTreatment($elementForm, $slugger, $element);
+                $this->pdfTreatment($elementForm, $slugger, $element);
             }
 
             $em->persist($element);
 
             // on ajoute les données au Point
             $point->setElement($element);
-            $coordGPS = $request->request->get(key($_POST)/*$name*/)['coordonnees'];
+            $coordGPS = $request->request->get(key($_POST))['coordonnees'];
             $longitude = $coordGPS['longitude'];
             $latitude = $coordGPS['latitude'];
             $point->setLongitude($longitude);
@@ -402,27 +384,9 @@ class MapController extends AbstractController
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-
-            $photoFile = $elementForm->get('photo')->getData();
-            if ($photoFile) {
-                $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safePhotoFilename = $slugger->slug($originalPhotoFilename);
-                $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
-
-                $photoFile->move($this->getParameter('uploads_photos'), $newPhotoName);
-
-                $elementClique->setPhoto($newPhotoName);
-            }
-
-            $pdfFile = $elementForm->get('lien')->getData();
-            if ($pdfFile) {
-                $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safePdfFilename = $slugger->slug($originalPdfFilename);
-                $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
-
-                $pdfFile->move($this->getParameter('uploads_pdf'), $newPdfName);
-
-                $elementClique->setLien($newPdfName);
+            if ($_FILES) { // si on a des fichiers téléchargés (photo ou pdf)
+                $this->photoTreatment($elementForm, $slugger, $elementClique);
+                $this->pdfTreatment($elementForm, $slugger, $elementClique);
             }
 
             $em->persist($elementClique);
@@ -510,6 +474,32 @@ class MapController extends AbstractController
         }
 
         return $elementForm;
+    }
+
+    private function photoTreatment(Form $elementForm, SluggerInterface $slugger, Element $element) {
+        $photoFile = $elementForm->get('photo')->getData();
+        if ($photoFile) {
+            $originalPhotoFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safePhotoFilename = $slugger->slug($originalPhotoFilename);
+            $newPhotoName = $safePhotoFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+            $photoFile->move($this->getParameter('uploads_photos'), $newPhotoName);
+
+            $element->setPhoto($newPhotoName);
+        }
+    }
+
+    private function pdfTreatment(Form $elementForm, SluggerInterface $slugger, Element $element) {
+        $pdfFile = $elementForm->get('lien')->getData();
+        if ($pdfFile) {
+            $originalPdfFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safePdfFilename = $slugger->slug($originalPdfFilename);
+            $newPdfName = $safePdfFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+
+            $pdfFile->move($this->getParameter('uploads_pdf'), $newPdfName);
+
+            $element->setLien($newPdfName);
+        }
     }
 
     /**
@@ -632,7 +622,7 @@ class MapController extends AbstractController
             $em->persist($icone);
             $em->flush();
             $this->addFlash('success', 'L\'icône a bien été ajoutée !');
-            return $this->redirectToRoute('list_icones');
+            return $this->redirectToRoute('map');
         }
 
         return $this->render('map/add-icone.html.twig', [

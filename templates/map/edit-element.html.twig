@@ -1,55 +1,62 @@
 {% extends 'map/index.html.twig' %}
 
 {% block global %}
-<div class="sub-nav">
-    <div class="title">
-        <h2 class="add-title">Modification de l'élément "{{ nomElement }}"</h2>
+    <div class="sub-nav">
+        <div class="title">
+            <h2 class="add-title">Modification de l'élément "{{ nomElement }}"</h2>
+        </div>
+
+        {{ form_start(form) }}
+
+        <fieldset class="form-group coordonnees">
+            {{ form_label(form.coordonnees) }}
+            {{ form_errors(form.coordonnees) }}
+            {{ form_row(form.coordonnees.latitude , {'value' : latitude }) }}
+            {{ form_row(form.coordonnees.longitude, {'value' : longitude }) }}
+        </fieldset>
+
+        {{ form_row(form.nom) }}
+
+        {% if form.texte is defined %}
+            {{ form_row(form.texte) }}
+        {%  endif %}
+
+        {% if form.photo is defined %}
+            <fieldset>
+                {{ form_label(form.photo) }}
+                <div class="form-photo">
+                    {{ form_widget(form.photo) }}
+                    {% if photo %}
+                        <a href="{{ path('delete_photo', { 'idElement' : idElement }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer cette photo ?')">
+                            <span title="Supprimer une photo" class="material-icons listElt-icon">delete</span>
+                        </a>
+                    {% endif %}
+                </div>
+                {{ form_help(form.photo) }}
+            </fieldset>
+        {%  endif %}
+
+        {% if form.lien is defined %}
+            <fieldset>
+                {{ form_label(form.lien) }}
+                <div class="form-lien">
+                    {{ form_widget(form.lien) }}
+                    {% if lien %}
+                        <a href="{{ path('delete_pdf', { 'idElement' : idElement }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce pdf ?')">
+                            <span title="Supprimer un pdf" class="material-icons listElt-icon">delete</span>
+                        </a>
+                    {% endif %}
+                </div>
+                {{ form_help(form.lien) }}
+            </fieldset>
+        {%  endif %}
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
     </div>
 
-    {{ form_start(form) }}
-
-    <fieldset class="form-group coordonnees">
-    {{ form_label(form.coordonnees) }}
-    {{ form_errors(form.coordonnees) }}
-    {{ form_row(form.coordonnees.latitude , {'value' : latitude }) }}
-    {{ form_row(form.coordonnees.longitude, {'value' : longitude }) }}
-    </fieldset>
-
-    {{ form_row(form.nom) }}
-    {{ form_row(form.texte) }}
-
-    <fieldset>
-        {{ form_label(form.photo) }}
-        <div class="form-photo">
-            {{ form_widget(form.photo) }}
-            {% if photo %}
-            <a href="{{ path('delete_photo', { 'idElement' : idElement }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer cette photo ?')">
-                <span title="Supprimer une photo" class="material-icons listElt-icon">delete</span>
-            </a>
-            {% endif %}
-        </div>
-        {{ form_help(form.photo) }}
-    </fieldset>
-
-    <fieldset>
-        {{ form_label(form.lien) }}
-        <div class="form-lien">
-            {{ form_widget(form.lien) }}
-            {% if lien %}
-                <a href="{{ path('delete_pdf', { 'idElement' : idElement }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce pdf ?')">
-                    <span title="Supprimer un pdf" class="material-icons listElt-icon">delete</span>
-                </a>
-            {% endif %}
-        </div>
-        {{ form_help(form.lien) }}
-    </fieldset>
-
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
-</div>
-
-{# passage de données via Twig #}
-<div class="calqueNom" calqueNom="{{ nomCalque }}"></div>
-<div class="photo" photo="{{ photo }}"></div>
-<div class="lien" lien="{{ lien }}"></div>
+    {# passage de données via Twig #}
+    <div class="calqueNom" calqueNom="{{ nomCalque }}"></div>
+    <div class="photo" photo="{{ photo }}"></div>
+    <div class="lien" lien="{{ lien }}"></div>
 {% endblock %}
