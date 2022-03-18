@@ -30,9 +30,8 @@ $(document).ready(function() {
     $("fieldset.form-group").css("display", "none");
 
     //---------------------------------------------------------------------------------------------------
-    var urlAddElement = window.location.pathname.substr(0,16) === "/map/add-element";
-    var urlEditElement = window.location.pathname.substr(0,17) === "/map/edit-element";
-    //let formName = document.querySelectorAll("form")[1].name;
+    var urlAddElement = window.location.pathname.includes("add-element");
+    var urlEditElement = window.location.pathname.includes("edit-element");
 
     if (urlAddElement || urlEditElement) {
         // Récupère le nom du formulaire [1] de la page
