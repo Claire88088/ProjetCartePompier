@@ -26,32 +26,11 @@ $(document).ready(function(){
     var eltsToShowElt = $('.allEltsToShow');
     var calqueList = $('.calquesNomsList');
 
-
-    // Animation du display des calques avec leurs éléments
-    var divCalquesList = $('.listCalqueElem')
-    var divTypesElementCalque = $('.typeElementCalque')
-    for (let i=0; i < divCalquesList.length; i++) {
-
-        divCalquesList[i].addEventListener("mouseover", function (event) {
-            divTypesElementCalque[i].style.display = 'block'
-        })
-        divTypesElementCalque[i].addEventListener("mouseover", function (event) {
-            divTypesElementCalque[i].style.display = 'block'
-        })
-        divCalquesList[i].addEventListener("mouseout", function (event) {
-            divTypesElementCalque[i].style.display = 'none'
-        })
-        divTypesElementCalque[i].addEventListener("mouseout", function (event) {
-            divTypesElementCalque[i].style.display = 'none'
-        })
-    }
-
     // ajout du système de gestion de l'affichage (calques et éléments) (permet aussi de récupérer les données d'affichage des calques : groupes de marqueurs et clusters)
     let affichageCalquesTab = addGestionAffichage(eltsToShowElt, calqueList, myMap);
 
 
-    //--------------------------------------------------------------------
-    // 3. STYLISATION DE L'"ICONE" de gestion des calques
+    // 3. STYLISATION DE L'"ICONE" de gestion des calques-----------------------------------------------------------
     var bCalques = document.getElementsByClassName('leaflet-control-layers-overlays')[0];
 
     var titreCalque = document.createElement('label');
@@ -65,8 +44,8 @@ $(document).ready(function(){
 
     bCalques.prepend(titreCalque);
 
-    //----------------------------------------------------
-    // 4. RECHERCHE D'UNE ADRESSE
+
+    // 4. RECHERCHE D'UNE ADRESSE----------------------------------------
     // Pour la première commune selectionnée
     let formCommune = document.getElementById("form_commune");
 
@@ -91,25 +70,13 @@ $(document).ready(function(){
         searchAddress(myMap, communeLat, communeLong);
     });
 
-    //----------------------------------------------------
-    // Permet au champs d'upload d'afficher le nom du ficher donné.
-    $('.custom-file-input').on('change', function (event) {
-        var inputFile = event.currentTarget;
-        $(inputFile).parent()
-            .find('.custom-file-label')
-            .html(inputFile.files[0].name);
-    });
 
-    //----------------------------------------------------
-    // Cache dans les formulaires la latitude et la longitude
-    $("fieldset.form-group").css("display", "none");
-
-    //----------------------------------------------------
-    // 5. AJOUT D'UN NOUVEAU MARQUEUR
+    // 5. AJOUT D'UN NOUVEAU MARQUEUR-----------------------------------------
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
     var newMarker;
     var urlAddElement = window.location.pathname.substr(0,16) === "/map/add-element";
     var urlEditElement = window.location.pathname.substr(0,17) === "/map/edit-element";
+
     if (urlAddElement || urlEditElement) {
         // on adapte le zoom
         //myMap.setZoom(18);
@@ -127,36 +94,6 @@ $(document).ready(function(){
         //----------------------------------------------------
         // Récupère le nom du formulaire [1] de la page
         let formName = document.querySelectorAll("form")[1].name;
-        // Récupère le select des icones comprenant les options
-        let selectIcone = document.getElementById(formName + "_icone");
-
-        // boucle sur le select pour avoir chaque option
-        for (let i = 0; i < selectIcone.length; i++) {
-            let option = selectIcone[i];
-            let valOption = selectIcone[i].label;
-
-            let unicode = option.attributes[1].value
-            // construction du chemin vers les icones
-            let cheminIcone = "/MarkersIcons/" + valOption;
-
-            // set l'attribut nécessaire pour afficher les images par la suite
-            option.setAttribute('data-imagesrc', cheminIcone)
-            option.setAttribute('data-description', unicode)
-
-            // set le nom de l'icone a partir du lien
-            let iconeName = option.childNodes[0].textContent
-            let splitIconeName = iconeName.split("-")[1].split('.')[0]
-            option.innerHTML = splitIconeName
-        }
-
-        // Fonction jQuery UI pour reconstruire un select option en div et y inclure des images
-        $('#' + formName + '_icone').ddslick({
-            onSelected: function (selectedData) {
-                // remet le nom sur le input icone pour qu'il repasse dans le formulaire avec l'id de l'icone selectionnée
-                $("input.dd-selected-value").attr("name", formName + "[icone]")
-                $(".dd-selected-image").attr("unicode", selectedData.selectedData.description)
-            }
-        });
 
         let inputCouleur = document.getElementById(""+formName+"_couleur")
         let inputCouleurVal = inputCouleur.value
@@ -267,6 +204,7 @@ $(document).ready(function(){
             }
             myMap.on("click", addMarker);
         }
+
         if (urlEditElement) {
             let currentUrl = window.location.href
             let idCurrentElement = currentUrl.split('-')[2]
@@ -290,41 +228,6 @@ $(document).ready(function(){
                 // on l'applique avec le innerHTML (non faisable avec textContent ou innerText car ces propriétés ne parsent pas en contenu HTML et donc l'unicode s'affiche en texte)
                 Element.innerHTML = iconeUnicode
             })
-
-            //---------------------------------------------------------------------------------------------
-            // Affiche les noms des photos et liens dans leur champs correspondant, par défaut symfony les cache.
-            let divPhoto = $('.photo');
-            let divlien =  $('.lien');
-
-            let photoNom = divPhoto[0].attributes[1].value;
-            let lienNom = divlien[0].attributes[1].value;
-
-            if (photoNom) {
-                let uploadPhoto = document.getElementById(formName + "_photo");
-                uploadPhoto.nextSibling.textContent = photoNom
-            }
-            if (lienNom) {
-                let uploadLien = document.getElementById(formName + "_lien");
-                uploadLien.nextSibling.textContent = lienNom
-            }
         }
-
-        //---------------------------------------------------------------------------------------------
-        // 6. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
-        $('#' + formName + '_ajouter').click(function(e){
-            $('#position').removeClass('alert-danger');
-            if (!$('#' + formName + '_coordonnees_longitude')[0].value) {
-                $('#position').addClass('alert-danger');
-            }
-        });
-
-        //---------------------------------------------------------------------------------------------
-        // X. INFORMATION UTILISATEUR si on ne clique pas sur la carte pour choisir un point lors de la création d'un nouvel élément
-        $('#' + formName + '_ajouter').click(function(e){
-            $('#position').removeClass('alert-danger');
-            if (!$('#' + formName + '_coordonnees_longitude')[0].value) {
-                $('#position').addClass('alert-danger');
-            }
-        });
     }
 })
