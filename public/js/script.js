@@ -3,6 +3,7 @@ $(document).ready(function(){
     let latToCenter = sessionStorage.getItem('latToCenter');
     let longToCenter = sessionStorage.getItem('longToCenter');
     let zoomToPut = sessionStorage.getItem('zoomToPut');
+    let calqueWithAddOrEdit = sessionStorage.getItem('calqueWithAddOrEdit');
 
     // taille des icones :
     let iconeHauteur = 50;
@@ -14,7 +15,9 @@ $(document).ready(function(){
         var centerLat = latToCenter;
         var centerLong = longToCenter;
         var zoom = zoomToPut;
-        sessionStorage.clear();
+        sessionStorage.removeItem(latToCenter);
+        sessionStorage.removeItem(longToCenter);
+        sessionStorage.removeItem(zoomToPut);
     } else {
         let defaultLatAndLongElt = $('.defaultLatAndLong');
         let defaultLatAndLong = JSON.parse(defaultLatAndLongElt[0].attributes[1].value);
@@ -23,6 +26,7 @@ $(document).ready(function(){
         var zoom = 13;
     }
 
+    // création de la carte
     let myMap = L.map('mapid', {
         center: [centerLat, centerLong],
         zoom: zoom
@@ -42,6 +46,17 @@ $(document).ready(function(){
 
     // ajout du système de gestion de l'affichage (calques et éléments) (permet aussi de récupérer les données d'affichage des calques : groupes de marqueurs et clusters)
     let affichageCalquesTab = addGestionAffichage(eltsToShowElt, calqueList, myMap);
+
+    if (calqueWithAddOrEdit) {
+        console.log('afficahge du calque')
+        // on affiche le calque (groupes de marqueurs et cluster) sur lequel on a créé un point
+        let markersGroupTab = affichageCalquesTab[0];
+        let clustersTab = affichageCalquesTab[1];
+
+        markersGroupTab[calqueWithAddOrEdit].addTo(myMap);
+        myMap.addLayer(clustersTab[calqueWithAddOrEdit]);
+        sessionStorage.removeItem('calqueWithAddOrEdit');
+    }
 
 
     // 3. STYLISATION DE L'"ICONE" de gestion des calques-----------------------------------------------------------
@@ -99,6 +114,7 @@ $(document).ready(function(){
         // on affiche le calque (groupes de marqueurs et cluster) sur lequel on veut créer un point
         let calqueNomElt = $('.calqueNom');
         let calqueNom = calqueNomElt[0].attributes[1].value;
+        sessionStorage.setItem('calqueWithAddOrEdit', calqueNom);
 
         let markersGroupTab = affichageCalquesTab[0];
         let clustersTab = affichageCalquesTab[1];
@@ -225,6 +241,18 @@ $(document).ready(function(){
         }
 
         if (urlEditElement) {
+            // on stocke les lat et long de l'élément modifié dans le navigateur (pour pouvoir centrer la carte)
+            let editEltLatElt = $('.editEltLat');
+            let editEltLongElt = $('.editEltLong');
+
+            let editEltLat = editEltLatElt[0].attributes[1].value;
+            let editEltLong = editEltLongElt[0].attributes[1].value;
+
+            sessionStorage.setItem('latToCenter', editEltLat);
+            sessionStorage.setItem('longToCenter', editEltLong);
+            sessionStorage.setItem('zoomToPut', 18);
+
+            // onrécupère l'id de l'élement
             let currentUrl = window.location.href
             let idCurrentElement = currentUrl.split('-')[2]
 
