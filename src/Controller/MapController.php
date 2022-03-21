@@ -337,13 +337,11 @@ class MapController extends AbstractController
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-            if ($_FILES) { // si on a des fichiers téléchargés (photo ou pdf)
-                if (key($_FILES) == "photo") {
-                    $this->photoTreatment($elementForm, $slugger, $element);
-                }
-                if (key($_FILES) == "lien") {
-                    $this->pdfTreatment($elementForm, $slugger, $element);
-                }
+            if ($_FILES[key($_FILES)]["name"]["photo"]) {
+                $this->photoTreatment($elementForm, $slugger, $element);
+            }
+            if ($_FILES[key($_FILES)]["name"]["lien"]) {
+                $this->pdfTreatment($elementForm, $slugger, $element);
             }
 
             $em->persist($element);
@@ -401,13 +399,12 @@ class MapController extends AbstractController
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-            if ($_FILES) { // si on a des fichiers téléchargés (photo ou pdf)
-                if (key($_FILES) == "photo") {
-                    $this->photoTreatment($elementForm, $slugger, $elementClique);
-                }
-                if (key($_FILES) == "lien") {
-                    $this->pdfTreatment($elementForm, $slugger, $elementClique);
-                }
+            // si on a des fichiers téléchargés (photo ou pdf)
+            if ($_FILES[key($_FILES)]["name"]["photo"]) {
+                $this->photoTreatment($elementForm, $slugger, $elementClique);
+            }
+            if ($_FILES[key($_FILES)]["name"]["lien"]) {
+                $this->pdfTreatment($elementForm, $slugger, $elementClique);
             }
 
             $em->persist($elementClique);
