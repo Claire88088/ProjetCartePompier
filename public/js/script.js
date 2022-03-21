@@ -1,13 +1,9 @@
 $(document).ready(function(){
-   //sessionStorage.clear()
     // récupération des données stockées dans le navigateur
     let latToCenter = sessionStorage.getItem('latToCenter');
     let longToCenter = sessionStorage.getItem('longToCenter');
     let zoomToPut = sessionStorage.getItem('zoomToPut');
     let calqueWithAddOrEdit = sessionStorage.getItem('calqueWithAddOrEdit');
-    console.log("calque "+calqueWithAddOrEdit);
-    console.log("lat "+latToCenter)
-    console.log("zoom "+zoomToPut)
 
     // taille des icones :
     let iconeHauteur = 50;
@@ -17,7 +13,6 @@ $(document).ready(function(){
     // 1. CREATION DE LA CARTE avec un fond de carte OSM---------------------------------
     // gestion du zoom et du centrage en fonction des cas
     if (latToCenter) {
-        console.log('dans latToCenter')
         var centerLat = latToCenter;
         var centerLong = longToCenter;
         var zoom = zoomToPut;
@@ -25,7 +20,6 @@ $(document).ready(function(){
         sessionStorage.removeItem(longToCenter);
         sessionStorage.removeItem(zoomToPut);
     } else {
-        console.log('dans else')
         let defaultLatAndLongElt = $('.defaultLatAndLong');
         let defaultLatAndLong = JSON.parse(defaultLatAndLongElt[0].attributes[1].value);
         var centerLat = defaultLatAndLong[0];
@@ -53,13 +47,24 @@ $(document).ready(function(){
 
     // ajout du système de gestion de l'affichage (calques et éléments) (permet aussi de récupérer les données d'affichage des calques : groupes de marqueurs et clusters)
     let affichageCalquesTab = addGestionAffichage(eltsToShowElt, calqueList, myMap);
+    var markersGroupTab = affichageCalquesTab[0];
+    var clustersTab = affichageCalquesTab[1];
 
-    if (calqueWithAddOrEdit) {
-        console.log('afficahge du calque')
-        // on affiche le calque (groupes de marqueurs et cluster) sur lequel on a créé un point
-        let markersGroupTab = affichageCalquesTab[0];
+    // Si on n'est pas connecté : on affiche le calque "Etablissements Répertoriés" par défaut
+    let divIsConnected = $('.isConnected');
+    let isConnected = divIsConnected[0].attributes[1].value;
+    if (!isConnected) {
+        // on ajoute le calque "Etablissements Répertoriés"
+        let defaultCalque = "Etablissements Répertoriés";
         let clustersTab = affichageCalquesTab[1];
+        markersGroupTab[defaultCalque].addTo(myMap);
+        myMap.addLayer(clustersTab[defaultCalque]);
 
+    }
+
+    // si on ajoute ou modifie un point
+    if (calqueWithAddOrEdit) {
+        // on affiche le calque (groupes de marqueurs et cluster) sur lequel on a créé un point
         markersGroupTab[calqueWithAddOrEdit].addTo(myMap);
         myMap.addLayer(clustersTab[calqueWithAddOrEdit]);
         sessionStorage.removeItem('calqueWithAddOrEdit');
@@ -84,10 +89,6 @@ $(document).ready(function(){
     // 4. RECHERCHE D'UNE ADRESSE----------------------------------------
     // Pour la première commune selectionnée
     let formCommune = document.getElementById("form_commune");
-
-    // // Par défaut :
-    // let communeLat = defaultLat;
-    // let communeLong = defaultLong;
 
     // on créé le form de l'API et on recherche l'adresse
     searchAddress(myMap, centerLat, centerLong);
@@ -119,9 +120,6 @@ $(document).ready(function(){
             }
         });
     }
-
-
-
 
 
     // 5. AJOUT D'UN NOUVEAU MARQUEUR-----------------------------------------
