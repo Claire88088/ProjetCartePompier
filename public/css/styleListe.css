@@ -44,3 +44,8 @@
 .typeElementCalque {
     display: none;
 }
+
+.scroll {
+    max-height: 200px;
+    overflow-y: scroll;
+}

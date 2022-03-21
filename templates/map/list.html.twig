@@ -51,7 +51,7 @@
                                         </div>
                                         {% endif %}
                                     </div>
-                                    <div class="collapse" id="eltsOf{{ type.0.id }}">
+                                    <div class="collapse scroll" id="eltsOf{{ type.0.id }}">
                                         <div class="card card-body">
                                             {{ render(controller('App\\Controller\\MapController::listElementsAction', { 'idTypeElt':type.0.id })) }}
                                         </div>
