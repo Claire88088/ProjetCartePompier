@@ -4,6 +4,7 @@ $(document).ready(function(){
     let longToCenter = sessionStorage.getItem('longToCenter');
     let zoomToPut = sessionStorage.getItem('zoomToPut');
     let calqueWithAddOrEdit = sessionStorage.getItem('calqueWithAddOrEdit');
+    let searchZoom = sessionStorage.getItem('searchZoom');
 
     // taille des icones :
     let iconeHauteur = 50;
@@ -11,20 +12,28 @@ $(document).ready(function(){
     let defaultZoom = 13;
 
     // 1. CREATION DE LA CARTE avec un fond de carte OSM---------------------------------
-    // gestion du zoom et du centrage en fonction des cas
+    // gestion du zoom
+    if (latToCenter) {
+        var zoom = zoomToPut;
+        sessionStorage.removeItem(zoomToPut);
+    } else if (searchZoom) {
+        var zoom = searchZoom;
+        sessionStorage.removeItem(searchZoom);
+    } else {
+        var zoom = defaultZoom;
+    }
+
+    // gestion du centrage de la carte
     if (latToCenter) {
         var centerLat = latToCenter;
         var centerLong = longToCenter;
-        var zoom = zoomToPut;
         sessionStorage.removeItem(latToCenter);
         sessionStorage.removeItem(longToCenter);
-        sessionStorage.removeItem(zoomToPut);
     } else {
         let defaultLatAndLongElt = $('.defaultLatAndLong');
         let defaultLatAndLong = JSON.parse(defaultLatAndLongElt[0].attributes[1].value);
         var centerLat = defaultLatAndLong[0];
         var centerLong = defaultLatAndLong[1];
-        var zoom = defaultZoom;
     }
 
     // création de la carte
@@ -59,7 +68,6 @@ $(document).ready(function(){
         let clustersTab = affichageCalquesTab[1];
         markersGroupTab[defaultCalque].addTo(myMap);
         myMap.addLayer(clustersTab[defaultCalque]);
-
     }
 
     // si on ajoute ou modifie un point
@@ -131,7 +139,7 @@ $(document).ready(function(){
 
     if (urlAddElement || urlEditElement) {
         // on adapte le zoom
-        //myMap.setZoom(18);
+       //myMap.setZoom(17);
 
         // on affiche le calque (groupes de marqueurs et cluster) sur lequel on veut créer un point
         let calqueNomElt = $('.calqueNom');
