@@ -25,30 +25,42 @@
                         </div>
                         <div class="typeElementCalque {{ calque.id }}">
 
-                        <ul class="listElt-types">
-                        {% for type in typesEltWithCalque %}
-                            {% if type.calqueId == calque.id %}
+                            <ul class="listElt-types">
+                            {% for type in typesEltWithCalque %}
+                                {% if type.calqueId == calque.id %}
 
-                            <li class="listElt-typeElt">
-                                <button class="create-elt create-btn btn btn-primary" onclick="location.href='{{ path('add_element_from_type', { 'idCalque':calque.id, 'idTypeElt':type.0.id }) }}'">
-                                    <div class="material-icons material-icons-outlined">add</div>
-                                    <div class="type">{{ type.0.nom }}</div>
-                                </button>
+                                <li class="listElt">
+                                    <div class="listElt-typeElt">
+                                        <button class="create-elt create-btn btn btn-primary" onclick="location.href='{{ path('add_element_from_type', { 'idCalque':calque.id, 'idTypeElt':type.0.id }) }}'">
+                                            <div class="material-icons material-icons-outlined">add</div>
+                                            <div class="type">{{ type.0.nom }}</div>
+                                        </button>
 
-                                {% if is_granted('ROLE_ADMIN') %}
-                                <div class="listElt-icons">
-                                    <a href="{{ path('edit_type_element', { 'id':type.0.id }) }}">
-                                        <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
-                                    </a>
-                                    <a href="{{ path('del_type_element', { 'id':type.0.id  }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce type d\'élément ?')">
-                                        <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
-                                    </a>
-                                </div>
+                                        <a class="link-primary p-2" data-bs-toggle="collapse" href="#eltsOf{{ type.0.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            Afficher les éléments
+                                        </a>
+
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                        <div class="listElt-icons">
+                                            <a href="{{ path('edit_type_element', { 'id':type.0.id }) }}">
+                                                <span title="Modifier un élement" class="material-icons listElt-icon edit">edit</span>
+                                            </a>
+                                            <a href="{{ path('del_type_element', { 'id':type.0.id  }) }}"  onclick="return confirm('Etes-vous sûr de vouloir supprimer ce type d\'élément ?')">
+                                                <span title="Supprimer un élement" class="material-icons listElt-icon">delete</span>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="collapse" id="eltsOf{{ type.0.id }}">
+                                        <div class="card card-body">
+                                            {{ render(controller('App\\Controller\\MapController::listElementsAction', { 'idTypeElt':type.0.id })) }}
+                                        </div>
+                                    </div>
+                                </li>
                                 {% endif %}
-                            </li>
-                            {% endif %}
-                        {% endfor %}
-                        </ul>
+                            {% endfor %}
+                            </ul>
+
                     </div>
                 </div>
             </li>

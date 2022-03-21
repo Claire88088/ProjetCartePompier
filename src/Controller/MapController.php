@@ -125,6 +125,19 @@ class MapController extends AbstractController
     }
 
     /**
+     * Affichage de la liste des éléments à partir du type choisi
+     * @IsGranted("ROLE_USER")
+     */
+    public function listElementsAction(EntityManagerInterface $em, int $idTypeElt): Response
+    {
+        $elementsByType = $em->getRepository('App:Element')->findByTypeElement($idTypeElt);
+
+        return $this->render('/map/list-elements.html.twig', [
+            'elementsByType' => $elementsByType,
+        ]);
+    }
+
+    /**
      * Ajout d'un nouveau calque
      * forcément du type "AUTRE"
      * @Route("/map/add-calque", name="add_calque")
