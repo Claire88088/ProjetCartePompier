@@ -325,8 +325,12 @@ class MapController extends AbstractController
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
             if ($_FILES) { // si on a des fichiers téléchargés (photo ou pdf)
-                $this->photoTreatment($elementForm, $slugger, $element);
-                $this->pdfTreatment($elementForm, $slugger, $element);
+                if (key($_FILES) == "photo") {
+                    $this->photoTreatment($elementForm, $slugger, $element);
+                }
+                if (key($_FILES) == "lien") {
+                    $this->pdfTreatment($elementForm, $slugger, $element);
+                }
             }
 
             $em->persist($element);
@@ -385,8 +389,12 @@ class MapController extends AbstractController
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
             if ($_FILES) { // si on a des fichiers téléchargés (photo ou pdf)
-                $this->photoTreatment($elementForm, $slugger, $elementClique);
-                $this->pdfTreatment($elementForm, $slugger, $elementClique);
+                if (key($_FILES) == "photo") {
+                    $this->photoTreatment($elementForm, $slugger, $elementClique);
+                }
+                if (key($_FILES) == "lien") {
+                    $this->pdfTreatment($elementForm, $slugger, $elementClique);
+                }
             }
 
             $em->persist($elementClique);
