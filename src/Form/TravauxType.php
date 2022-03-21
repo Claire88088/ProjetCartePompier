@@ -28,14 +28,14 @@ class TravauxType extends AbstractType
                     'placeholder' => 'Entrez le nom de l\'élément'
                 ]
             ])
-            ->add('dateDeb', DateTimeType::class, [
+            ->add('dateDeb', DateType::class, [
                 'label' => 'Date de début des travaux',
                 'widget' => 'single_text',
                 'attr' => array(
                     'placeholder' => 'Entrez la date de début des travaux'
                 ),
             ])
-            ->add('dateFin', DateTimeType::class, [
+            ->add('dateFin', DateType::class, [
                 'label' => 'Date de fin des travaux',
                 'required' => false,
                 'widget' => 'single_text',

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Element;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -65,7 +66,7 @@ class ElementType extends AbstractType
                     'placeholder' => 'Sélectionnez un PDF'
                     ),
                 ])
-            ->add('dateDeb', DateTimeType::class, [
+            ->add('dateDeb', DateType::class, [
                 'label' => 'Date de début',
                 'required' => false,
                 'widget'=> 'single_text',
@@ -73,7 +74,7 @@ class ElementType extends AbstractType
                     'placeholder' => 'Entrez la date de début'
                 ),
             ])
-            ->add('dateFin', DateTimeType::class, [
+            ->add('dateFin', DateType::class, [
                 'label' => 'Date de fin',
                 'required' => false,
                 'widget' => 'single_text',
