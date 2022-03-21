@@ -106,6 +106,23 @@ $(document).ready(function(){
         searchAddress(myMap, communeLat, communeLong);
     });
 
+    // Centre sur le péage nord de l'autoroute A10 lors du clique sur le calque "Autoroute"
+    let controlCalques = $(".leaflet-control-layers-overlays")
+    let checkboxCalque;
+    let nomCalque;
+    for (let i = 1; i < controlCalques[0].childElementCount; i++) {
+        checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
+        checkboxCalque.addEventListener('change', function () {
+            nomCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0].nextSibling.textContent.trim()
+            if (this.checked && nomCalque === "Autoroute") {
+                myMap.setView([46.83533, 0.531051], 17)
+            }
+        });
+    }
+
+
+
+
 
     // 5. AJOUT D'UN NOUVEAU MARQUEUR-----------------------------------------
     // Fonction d'ajout d'un marqueur uniquement a une url précise.
