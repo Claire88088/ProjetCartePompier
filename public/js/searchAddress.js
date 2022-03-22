@@ -5,6 +5,7 @@
  * @param myMap carte Leaflet
  */
  function searchAddress(myMap, communeLat, communeLong) {
+    myMap.panTo([communeLat, communeLong]);
     const apiKey = "AAPK0ee63466d5eb4011b7e5a901086f02affTxglD9L_jLQVyX8dX6eIwNyVBIlFsfE4_Xq4enRxRLVGgBDBkZ5tDkOP-M_cf5W";
 
     // on créé le formulaire de recherche
@@ -31,11 +32,6 @@
     
     // l'événement "results" a lieu quand le geocoder a trouvé des résultats
     searchControl.on("results", (data) => {
-        myMap.setZoom(17)
-        results.clearLayers();
-        myMap.setZoom(17);
-        sessionStorage.setItem('searchZoom', 17);
-
         for (let i = data.results.length - 1; i >= 0; i--) {
             const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000)/100000}, ${Math.round(data.results[i].latlng.lat * 100000)/100000}`;
 
@@ -51,7 +47,6 @@
             results.addLayer(marker);
             marker.openPopup();
         }
-        myMap.setZoom(17)
 
         // le header s'affiche en petit et la carte en grand
         $("#header-content").removeClass("bigHeader").addClass("smallHeader");
