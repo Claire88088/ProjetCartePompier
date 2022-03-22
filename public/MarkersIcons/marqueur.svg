@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2022 by original authors @ fontello.com</metadata>
+<defs>
+<font id="marqueur" horiz-adv-x="1000" >
+<font-face font-family="marqueur" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="icons8-location-24" unicode="&#xe801;" d="M300 671c-50-54-92-142-92-200 0-117 225-496 292-496 71 0 292 379 292 500 0 138-159 292-296 292-58 0-146-42-196-96z m283-196c0-54-29-83-83-83-54 0-83 29-83 83 0 54 29 83 83 83 54 0 83-29 83-83z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>
