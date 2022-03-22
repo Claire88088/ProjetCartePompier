@@ -96,73 +96,24 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             }
 
             let photo = eltsToShow[i].photo
-            let lien = eltsToShow[i].lien
+            if (photo) {
+                clickPopupContent +=
+                    '<a class="d-inline-block mt-2 mb-2 mr-2" id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a>'
+            }
 
-            if (photo === null && lien === null) {
-                if (isConnected && role === "ROLE_ADMIN") {
-                    clickPopupContent +=
-                        '</br>'
-                        + '<div style="display: flex;">'
-                        + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                        + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
-                        + '</div>'
-                }
-            } else if (photo !== null && lien === null) {
-                if (isConnected && role === "ROLE_ADMIN") {
-                    clickPopupContent +=
-                        '</br>'
-                        + '<div>'
-                        + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
-                        + '</div>'
-                        + '<div style="display: flex;">'
-                        + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                        + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class=" btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
-                        + '</div>'
-                } else {
-                    clickPopupContent +=
-                        '</br>'
-                        + '<div>'
-                        + '<div style="margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
-                        + '</div>'
-                }
-            } else if (lien !== null && photo === null) {
-                if (isConnected && role === "ROLE_ADMIN") {
-                    clickPopupContent +=
-                        '</br>'
-                        + '<div>'
-                        + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
-                        + '</div>'
-                        + '<div style="display: flex;">'
-                        + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                        + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
-                        + '</div>'
-                } else {
-                    clickPopupContent +=
-                        '</br>'
-                        + '<div>'
-                        + '<div style="margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
-                        + '</div>'
-                }
-            } else {
-                if (isConnected && role === "ROLE_ADMIN") {
-                    clickPopupContent +=
-                        '</br>'
-                        + '<div style="display: flex;">'
-                        + '<div style="flex:auto; margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
-                        + '<div style="flex:auto; margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
-                        + '</div>'
-                        + '<div style="display: flex;">'
-                        + '<div style="flex:auto; text-align: center;"><button id="modification'+eltsToShow[i].idElement+'" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
-                        + '<div style="flex:auto; text-align: center;"><button id="suppression'+eltsToShow[i].idElement+'" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
-                        + '</div>'
-                } else {
-                    clickPopupContent +=
-                        '</br>'
-                        + '<div style="display: flex;">'
-                        + '<div style="flex:auto; margin-bottom: 10px;"><a id="photo" photo="../uploads/photos/' + photo + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir la photo</a></div>'
-                        + '<div style="flex:auto; margin-bottom: 10px;"><a id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a></div>'
-                        + '</div>'
-                }
+            let lien = eltsToShow[i].lien
+            if (lien) {
+                clickPopupContent +=
+                    '<a class="d-inline-block mt-2 mb-2" id="lien" lien="../uploads/pdf/' + lien + '" role="button" data-toggle="modal" data-target="#modalAffichage">voir le pdf</a>'
+            }
+
+            if (isConnected && role === "ROLE_ADMIN") {
+                clickPopupContent +=
+                    '</br>'
+                    + '<div style="display: flex;">'
+                    + '<div style="flex:auto; text-align: center;"><button id="modification' + eltsToShow[i].idElement + '" class="btn-primary btn" style="font-size: 12px; padding:5px;">Modifier</button></div>'
+                    + '<div style="flex:auto; text-align: center;"><button id="suppression' + eltsToShow[i].idElement + '" class="btn suppression" style="font-size: 12px; padding:5px;">Supprimer</button></div>'
+                    + '</div>'
             }
 
             // création des pop-ups
