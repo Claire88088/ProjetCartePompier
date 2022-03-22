@@ -337,10 +337,10 @@ class MapController extends AbstractController
         $elementForm->handleRequest($request);
 
         if ($elementForm->isSubmitted() && $elementForm->isValid()) {
-            if ($_FILES[key($_FILES)]["name"]["photo"]) {
+            if (isset($_FILES[key($_FILES)]["name"]["photo"])) {
                 $this->photoTreatment($elementForm, $slugger, $element);
             }
-            if ($_FILES[key($_FILES)]["name"]["lien"]) {
+            if (isset($_FILES[key($_FILES)]["name"]["lien"])) {
                 $this->pdfTreatment($elementForm, $slugger, $element);
             }
 
