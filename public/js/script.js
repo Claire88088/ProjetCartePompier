@@ -106,11 +106,10 @@ $(document).ready(function(){
     let controlCalques = $(".leaflet-control-layers-overlays")
     let checkboxCalque;
     let nomCalque;
-    for (let i = 1; i < controlCalques[0].childElementCount; i++) {
+    for (let i = 0; i < controlCalques[0].childElementCount; i++) {
         checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
-        nomCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0].nextSibling.textContent.trim()
         checkboxCalque.addEventListener('change', function () {
-            if (this.checked && nomCalque === "Autoroute") {
+            if (this.checked && this.nextSibling.textContent.trim() == "Autoroute") {
                 myMap.setView([46.83533, 0.531051], 17)
             }
         });
