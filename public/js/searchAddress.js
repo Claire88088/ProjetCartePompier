@@ -34,6 +34,7 @@
     
     // l'événement "results" a lieu quand le geocoder a trouvé des résultats
     searchControl.on("results", (data) => {
+        myMap.setZoom(17)
         results.clearLayers();
         for (let i = data.results.length - 1; i >= 0; i--) {
             const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000)/100000}, ${Math.round(data.results[i].latlng.lat * 100000)/100000}`;
@@ -48,6 +49,7 @@
             results.addLayer(marker);
             marker.openPopup();
         }
+        myMap.setZoom(17)
 
         // le header s'affiche en petit et la carte en grand
         $("#header-content").removeClass("bigHeader").addClass("smallHeader");

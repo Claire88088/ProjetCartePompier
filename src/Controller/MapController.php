@@ -131,7 +131,6 @@ class MapController extends AbstractController
     public function listElementsAction(EntityManagerInterface $em, int $idTypeElt): Response
     {
         $elementsByType = $em->getRepository('App:Element')->findByTypeElement($idTypeElt);
-
         return $this->render('/map/list-elements.html.twig', [
             'elementsByType' => $elementsByType,
         ]);

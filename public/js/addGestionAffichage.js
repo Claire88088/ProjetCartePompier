@@ -178,8 +178,11 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
             // gestion de l'affichage des pop up
             eltAndIcone.on('mouseover', function() {
                 this.unbindPopup();
-                this.bindPopup(hoverPopup).openPopup();
+                this.bindPopup(hoverPopup).openPopup()
             })
+            eltAndIcone.on('mouseout', function(e){
+                    e.target.closePopup(hoverPopup);
+            });
 
             eltAndIcone.on('click', function() {
                 this.unbindPopup();

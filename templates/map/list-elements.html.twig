@@ -1,6 +1,8 @@
 
 <div class="">
     {% for element in elementsByType %}
-        <p>{{ element.nom }}</p>
+        {% for point in element.points %}
+                <p class="elementClique" latitude="{{ point.latitude }}" longitude="{{ point.longitude }}">{{ element.nom }}</p>
+        {% endfor %}
     {% endfor %}
 </div>

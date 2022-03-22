@@ -113,13 +113,35 @@ $(document).ready(function(){
     let nomCalque;
     for (let i = 1; i < controlCalques[0].childElementCount; i++) {
         checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
+        nomCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0].nextSibling.textContent.trim()
         checkboxCalque.addEventListener('change', function () {
-            nomCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0].nextSibling.textContent.trim()
             if (this.checked && nomCalque === "Autoroute") {
                 myMap.setView([46.83533, 0.531051], 17)
             }
         });
     }
+
+    // Affiche le calque sur lequel on veut centrer un élément
+
+    $(".afficheCalqueElem").on("click", function (e) {
+        let nomCalqueTypeElem = e.target.attributes[1].value
+        for (let i = 1; i < controlCalques[0].childElementCount; i++) {
+            checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
+            nomCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0].nextSibling.textContent.trim()
+            if (nomCalqueTypeElem === nomCalque) {
+                console.log('yes')
+                checkboxCalque.checked = true;
+            }
+        }
+    })
+
+    // Centre sur l'élément quand on clique dessus.
+    $(".elementClique").css("cursor", "pointer")
+    $(".elementClique").on("click", function (e) {
+        let latitude =  e.target.attributes[1].value
+        let longitude = e.target.attributes[2].value
+        myMap.setView([latitude, longitude], 17)
+    })
 
 
     // 5. AJOUT D'UN NOUVEAU MARQUEUR-----------------------------------------
