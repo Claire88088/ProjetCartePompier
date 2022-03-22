@@ -51,20 +51,21 @@ $(document).ready(function(){
 
     // 2. AFFICHAGE DES ELEMENTS EXISTANTS sur les calques---------------------------------------------------------------------
     // récupération des éléments à afficher (transmis via Twig)
-    var eltsToShowElt = $('.allEltsToShow');
-    var calqueList = $('.calquesNomsList');
+    let eltsToShowElt = $('.allEltsToShow');
+    let eltsToShow = JSON.parse(eltsToShowElt[0].attributes[1].value);
+    let calquesList = $('.calquesNomsList');
+    let calquesNoms = JSON.parse(calquesList[0].attributes[1].value);
 
     // ajout du système de gestion de l'affichage (calques et éléments) (permet aussi de récupérer les données d'affichage des calques : groupes de marqueurs et clusters)
-    let affichageCalquesTab = addGestionAffichage(eltsToShowElt, calqueList, myMap);
+    let affichageCalquesTab = addGestionAffichage(eltsToShow, calquesNoms, myMap);
     var markersGroupTab = affichageCalquesTab[0];
     var clustersTab = affichageCalquesTab[1];
 
-    // Si on n'est pas connecté : on affiche le calque "Etablissements Répertoriés" par défaut
+    // Si on n'est pas connecté : on affiche par défaut le 1er calque stocké en BDD
     let divIsConnected = $('.isConnected');
     let isConnected = divIsConnected[0].attributes[1].value;
     if (!isConnected) {
-        // on ajoute le calque "Etablissements Répertoriés"
-        let defaultCalque = "Etablissements Répertoriés";
+        let defaultCalque = calquesNoms[0];
         let clustersTab = affichageCalquesTab[1];
         markersGroupTab[defaultCalque].addTo(myMap);
         myMap.addLayer(clustersTab[defaultCalque]);
@@ -105,7 +106,6 @@ $(document).ready(function(){
     // Centre sur le péage nord de l'autoroute A10 lors du clique sur le calque "Autoroute"
     let controlCalques = $(".leaflet-control-layers-overlays")
     let checkboxCalque;
-    let nomCalque;
     for (let i = 0; i < controlCalques[0].childElementCount; i++) {
         checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
         checkboxCalque.addEventListener('change', function () {

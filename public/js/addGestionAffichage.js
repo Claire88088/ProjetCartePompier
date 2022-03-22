@@ -2,12 +2,12 @@
  * Ajoute :
  * 1. le système de gestion de l'affichage des calques (et des éléments)
  * 2. la fonctionnalité "cluster" de marqueurs par calque
- * @param elementsToShowElt élément HTML qui contient les éléments à afficher en attribut
- * @param calquesList [] élément HTML dequi contient les noms des calques en attribut
+ * @param eltsToShow [] éléments à afficher
+ * @param calquesNoms [] noms des calques
  * @param myMap objet Leaflet L.map carte sur laquelle on affiche
  * @return affichageCalquesTab [] tableau qui contient le tableau des groupes de marqueurs (markersGroup) et le tableau des clusters (clustersTab)
  */
-function addGestionAffichage(elementsToShowElt, calquesList, myMap)
+function addGestionAffichage(eltsToShow, calquesNoms, myMap)
 {
     let affichageCalquesTab = [];
     let markersGroupTab = [];
@@ -15,10 +15,6 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
     // taille des icones :
     let iconeHauteur = 50;
     let iconeLargeur = 50;
-
-    // traitement des données
-    let eltsToShow = JSON.parse(elementsToShowElt[0].attributes[1].value);
-    let calquesNoms = JSON.parse(calquesList[0].attributes[1].value);
 
     // on créé autant de tableaux et de clusters de marqueurs qu'il y a de calques
     let markersTabTab = []; //contiendra les tableaux de marqueurs à afficher par calque
