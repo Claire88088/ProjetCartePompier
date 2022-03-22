@@ -52,6 +52,11 @@
             marker.bindPopup(`<p>${label}</p>`);
             results.addLayer(marker);
             marker.openPopup();
+
+            // gestion de l'affichage des pop up
+            setTimeout(function () {
+                marker.closePopup()
+            }, 2000)
         }
 
         myMap.setView([lat, long], 17);
