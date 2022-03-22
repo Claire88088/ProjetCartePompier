@@ -286,6 +286,11 @@ $(document).ready(function(){
 
                 newMarker.bindPopup(newPopup).openPopup();
 
+                // gestion de l'affichage des pop up
+                setTimeout(function () {
+                    newMarker.closePopup()
+                }, 2000)
+
                 // on stocke les coordonnées du nouveau marqueur dans le navigateur
                 let currentZoom = myMap.getZoom();
                 sessionStorage.setItem('latToCenter', lat);
