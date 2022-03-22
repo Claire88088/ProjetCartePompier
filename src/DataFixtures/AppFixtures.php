@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
         $manager->persist($commune4);
 
         $commune1 = new Commune();
-        $commune1->setNom('Antran')->setCodePostal('86100')->setLatitude(46.849998 )->setLongitude(0.53333);
+        $commune1->setNom('Antran')->setCodePostal('86100')->setLatitude(46.849998)->setLongitude(0.53333);
         $manager->persist($commune1);
 
         $commune2 = new Commune();
@@ -39,15 +39,15 @@ class AppFixtures extends Fixture
         $manager->persist($commune2);
 
         $commune3 = new Commune();
-        $commune3->setNom('Cenon-sur-Vienne')->setCodePostal('86530')->setLatitude(46.76667  )->setLongitude(0.53333);
+        $commune3->setNom('Cenon-sur-Vienne')->setCodePostal('86530')->setLatitude(46.76667)->setLongitude(0.53333);
         $manager->persist($commune3);
 
         $commune5 = new Commune();
-        $commune5->setNom('Colombiers')->setCodePostal('86490')->setLatitude(46.7799541393 )->setLongitude(0.437112922808);
+        $commune5->setNom('Colombiers')->setCodePostal('86490')->setLatitude(46.7799541393)->setLongitude(0.437112922808);
         $manager->persist($commune5);
 
         $commune6 = new Commune();
-        $commune6->setNom('Naintré')->setCodePostal('86530')->setLatitude(46.7725487578 )->setLongitude(0.494183225778);
+        $commune6->setNom('Naintré')->setCodePostal('86530')->setLatitude(46.7725487578)->setLongitude(0.494183225778);
         $manager->persist($commune6);
 
         $commune7 = new Commune();
@@ -55,7 +55,7 @@ class AppFixtures extends Fixture
         $manager->persist($commune7);
 
         $commune8 = new Commune();
-        $commune8->setNom('Scorbé-Clairvaux')->setCodePostal('86140')->setLatitude(46.8070996218 )->setLongitude(0.410520780394);
+        $commune8->setNom('Scorbé-Clairvaux')->setCodePostal('86140')->setLatitude(46.8070996218)->setLongitude(0.410520780394);
         $manager->persist($commune8);
 
         $commune9 = new Commune();
@@ -67,11 +67,11 @@ class AppFixtures extends Fixture
         $manager->persist($commune10);
 
         $commune11 = new Commune();
-        $commune11->setNom('Thuré')->setCodePostal('86540')->setLatitude(46.8408988705 )->setLongitude(0.455456315657);
+        $commune11->setNom('Thuré')->setCodePostal('86540')->setLatitude(46.8408988705)->setLongitude(0.455456315657);
         $manager->persist($commune11);
 
         $commune12 = new Commune();
-        $commune12->setNom('Usseau')->setCodePostal('86230')->setLatitude(46.8867943192 )->setLongitude(0.494483523463);
+        $commune12->setNom('Usseau')->setCodePostal('86230')->setLatitude(46.8867943192)->setLongitude(0.494483523463);
         $manager->persist($commune12);
 
         // 4 types de calque
@@ -125,17 +125,17 @@ class AppFixtures extends Fixture
         $manager->persist($typeElementEltAutoroute);
 
         // Icones custom
-        $iconeCaserneSVG = new Icone();
-        $iconeCaserneSVG->setUnicode('&#xe805;')->setLien('preview-caserne.svg')->setNom("caserne");
-        $manager->persist($iconeCaserneSVG);
+        $icone1 = new Icone();
+        $icone1->setUnicode('&#xe801;')->setLien('preview-marqueur.svg')->setNom("marqueur");
+        $manager->persist($icone1);
 
-        $iconeFeuSVG = new Icone();
-        $iconeFeuSVG->setUnicode('&#xe804;')->setLien('preview-feu.svg')->setNom("feu");
-        $manager->persist($iconeFeuSVG);
+        $icone2 = new Icone();
+        $icone2->setUnicode('&#xe802;')->setLien('preview-pi.svg')->setNom("pi");
+        $manager->persist($icone2);
 
-        $iconeAppleSVG = new Icone();
-        $iconeAppleSVG->setUnicode('&#xe803;')->setLien('preview-test.svg')->setNom("test");
-        $manager->persist($iconeAppleSVG);
+        $icone3 = new Icone();
+        $icone3->setUnicode('&#xe803;')->setLien('preview-immeuble.svg')->setNom("immeuble");
+        $manager->persist($icone3);
 
         $manager->flush();
     }
