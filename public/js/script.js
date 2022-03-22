@@ -91,6 +91,7 @@ $(document).ready(function(){
         markersGroupTab[nomCalqueTypeElem].addTo(myMap);
         myMap.addLayer(clustersTab[nomCalqueTypeElem]);
         sessionStorage.setItem('calqueAfficheElt', nomCalqueTypeElem);
+        styleGestionCalques()
     })
 
     // Centre sur l'élément quand on clique dessus.
@@ -115,21 +116,22 @@ $(document).ready(function(){
         });
     }
 
+    // 3. STYLISATION DE L'"ICONE" de gestion des calques----------------------------
+    function styleGestionCalques() {
+        var bCalques = document.getElementsByClassName('leaflet-control-layers-overlays')[0];
 
-    // 3. STYLISATION DE L'"ICONE" de gestion des calques-----------------------------------------------------------
-    var bCalques = document.getElementsByClassName('leaflet-control-layers-overlays')[0];
+        var titreCalque = document.createElement('label');
+        titreCalque.style.textAlign = 'center';
+        titreCalque.style.fontSize = '.9rem';
+        titreCalque.appendChild(document.createTextNode('Affichage des calques'));
 
-    var titreCalque = document.createElement('label');
-    titreCalque.style.textAlign = 'center';
-    titreCalque.style.fontSize = '.9rem';
-    titreCalque.appendChild(document.createTextNode('Affichage des calques'));
+        var ligne = document.createElement('hr');
+        ligne.style.margin = 'auto';
+        titreCalque.appendChild(ligne);
 
-    var ligne = document.createElement('hr');
-    ligne.style.margin = 'auto';
-    titreCalque.appendChild(ligne);
-
-    bCalques.prepend(titreCalque);
-
+        bCalques.prepend(titreCalque);
+    }
+    styleGestionCalques()
 
     // 4. RECHERCHE D'UNE ADRESSE----------------------------------------
     // Pour la première commune selectionnée
