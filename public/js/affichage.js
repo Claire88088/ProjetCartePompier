@@ -1,8 +1,4 @@
 $(document).ready(function() {
-
-    // Par défaut, en plein écran
-    fullScreen(document.body)
-
     // Passes la page en plein écran
     function fullScreen(element){
         if(element.requestFullScreen){
