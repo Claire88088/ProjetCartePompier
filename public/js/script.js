@@ -78,6 +78,43 @@ $(document).ready(function(){
         sessionStorage.removeItem('calqueWithAddOrEdit');
     }
 
+    // Affiche le calque sur lequel on veut centrer un élément
+    $(".afficheCalqueElem").on("click", function (e) {
+        let nomCalqueTypeElem = e.target.attributes[1].value
+        let previousCalqueAfficheElt = sessionStorage.getItem('calqueAfficheElt')
+
+        if (previousCalqueAfficheElt) {
+            markersGroupTab[previousCalqueAfficheElt].remove(myMap);
+            myMap.addLayer(clustersTab[previousCalqueAfficheElt]);
+        }
+
+        markersGroupTab[nomCalqueTypeElem].addTo(myMap);
+        myMap.addLayer(clustersTab[nomCalqueTypeElem]);
+        sessionStorage.setItem('calqueAfficheElt', nomCalqueTypeElem);
+    })
+
+    // Centre sur l'élément quand on clique dessus.
+    $(".elementClique").css("cursor", "pointer")
+    $(".elementClique").on("click", function (e) {
+        let latitude =  e.target.attributes[1].value
+        let longitude = e.target.attributes[2].value
+        myMap.setView([latitude, longitude], 17)
+    })
+
+    // Centre sur le péage nord de l'autoroute A10 lors du clique sur le calque "Autoroute"
+    let controlCalques = $(".leaflet-control-layers-overlays")
+    let checkboxCalque;
+    let nomCalque;
+    for (let i = 1; i < controlCalques[0].childElementCount; i++) {
+        checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
+        nomCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0].nextSibling.textContent.trim()
+        checkboxCalque.addEventListener('change', function () {
+            if (this.checked && nomCalque === "Autoroute") {
+                myMap.setView([46.83533, 0.531051], 17)
+            }
+        });
+    }
+
 
     // 3. STYLISATION DE L'"ICONE" de gestion des calques-----------------------------------------------------------
     var bCalques = document.getElementsByClassName('leaflet-control-layers-overlays')[0];
@@ -114,42 +151,6 @@ $(document).ready(function(){
         communeLong = selectedCommune.getAttribute('longitude')
         searchAddress(myMap, communeLat, communeLong);
     });
-
-    // Centre sur le péage nord de l'autoroute A10 lors du clique sur le calque "Autoroute"
-    let controlCalques = $(".leaflet-control-layers-overlays")
-    let checkboxCalque;
-    let nomCalque;
-    for (let i = 1; i < controlCalques[0].childElementCount; i++) {
-        checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
-        nomCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0].nextSibling.textContent.trim()
-        checkboxCalque.addEventListener('change', function () {
-            if (this.checked && nomCalque === "Autoroute") {
-                myMap.setView([46.83533, 0.531051], 17)
-            }
-        });
-    }
-
-    // Affiche le calque sur lequel on veut centrer un élément
-
-    $(".afficheCalqueElem").on("click", function (e) {
-        let nomCalqueTypeElem = e.target.attributes[1].value
-        for (let i = 1; i < controlCalques[0].childElementCount; i++) {
-            checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
-            nomCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0].nextSibling.textContent.trim()
-            if (nomCalqueTypeElem === nomCalque) {
-                console.log('yes')
-                checkboxCalque.checked = true;
-            }
-        }
-    })
-
-    // Centre sur l'élément quand on clique dessus.
-    $(".elementClique").css("cursor", "pointer")
-    $(".elementClique").on("click", function (e) {
-        let latitude =  e.target.attributes[1].value
-        let longitude = e.target.attributes[2].value
-        myMap.setView([latitude, longitude], 17)
-    })
 
 
     // 5. AJOUT D'UN NOUVEAU MARQUEUR-----------------------------------------
