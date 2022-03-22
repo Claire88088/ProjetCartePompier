@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    // Par défaut, en plein écran
+    fullScreen(document.body)
+
     // Passes la page en plein écran
     function fullScreen(element){
         if(element.requestFullScreen){
@@ -14,15 +17,30 @@ $(document).ready(function() {
     $('#fullScreen').css("cursor", "pointer")
     // Au clique du bouton "Plein écran"
     $('#fullScreen').on('click', function(e) {
+        let fullBandeau = $("#bLog")
+        let bandeauCommuneCo = $("#header-content")
+        let mapAndForm = $("#mapAndForm")
+
         // Si la fenêtre est en plein écran
         if (document.fullscreenElement) {
             document.exitFullscreen()
+
+            bandeauCommuneCo.css("display", "flex")
+            fullBandeau.css("height", "118px")
+            mapAndForm.css("top","118px")
+
             $(e.target).removeClass("material-icons")
             e.target.innerHTML = "Plein écran"
             e.target.css("font-size", "35px")
+
         // Si ce n'est pas le cas
         } else {
             fullScreen(document.body);
+
+            bandeauCommuneCo.css("display", "none")
+            fullBandeau.css("height", "56px")
+            mapAndForm.css("top","56px")
+
             $(e.target).addClass("material-icons")
             e.target.innerHTML = "close"
         }

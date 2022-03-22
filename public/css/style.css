@@ -8,20 +8,10 @@
 .container-fluid {
     width: 100%;
     position: absolute;
-    top: 60px;
+    top: 118px;
     bottom: 0;
     left: 0;
     right: 0;
-}
-
-.bigMap {
-    margin-top: unset;
-    transition: margin-top 10ms;
-}
-
-.smallMap {
-    margin-top: 58px;
-    transition: margin-top 10ms;
 }
 
 /******/
