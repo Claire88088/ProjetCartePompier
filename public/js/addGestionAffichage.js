@@ -24,7 +24,7 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
     let markersTabTab = []; //contiendra les tableaux de marqueurs à afficher par calque
     let clustersTab = []; // contiendra les "clusters" de marqueurs par calque
     for (let i = 0; i < calquesNoms.length; i++) {
-        markersTabTab[calquesNoms[i]] = [];
+        markersTabTab[escapeHtml(calquesNoms[i])] = [];
         clustersTab[calquesNoms[i]] = L.markerClusterGroup();
     }
 
