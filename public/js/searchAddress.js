@@ -33,9 +33,13 @@
     // l'événement "results" a lieu quand le geocoder a trouvé des résultats
     searchControl.on("results", (data) => {
         results.clearLayers();
+        let lat;
+        let long;
 
         for (let i = data.results.length - 1; i >= 0; i--) {
-            const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000)/100000}, ${Math.round(data.results[i].latlng.lat * 100000)/100000}`;
+            lat = data.results[i].latlng.lat;
+            long = data.results[i].latlng.lng;
+            const lngLatString = `${Math.round(long * 100000)/100000}, ${Math.round(lat * 100000)/100000}`;
 
             // on créé un marqueur pour l'adresse trouvée et on l'affiche via le layerGroup
             const marker = L.marker(data.results[i].latlng);
@@ -50,7 +54,7 @@
             marker.openPopup();
         }
 
-        myMap.setZoom(17);
+        myMap.setView([lat, long], 17);
         sessionStorage.setItem('searchZoom', 17);
 
         // le header s'affiche en petit et la carte en grand

@@ -15,10 +15,10 @@ $(document).ready(function(){
     // gestion du zoom
     if (latToCenter) {
         var zoom = zoomToPut;
-        sessionStorage.removeItem(zoomToPut);
+        sessionStorage.removeItem('zoomToPut');
     } else if (searchZoom) {
         var zoom = searchZoom;
-        sessionStorage.removeItem(searchZoom);
+        sessionStorage.removeItem('searchZoom');
     } else {
         var zoom = defaultZoom;
     }
@@ -27,8 +27,8 @@ $(document).ready(function(){
     if (latToCenter) {
         var centerLat = latToCenter;
         var centerLong = longToCenter;
-        sessionStorage.removeItem(latToCenter);
-        sessionStorage.removeItem(longToCenter);
+        sessionStorage.removeItem('latToCenter');
+        sessionStorage.removeItem('longToCenter');
     } else {
         let defaultLatAndLongElt = $('.defaultLatAndLong');
         let defaultLatAndLong = JSON.parse(defaultLatAndLongElt[0].attributes[1].value);
