@@ -71,16 +71,16 @@ function addGestionAffichage(elementsToShowElt, calquesList, myMap)
 
             // Mise en forme des popups : 2 types de pop up en fonction de l'affichage : au survol ou au clic
             // contenu de la pop up au survol :
-            let nom = eltsToShow[i].nom
-            let hoverPopupContent = "" + nom;
+            let nom = eltsToShow[i].nom;
+            let hoverPopupContent = "" + escapeHtml(nom);
 
             // contenu de la pop up au clic :
-            let typeElement = eltsToShow[i].typeElementNom
-            let clickPopupContent = "<strong>" + nom + "</strong> (type : " + typeElement + ")</br>";
+            let typeElement = eltsToShow[i].typeElementNom;
+            let clickPopupContent = "<strong>" + escapeHtml(nom) + "</strong> (type : " + escapeHtml(typeElement) + ")</br>";
 
-            let texte = eltsToShow[i].texte
+            let texte = eltsToShow[i].texte;
             if (texte) {
-                clickPopupContent += "Description : " + texte +  "</br>";
+                clickPopupContent += "Description : " + escapeHtml(texte) +  "</br>";
             }
 
             let dateDeb = eltsToShow[i].dateDeb
