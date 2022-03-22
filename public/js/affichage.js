@@ -1,4 +1,34 @@
 $(document).ready(function() {
+
+    // Passes la page en plein écran
+    function fullScreen(element){
+        if(element.requestFullScreen){
+            element.requestFullScreen();
+        } else if (element.webkitRequestFullScreen){
+            element.webkitRequestFullScreen();
+        } else if (element.mozRequestFullScreen){
+            element.mozRequestFullScreen();
+        }
+    };
+
+    $('#fullScreen').css("cursor", "pointer")
+    // Au clique du bouton "Plein écran"
+    $('#fullScreen').on('click', function(e) {
+        // Si la fenêtre est en plein écran
+        if (document.fullscreenElement) {
+            document.exitFullscreen()
+            $(e.target).removeClass("material-icons")
+            e.target.innerHTML = "Plein écran"
+            e.target.css("font-size", "35px")
+        // Si ce n'est pas le cas
+        } else {
+            fullScreen(document.body);
+            $(e.target).addClass("material-icons")
+            e.target.innerHTML = "close"
+        }
+    });
+
+
     // Animation du display des calques avec leurs éléments
     var divCalquesList = $('.listCalqueElem')
     var divTypesElementCalque = $('.typeElementCalque')

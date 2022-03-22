@@ -1,3 +1,9 @@
+/* set la couleur du fullscreen à blanc, par défaut c'est noir */
+::backdrop
+{
+    background-color: white;
+}
+
 /* map */
 .container-fluid {
     width: 100%;
