@@ -14,6 +14,18 @@
     right: 0;
 }
 
+.afficheCalqueElem {
+    flex: 0 0 25%;
+}
+
+.type {
+    text-align: left;
+}
+
+.create-elt.create-btn.btn.btn-primary {
+    flex: 0 0 55%;
+}
+
 /******/
 h4, .titre_4 {
     margin-bottom: 20px;
