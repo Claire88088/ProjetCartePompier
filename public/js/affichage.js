@@ -27,7 +27,6 @@ $(document).ready(function() {
 
             $(e.target).removeClass("material-icons")
             e.target.innerHTML = "Plein écran"
-            e.target.css("font-size", "35px")
 
         // Si ce n'est pas le cas
         } else {
