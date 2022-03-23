@@ -92,6 +92,7 @@ $(document).ready(function(){
         markersGroupTab[nomCalqueTypeElem].addTo(myMap);
         myMap.addLayer(clustersTab[nomCalqueTypeElem]);
         sessionStorage.setItem('calqueAfficheElt', nomCalqueTypeElem);
+        centrePeageNord()
         styleGestionCalques()
     })
 
@@ -104,16 +105,19 @@ $(document).ready(function(){
     })
 
     // Centre sur le péage nord de l'autoroute A10 lors du clique sur le calque "Autoroute"
-    let controlCalques = $(".leaflet-control-layers-overlays")
-    let checkboxCalque;
-    for (let i = 0; i < controlCalques[0].childElementCount; i++) {
-        checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
-        checkboxCalque.addEventListener('change', function () {
-            if (this.checked && this.nextSibling.textContent.trim() == "Autoroute") {
-                myMap.setView([46.83533, 0.531051], 17)
-            }
-        });
+    function centrePeageNord() {
+        let controlCalques = $(".leaflet-control-layers-overlays")
+        let checkboxCalque;
+        for (let i = 0; i < controlCalques[0].childElementCount; i++) {
+            checkboxCalque = controlCalques[0].childNodes[i].childNodes[0].childNodes[0]
+            checkboxCalque.addEventListener('change', function () {
+                if (this.checked && this.nextSibling.textContent.trim() == "Autoroute") {
+                    myMap.setView([46.83533, 0.531051], 17)
+                }
+            });
+        }
     }
+    centrePeageNord()
 
     // 3. STYLISATION DE L'"ICONE" de gestion des calques----------------------------
     function styleGestionCalques() {
