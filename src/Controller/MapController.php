@@ -621,6 +621,10 @@ class MapController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $unicodeIcone = $form->get('unicode')->getData();
+            $formatedUnicode = "&#x" . strtolower($unicodeIcone) . ";";
+            $icone->setUnicode($formatedUnicode);
+
             // Nom de l'icone qui servira a renommer les fichiers passés dans les upload
             $nameIcone = $form->get('nom')->getData();
             // On récupère le fichier svg qui servira de preview

@@ -12,8 +12,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=IconeRepository::class)
  * @UniqueEntity(
- *     fields="nom",
- *     message="Ce nom est déjà utilisé"
+ *     fields={"nom", "unicode"},
+ *     message="Cette valeur est déjà utilisée"
  *     )
  */
 class Icone
@@ -27,11 +27,22 @@ class Icone
 
     /**
      * @ORM\Column(type="string", length=255, unique=true, nullable=false)
+     * @Assert\NotBlank(message="Le nom de l'icône est obligatoire")
+     * @Assert\Type("string")
+     * @Assert\Length(max="50")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="L'unicode de l'icône est obligatoire")
+     * @Assert\Type("string")
+     * @Assert\Length(max="10")
+     * @Assert\Regex(
+     *     pattern="/^E[0-9]+/",
+     *     match=true,
+     *     message="L'unicode doit être par exemple : E800"
+     * )
      */
     private $unicode;
 
