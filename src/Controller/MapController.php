@@ -678,6 +678,15 @@ class MapController extends AbstractController
     public function deleteIconeAction(EntityManagerInterface $em, int $idIcone): Response
     {
         $icone = $em->getRepository('App:Icone')->find($idIcone);
+        $preview = $icone->getLien();
+        $name = $icone->getNom();
+
+        unlink($this->getParameter('uploads_icones').'/'. $preview);
+
+        $extensions = [".eot", ".svg", ".ttf", ".woff", ".woff2"];
+        for ($i = 0; $i < 5; $i++) {
+            unlink($this->getParameter('uploads_icones').'/'. $name.$extensions[$i]);
+        }
 
         if (is_null($icone->getElements()[0])) {
             $em->remove($icone);
