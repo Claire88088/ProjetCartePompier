@@ -621,87 +621,52 @@ class MapController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $unicodeIcone = $form->get('unicode')->getData();
+            $formatedUnicode = "&#x" . strtolower($unicodeIcone) . ";";
+            $icone->setUnicode($formatedUnicode);
 
             // Nom de l'icone qui servira a renommer les fichiers passés dans les upload
             $nameIcone = $form->get('nom')->getData();
-            // Extensions voulu pour les fichiers font
-            $extensions = ["eot", "svg", "ttf", "woff", "woff2"];
-            // Tableau booléen qui contiendra true si l'extension correspond à celles désirées et false sinon
-            $extensionsBool = [];
+            // On récupère le fichier svg qui servira de preview
+            $iconeSVG = $form->get('lien')->getData();
+            // On reconstruit son nom
+            $namePreview = "preview-".$nameIcone.".svg";
+            $icone->setLien($namePreview);
+            try {
+                $iconeSVG->move(
+                    $this->getParameter('uploads_icones'),
+                    $namePreview
+                );
 
-            // Si le nom de l'icone corresponds à la regex
-            if (preg_match('/^[a-zA-Z0-9]*$/', $nameIcone)) {
-
-                // On récupère les fichiers font qui serviront à construire l'icone
-                $iconeFiles = $form->get('icone')->getData();
-                // Taille du tableau
-                $limite = count($iconeFiles);
-                // Extension du fichier
-
-                // On parcoure chaque fichiers pour avoir les extensions
-                for ($i = 0; $i < $limite; $i++) {
-
-                    // On récupère l'extension du fichier dans le tableau iconeFiles grace à l'explode
-                    $extension = explode('.', $iconeFiles[$i]->getClientOriginalName())[1];
-
-                    // Rempli le tableau de booléen par true ou false si l'extension du fichier est compris dans celles acceptées
-                    if (in_array($extension, $extensions)) {
-                        $extensionsBool[$i] = true;
-                    } else {
-                        $extensionsBool[$i] = false;
-                    }
-                }
-
-                // Si dans le tableau il s'avère qu'une extension est false alors on renvoie une erreur et on retourne à l'ajout de l'icone
-                if (in_array(false, $extensionsBool)) {
-                    $this->addFlash('danger', "Les fichiers font n'ont pas les bonnes extensions, dans l'ordre, .eot, .svg, .ttf, .woff, .woff2");
-                    return $this->redirectToRoute('add_icone');
-                    // Sinon si tout est à true alors les extensions correspondent
-                } else {
-                    for ($i = 0; $i < $limite; $i++) {
-                        $extension = explode('.', $iconeFiles[$i]->getClientOriginalName())[1];
-                        $nameFont = $nameIcone . "." . $extension;
-                        try {
-                            $iconeFiles[$i]->move(
-                                $this->getParameter('uploads_icones'),
-                                $nameFont
-                            );
-
-                        } catch (FileException $e) {
-                            // Catch des erreurs si il y en a
-                        }
-
-                        // Quand on arrive au dernier tour de boucle
-                        if ($i === ($limite-1)) {
-                            // On récupère le fichier svg qui servira de preview
-                            $iconeSVG = $form->get('lien')->getData();
-                            // On reconstruit son nom
-                            $namePreview = "preview-" . $nameIcone . ".svg";
-                            // On set son nom en base
-                            $icone->setLien($namePreview);
-
-                            // On le déplace dans le fichier des icones
-                            try {
-                                $iconeSVG->move(
-                                    $this->getParameter('uploads_icones'),
-                                    $namePreview
-                                );
-
-                            } catch (FileException $e) {
-                                // Catch des erreurs si il y en a
-                            }
-
-                            $em->persist($icone);
-                            $em->flush();
-                            $this->addFlash('success', 'L\'icône a bien été ajoutée !');
-                            return $this->redirectToRoute('map');
-                        }
-                    }
-                }
-            } else {
-                $this->addFlash('danger', "Le nom ne peut contenir que des lettres de a à Z (en majuscule ou minuscule) et des chiffres de 0 à 9");
-                return $this->redirectToRoute('add_icone');
+            } catch (FileException $e) {
+                // Catch des erreurs si il y en a
             }
+
+            // On récupère les fichiers font qui serviront de preview
+            $iconeFiles = $form->get('icone')->getData();
+            // taille du tableau
+            $limite = count($iconeFiles);
+            // On parcoure chaque fichiers
+            for ($i = 0; $i < $limite; $i++) {
+
+                $extension = explode('.', $iconeFiles[$i]->getClientOriginalName())[1];
+                $nameFont = $nameIcone.".".$extension;
+                try {
+                    $iconeFiles[$i]->move(
+                        $this->getParameter('uploads_icones'),
+                        $nameFont
+                    );
+
+                } catch (FileException $e) {
+                    // Catch des erreurs si il y en a
+                }
+
+            }
+
+            $em->persist($icone);
+            $em->flush();
+            $this->addFlash('success', 'L\'icône a bien été ajoutée !');
+            return $this->redirectToRoute('map');
         }
 
         return $this->render('map/add-icone.html.twig', [
