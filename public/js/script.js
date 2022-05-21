@@ -278,11 +278,13 @@ $(document).ready(function(){
 
                     // Récupère le champ de latitude et le remplit avec la latitude du point (au clique)
                     var inputLat = document.getElementById(formName + '_coordonnees_latitude');
-                    inputLat.setAttribute("value", jp.features[0].geometry.coordinates[1]);
+                    //inputLat.setAttribute("value", jp.features[0].geometry.coordinates[1]);
+                    inputLat.setAttribute("value", lat);
 
                     // idem
                     var inputLong = document.getElementById(formName + '_coordonnees_longitude');
-                    inputLong.setAttribute("value", jp.features[0].geometry.coordinates[0]);
+                    //inputLong.setAttribute("value", jp.features[0].geometry.coordinates[0]);
+                    inputLong.setAttribute("value", long);
 
                     $('#loader').hide();
                 });
