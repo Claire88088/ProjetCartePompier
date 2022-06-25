@@ -59,23 +59,23 @@ $(document).ready(function(){
     // ajout du système de gestion de l'affichage (calques et éléments) (permet aussi de récupérer les données d'affichage des calques : groupes de marqueurs et clusters)
     let affichageCalquesTab = addGestionAffichage(eltsToShow, calquesNoms, myMap);
     var markersGroupTab = affichageCalquesTab[0];
-    var clustersTab = affichageCalquesTab[1];
+    // var clustersTab = affichageCalquesTab[1];
 
     // Si on n'est pas connecté : on affiche par défaut le 1er calque stocké en BDD
     let divIsConnected = $('.isConnected');
     let isConnected = divIsConnected[0].attributes[1].value;
     if (!isConnected) {
         let defaultCalque = calquesNoms[0];
-        let clustersTab = affichageCalquesTab[1];
+        // let clustersTab = affichageCalquesTab[1];
         markersGroupTab[defaultCalque].addTo(myMap);
-        myMap.addLayer(clustersTab[defaultCalque]);
+        // myMap.addLayer(clustersTab[defaultCalque]);
     }
 
     // si on ajoute ou modifie un point
     if (calqueWithAddOrEdit) {
         // on affiche le calque (groupes de marqueurs et cluster) sur lequel on a créé un point
         markersGroupTab[calqueWithAddOrEdit].addTo(myMap);
-        myMap.addLayer(clustersTab[calqueWithAddOrEdit]);
+        // myMap.addLayer(clustersTab[calqueWithAddOrEdit]);
         sessionStorage.removeItem('calqueWithAddOrEdit');
     }
 
@@ -86,11 +86,11 @@ $(document).ready(function(){
 
         if (previousCalqueAfficheElt) {
             markersGroupTab[previousCalqueAfficheElt].remove(myMap);
-            myMap.addLayer(clustersTab[previousCalqueAfficheElt]);
+            // myMap.addLayer(clustersTab[previousCalqueAfficheElt]);
         }
 
         markersGroupTab[nomCalqueTypeElem].addTo(myMap);
-        myMap.addLayer(clustersTab[nomCalqueTypeElem]);
+        // myMap.addLayer(clustersTab[nomCalqueTypeElem]);
         sessionStorage.setItem('calqueAfficheElt', nomCalqueTypeElem);
         centrePeageNord()
         styleGestionCalques()
@@ -175,10 +175,10 @@ $(document).ready(function(){
         sessionStorage.setItem('calqueWithAddOrEdit', calqueNom);
 
         let markersGroupTab = affichageCalquesTab[0];
-        let clustersTab = affichageCalquesTab[1];
+        // let clustersTab = affichageCalquesTab[1];
 
         markersGroupTab[calqueNom].addTo(myMap);
-        myMap.addLayer(clustersTab[calqueNom]);
+        // myMap.addLayer(clustersTab[calqueNom]);
 
         //----------------------------------------------------
         // Récupère le nom du formulaire [1] de la page

@@ -18,10 +18,10 @@ function addGestionAffichage(eltsToShow, calquesNoms, myMap)
 
     // on créé autant de tableaux et de clusters de marqueurs qu'il y a de calques
     let markersTabTab = []; //contiendra les tableaux de marqueurs à afficher par calque
-    let clustersTab = []; // contiendra les "clusters" de marqueurs par calque
+    // let clustersTab = []; // contiendra les "clusters" de marqueurs par calque
     for (let i = 0; i < calquesNoms.length; i++) {
         markersTabTab[escapeHtml(calquesNoms[i])] = [];
-        clustersTab[calquesNoms[i]] = L.markerClusterGroup();
+        // clustersTab[calquesNoms[i]] = L.markerClusterGroup();
     }
 
     // Si true, un utilisateur est connecté, si false, non.
@@ -156,7 +156,7 @@ function addGestionAffichage(eltsToShow, calquesNoms, myMap)
                     markersTabTab[calquesNoms[j]].push(eltAndIcone);
 
                     // on ajoute le marqueur au tableau des clusters
-                    clustersTab[calquesNoms[j]].addLayer(eltAndIcone);
+                    // clustersTab[calquesNoms[j]].addLayer(eltAndIcone);
                     break;
                 }
             }
@@ -178,7 +178,8 @@ function addGestionAffichage(eltsToShow, calquesNoms, myMap)
     }
 
     // on ajoute les données au tableau de retour
-    affichageCalquesTab.push(markersGroupTab, clustersTab);
+    // affichageCalquesTab.push(markersGroupTab, clustersTab); CB
+    affichageCalquesTab.push(markersGroupTab);
 
     // créé l'"icône" et le système de gestion de l'affichage des calques à la carte
     L.control.layers(null, calquesWithGroupsObjet, { collapsed:false }).addTo(myMap);
@@ -227,17 +228,17 @@ function addGestionAffichage(eltsToShow, calquesNoms, myMap)
     })
 
     // activation / inactivation des "clusters"
-    $(document).on("click", ".leaflet-control-layers-selector", function(e) {
-        // on doit enlever l'espace en début de string qui a été ajouté automatiquement
-        var calqueNom = e.target.nextElementSibling.textContent.trim();
-
-        if(this.checked) {
-            // on ajoute le cluster à la carte
-            myMap.addLayer(clustersTab[calqueNom]);
-        } else {
-            myMap.removeLayer(clustersTab[calqueNom]);
-        }
-    });
+    // $(document).on("click", ".leaflet-control-layers-selector", function(e) {
+    //     // on doit enlever l'espace en début de string qui a été ajouté automatiquement
+    //     var calqueNom = e.target.nextElementSibling.textContent.trim();
+    //
+    //     if(this.checked) {
+    //         // on ajoute le cluster à la carte
+    //         myMap.addLayer(clustersTab[calqueNom]);
+    //     } else {
+    //         myMap.removeLayer(clustersTab[calqueNom]);
+    //     }
+    // });
 
     function ConfirmDelete()
     {
