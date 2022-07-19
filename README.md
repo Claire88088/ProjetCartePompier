@@ -1,0 +1,1 @@
+Projet tuteuré effectué sur 12 semaines lors de ma formation en Licence Professionnelle Technologies Logicielles pour le Web et les Terminaux Mobiles (TLWTM) à Poitiers en 2021/2022. Projet effectué à 2 pour un client réel : établissement du cahier des charges et des spécifications techniques, développement et mise en production de l'application.
